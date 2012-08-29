@@ -1,0 +1,3 @@
+source "$HOME/Sites/webconfig/hashrocket/dotmatrix/.bashrc"
+source "$HOME/Sites/webconfig/hashrocket/dotmatrix/.hashrc"
+source "$HOME/Sites/kriogenx/dev.kriogenx.net/scripts/bashrc"

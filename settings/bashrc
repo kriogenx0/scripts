@@ -1,0 +1,217 @@
+# source "$HOME/Sites/Kriogenx/dev.kriogenx.net/scripts/bashrc"
+#if [ -n "echo $0 | grep 'zsh'" ]; then
+if [[ "$0" == 'zsh' ]]; then
+  unsetopt correct_all
+fi
+
+alias krc='vi ~/Sites/kriogenx/dev.kriogenx.net/scripts/bashrc'
+
+si() {
+  cd "$HOME/Sites/$1"
+}
+#alias ci="cd ~/Clients"
+
+# navigation
+alias la='ls -lAh'   #Show all, sort by extension
+alias lll='ls -lAh'
+alias lt="ls -R | grep \":$\" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'"
+alias ltl="lt | less"
+cl() {
+  cd $1; ls -l
+}
+mkd() {
+  mkdir $1
+  cd $1
+}
+ppath() {
+  for a in ${PATH//:/ }; do echo $a; done
+}
+
+# notepad
+alias edi='open -e "$1"'
+
+# builtin apps
+alias vi='vim'
+alias rmf='rm -rf'
+#alias grep='grep --color=auto --exclude="*~"'
+grp() {
+  grep -rn $1 . --colo=auto --exclude="*~"
+}
+egrp() {
+  egrep -rn $1 .
+}
+
+#SSH
+alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub'
+# postgres
+export PGDATA=/usr/local/var/postgres
+
+# rails
+alias rrvm='vi .rvmrc'
+alias rgems='rvm list gemsets; cat .rvmrc'
+alias rgem='vi Gemfile'
+alias rgembuild='gem pristine --all --no-extensions'
+alias rlog='tail -f log/development.log'
+alias rb='ruby'
+alias rss='rails s'
+alias rsc='rails console'
+rr() { #rails root
+  (
+    dir=${1:-$(pwd)}
+    i=0
+    while [ "/" != "$dir" -a "$i" -ne 16 ]; do
+      if [ -f "$dir/config/environment.rb" ]; then
+        echo "$dir"
+        return 0
+      fi
+      dir="$(dirname "$dir")"
+      i=$(expr $i + 1)
+    done
+    return 1
+  )
+}
+rssp() {
+  if [ -f "`rr`/script/rails" ]; then
+    S="`rr`/script/rails server"
+  elif [ -f "`rr`/script/server" ]; then
+    S="`rr`/script/server start"
+  else
+    S="rails s"
+  fi
+  if [ $1 ]; then
+    eval "`$S` -p '$1'"
+  else
+    `$S`
+  fi
+}
+
+# cake
+alias cake='app/Console/cake'
+
+# vendor apps
+alias tiga='tig --all'
+alias tigs='tig status'
+
+# apache
+alias asites='sudo vi /etc/apache2/extra/httpd-vhosts.conf; sudo vi /etc/hosts; sudo apachectl restart'
+alias astart='sudo apachectl restart'
+alias astop='sudo apachectl stop'
+
+# mysql
+#alias mysql=/usr/local/mysql/bin/mysql
+#alias mysqladmin=/usr/local/mysql/bin/mysqladmin
+alias mss='mysql.server start'
+alias mystart='mysql.server start'
+alias mystop='mysql.server stop'
+
+# git
+alias ga='git add .; git add -u; git status'
+alias gai='git add -i; git status'
+alias gap='git add -p'
+
+alias gsm='git submodule add'
+alias gsl='git submodule foreach git pull'
+
+alias gb='git branch'
+alias gbd='git branch -d' # delete
+alias gba='git branch -a' # all branches
+alias gbr='git branch -r' # remote branches
+alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
+alias gbum="git branch --no-merge" # unmerged
+function gbo() {
+  git branch "$1"
+  git checkout "$1"
+  git push -u origin "$1"
+}
+function gbt() {
+  git branch -t "$1" origin/"$1"; #origin/"$1";
+  git checkout "$1"
+}
+
+alias gc='git commit -v -m'
+alias gca='git commit -a -v'
+alias gcam='git commit --amend'
+
+alias gcl="git clone"
+alias gco="git checkout"
+alias go="git checkout"
+alias gom="git checkout master"
+alias gol="git checkout @\{-1\}" # checkout last branch
+gob() {
+  git checkout @\{-"$1"\}
+}
+
+alias gst='git status'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gdc='git diff --cached'
+alias gdh='git diff HEAD'
+alias gig="git update-index --assume-unchanged" # then filename, used for ignoring changes to a file locally
+alias gigu="git update-index --no-assume-unchanged" # then filename, used for ignoring changes to a file locally
+alias glod='git log --oneline --decorate'
+alias gbc="git cherry -v master" #show changes in branch not merged
+
+# git push/pull
+alias gp='git push'
+alias gpa='git push --all'
+alias gpu='git push -u'
+alias gl='git pull'
+alias glu='git pull --set-upstream'
+alias glr='git pull --rebase'
+alias glm="gom; gl; gol; gl"
+alias gr='git rebase'
+alias grc='git rebase --continue'
+alias grc='git rebase --skip'
+alias gra='git rebase --abort'
+alias gnc='gl; gpa'
+
+alias gs='git stash show'
+alias gss='git stash save'
+alias gsa='git stash apply'
+
+alias gm='git merge'
+alias gmt='git mergetool'
+alias gmf='git merge --no-commit --no-ff -v'
+
+alias gr='git revert'
+alias grundo='git revert HEAD~1 -n' #undo commit changes, leaving commit alone
+alias gcundo='git reset --hard HEAD~1' # undo last commit
+alias gsundo=' git reset --soft HEAD^'
+gundo() {
+  if ![ $1 -gt 1 ]; then
+    $1=1
+  fi
+  git revert -n HEAD~r$1
+}
+
+alias gclr='git add .; git add -u; git checkout -f'
+alias gconf='vi .git/config'
+alias gfix='git gc; git repack; git fsck'
+
+gsearch() {
+  git grep $1 $(git rev-list --all)
+}
+
+# tar compress
+tarc() {
+  a=${1%.*}'.tar.gz'
+  /usr/bin/tar cvf $a $1 ;
+}
+
+# copy sync
+cps() {
+  a=${1%.*}'/'
+  rsync -avzur --stats --progress --exclude ".svn" "$a" "$2"
+}
+
+syn() {
+  a=${1%.*}'/'
+  rsync -avzur --stats --progress --exclude ".svn" --delete "$a" "$2"
+}
+
+
+# remove svn and dw files
+cleanup() {
+  find . -name '.svn' -type d -print0 | xargs -0 -t rm -rf
+  find . -name '_notes' -type d -print0 | xargs -0 -t rm -rf
+}
