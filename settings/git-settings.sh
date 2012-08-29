@@ -1,3 +1,4 @@
+#!/bin/sh
 git config --global apply.whitespace nowarn
 git config --global merge.tool opendiff
 #git config --global diff.tool twdiff
@@ -39,8 +40,10 @@ git config --global mergetool.diffmerge.cmd 'diffmerge --merge\n--result="$MERGE
 git config --global mergetool.diffmerge.trustExistCode 'true'
 
 # kdiff3
-git config --global mergetool.kdiff3.path '/Applications/kdiff3.app/Contents/MacOS/kdiff3'
-git config --global mergetool.kdiff3.trustExistCode 'false'
+if [[ -d "/Applications/kdiff.app/Contents" ]]; then
+  git config --global mergetool.kdiff3.path '/Applications/kdiff3.app/Contents/MacOS/kdiff3'
+  git config --global mergetool.kdiff3.trustExistCode 'false'
+fi
 
 # p4merge
 git config --global mergetool.p4.cmd 'p4merge "$BASE" "$LOCAL" "$REMOTE" "$MERGED"'
