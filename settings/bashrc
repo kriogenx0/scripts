@@ -3,7 +3,7 @@ if [[ -n "echo $0 | grep 'zsh'" && "$0" != "-bash"  ]]; then
 fi
 
 # Kriogenx
-alias krc='vi ~/Sites/kriogenx/scripts/settings/rc'
+alias krc='vi ~/Sites/kriogenx/scripts/settings/bashrc'
 alias kd='cd ~/Sites/kriogenx/'
 
 # Traversing
@@ -194,6 +194,7 @@ alias gsl='git submodule foreach git pull'
 
 alias gclr='git add .; git add -u; git checkout -f'
 alias gconf='vi .git/config'
+alias ggconf='vi ~/.gitconfig'
 alias gfix='git gc; git repack; git fsck'
 
 gsearch() {
