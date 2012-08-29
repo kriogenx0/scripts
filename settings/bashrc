@@ -1,6 +1,5 @@
 # source "$HOME/Sites/Kriogenx/dev.kriogenx.net/scripts/bashrc"
-#if [ -n "echo $0 | grep 'zsh'" ]; then
-if [[ "$0" == 'zsh' ]]; then
+if [[ -n "echo $0 | grep 'zsh'" && "$0" != '-bash' ]]; then
   unsetopt correct_all
 fi
 
@@ -109,9 +108,18 @@ alias ga='git add .; git add -u; git status'
 alias gai='git add -i; git status'
 alias gap='git add -p'
 
-alias gsm='git submodule add'
-alias gsl='git submodule foreach git pull'
+alias gc='git commit -v -m'
+alias gca='git commit -a -v'
+alias gcam='git commit --amend'
 
+alias gcl="git clone"
+alias gco="git checkout"
+alias go="git checkout"
+alias gom="git checkout master"
+alias gol="git checkout @\{-1\}" # checkout last branch
+gob() { # go back a branch
+  git checkout @\{-"$1"\}
+}
 alias gb='git branch'
 alias gbd='git branch -d' # delete
 alias gba='git branch -a' # all branches
@@ -128,28 +136,21 @@ function gbt() {
   git checkout "$1"
 }
 
-alias gc='git commit -v -m'
-alias gca='git commit -a -v'
-alias gcam='git commit --amend'
-
-alias gcl="git clone"
-alias gco="git checkout"
-alias go="git checkout"
-alias gom="git checkout master"
-alias gol="git checkout @\{-1\}" # checkout last branch
-gob() {
-  git checkout @\{-"$1"\}
-}
-
+# status / diffs
 alias gst='git status'
 alias gd='git diff'
 alias gds='git diff --staged'
 alias gdc='git diff --cached'
 alias gdh='git diff HEAD'
-alias gig="git update-index --assume-unchanged" # then filename, used for ignoring changes to a file locally
-alias gigu="git update-index --no-assume-unchanged" # then filename, used for ignoring changes to a file locally
+
+# logging
 alias glod='git log --oneline --decorate'
-alias gbc="git cherry -v master" #show changes in branch not merged
+#alias glg ='git log -p'
+alias glol='git lol = log --graph --decorate --pretty=oneline --abbrev-commit'
+alias glola='git log --graph --decorate --pretty=oneline --abbrev-commit --all'
+alias gls='git ls-files'
+alias glgn'ls-files -o -i --exclude-standard' # Show files ignored by git:
+alias glc="git cherry -v master" #show changes in branch not merged
 
 # git push/pull
 alias gp='git push'
@@ -173,16 +174,21 @@ alias gm='git merge'
 alias gmt='git mergetool'
 alias gmf='git merge --no-commit --no-ff -v'
 
+# ignore file
+alias gig="git update-index --assume-unchanged" # then filename, used for ignoring changes to a file locally
+alias gigu="git update-index --no-assume-unchanged" # then filename, used for ignoring changes to a file locally
+
 alias gr='git revert'
-alias grundo='git revert HEAD~1 -n' #undo commit changes, leaving commit alone
 alias gcundo='git reset --hard HEAD~1' # undo last commit
 alias gsundo=' git reset --soft HEAD^'
+alias grundo='git revert HEAD~1 -n' #undo commit changes, leaving commit alone
 gundo() {
-  if ![ $1 -gt 1 ]; then
-    $1=1
-  fi
+  if [ ! $1 -gt 1 ]; then $1=1; fi
   git revert -n HEAD~r$1
 }
+
+alias gsm='git submodule add'
+alias gsl='git submodule foreach git pull'
 
 alias gclr='git add .; git add -u; git checkout -f'
 alias gconf='vi .git/config'
