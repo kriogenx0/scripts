@@ -1,0 +1,52 @@
+[core]
+	whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+#	autocrlf = true
+[color]
+	ui = true
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+	white = red reverse
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[alias]
+    st = status
+    ci = commit
+    br = branch
+    co = checkout
+    df = diff
+    dc = diff --cached
+    lg = log -p
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    ls = ls-files
+
+    # Show files ignored by git:
+    ign = ls-files -o -i --exclude-standard
+
+[apply]
+	whitespace = nowarn
+[mergetool "diffmerge"]
+	cmd = diffmerge --merge\n--result=$MERGED $LOCAL $BASE $REMOTE
+	trustExitCode = true
+[mergetool "kdiff3"]
+  path = /Applications/kdiff3.app/Contents/MacOS/kdiff3
+	trustExitCode = false
+[mergetool "p4merge"]
+  cmd = p4merge "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+  keepTemporaries = false
+  trustExitCode = false
+  keepBackup = false
+[mergetool]
+	keepBackup = false
+[merge]
+	tool = p4merge
+  keepBackup = false;
