@@ -1,10 +1,12 @@
-# source "$HOME/Sites/Kriogenx/dev.kriogenx.net/scripts/bashrc"
-if [[ -n "echo $0 | grep 'zsh'" && "$0" != '-bash' ]]; then
+if [[ -n "echo $0 | grep 'zsh'" && "$0" != "-bash"  ]]; then
   unsetopt correct_all
 fi
 
-alias krc='vi ~/Sites/kriogenx/dev.kriogenx.net/scripts/bashrc'
+# Kriogenx
+alias krc='vi ~/Sites/kriogenx/scripts/settings/rc'
+alias kd='cd ~/Sites/kriogenx/'
 
+# Traversing
 si() {
   cd "$HOME/Sites/$1"
 }
