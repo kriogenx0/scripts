@@ -2,6 +2,7 @@
 git config --global apply.whitespace nowarn
 git config --global merge.tool opendiff
 #git config --global diff.tool twdiff
+#git config --global diff.external p4diff
 git config --global merge.prompt false
 git config --global mergetool.keepBackup false
 git config --global mergetool.keepTemporaries 'false'
@@ -29,6 +30,15 @@ git config --global diff.external ~/Sites/kriogenx/scripts/settings/opendiff-mer
 git config --global difftool.twdiff.cmd "twdiff --wait \"\$LOCAL\" \"\$REMOTE\""
 #git config --global diff.external ~/git-twdiff.sh
 git config --global diff.external ~/Sites/kriogenx/scripts/settings/textwrangler-mergetool
+
+# diffmerge
+git config --global difftool.diffmerge.cmd "diffmerge \$LOCAL \$REMOTE"
+
+# kdiff3
+if [[ -d "/Applications/kdiff.app/Contents" ]]; then
+  git config --global difftool.kdiff3.path '/Applications/kdiff3.app/Contents/MacOS/kdiff3'
+  git config --global difftool.kdiff3.trustExistCode 'false'
+fi
 
 ### Mergetools
 
