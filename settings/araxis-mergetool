@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+LOCAL=$1
+REMOTE=$2
+MERGED=$3
+BASE=$4
+
+MERGE=/usr/local/bin/compare
+
+if [ -e "$BASE"  ]; then
+    $MERGE -wait -merge -3 -a1 \
+    -title1:"$MERGED (Base)" \
+    -title2:"$MERGED (Local)" \
+    -title3:"$MERGED (Remote)" \
+    "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+else
+    $MERGE -wait -2 \
+    -title1:"$MERGED (Local)" \
+    -title2:"$MERGED (Remote)" \
+    "$LOCAL" "$REMOTE" "$MERGED"
+fi
