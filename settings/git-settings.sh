@@ -40,6 +40,9 @@ if [[ -d "/Applications/kdiff.app/Contents" ]]; then
   git config --global difftool.kdiff3.trustExistCode 'false'
 fi
 
+# bbedit
+bbdiff = !"sh -c \"if [ -f '$1' ] && [ -f '$2' ]; then bbdiff --wait --resume '$1' '$2' fi exit 0 \""
+
 ### Mergetools
 
 # araxis
