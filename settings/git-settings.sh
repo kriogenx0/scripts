@@ -1,7 +1,7 @@
 #!/bin/sh
 git config --global apply.whitespace nowarn
-git config --global merge.tool opendiff
-#git config --global diff.tool twdiff
+git config --global merge.tool opendiff 
+#git config --global diff.tool twdiff #options: opendiff diffmerge kdiff3 bbedit textwrangler
 #git config --global diff.external p4diff
 git config --global merge.prompt false
 git config --global mergetool.keepBackup false
@@ -26,11 +26,6 @@ git config --global color.status.untracked cyan
 # opendiff
 git config --global diff.external ~/Sites/kriogenx/scripts/settings/opendiff-mergetool
 
-# textwrangler
-git config --global difftool.twdiff.cmd "twdiff --wait \"\$LOCAL\" \"\$REMOTE\""
-#git config --global diff.external ~/git-twdiff.sh
-git config --global diff.external ~/Sites/kriogenx/scripts/settings/textwrangler-mergetool
-
 # diffmerge
 git config --global difftool.diffmerge.cmd "diffmerge \$LOCAL \$REMOTE"
 
@@ -40,8 +35,14 @@ if [[ -d "/Applications/kdiff.app/Contents" ]]; then
   git config --global difftool.kdiff3.trustExistCode 'false'
 fi
 
-# bbedit
-bbdiff = !"sh -c \"if [ -f '$1' ] && [ -f '$2' ]; then bbdiff --wait --resume '$1' '$2' fi exit 0 \""
+# bbedit - install command line tools
+git config --global difftool.bbedit.cmd "twdiff --wait \"\$LOCAL\" \"\$REMOTE\""
+#bbdiff = !"sh -c \"if [ -f '$1' ] && [ -f '$2' ]; then bbdiff --wait --resume '$1' '$2' fi exit 0 \""
+
+# textwrangler - install command line tools
+git config --global difftool.twdiff.cmd "twdiff --wait \"\$LOCAL\" \"\$REMOTE\""
+#git config --global diff.external ~/git-twdiff.sh
+#git config --global diff.external ~/Sites/kriogenx/scripts/settings/textwrangler-mergetool
 
 ### Mergetools
 
@@ -62,6 +63,12 @@ fi
 git config --global mergetool.p4.cmd 'p4merge "$BASE" "$LOCAL" "$REMOTE" "$MERGED"'
 git config --global mergetool.p4.keepTemporaries 'false'
 git config --global mergetool.p4.trustExistCode 'false'
+
+# bbedit - install command line tools
+git config --global mergetool.bbedit.cmd "twdiff --wait \"\$LOCAL\" \"\$REMOTE\""
+
+# textwrangler - install command line tools
+git config --global mergetool.twdiff.cmd "twdiff --wait \"\$LOCAL\" \"\$REMOTE\""
 
 if [ -d "/Applications/Xcode.app/Contents" ]; then
   sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer

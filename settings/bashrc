@@ -130,12 +130,15 @@ alias gba='git branch -a' # all branches
 alias gbr='git branch -r' # remote branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
 alias gbum="git branch --no-merge" # unmerged
-function gbo() {
+gbo() {
   git branch "$1"
   git checkout "$1"
+}
+gbu() {
+  gbo "$1"
   git push -u origin "$1"
 }
-function gbt() {
+gbt() {
   git branch -t "$1" origin/"$1"; #origin/"$1";
   git checkout "$1"
 }
