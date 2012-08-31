@@ -124,6 +124,8 @@ gob() { # go back a branch
 }
 alias gb='git branch'
 alias gbd='git branch -d' # delete
+alias gbdd='git branch -D' # delete!
+gbdr() { git push origin ":$1" } # delete remote
 alias gba='git branch -a' # all branches
 alias gbr='git branch -r' # remote branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
@@ -138,6 +140,9 @@ function gbt() {
   git checkout "$1"
 }
 
+alias gtg='git tag'
+alais gts='git show'
+
 # status / diffs
 alias gst='git status'
 alias gd='git diff'
@@ -151,7 +156,7 @@ alias glod='git log --oneline --decorate'
 alias glol='git lol = log --graph --decorate --pretty=oneline --abbrev-commit'
 alias glola='git log --graph --decorate --pretty=oneline --abbrev-commit --all'
 alias gls='git ls-files'
-alias glgn'ls-files -o -i --exclude-standard' # Show files ignored by git:
+alias glgn='ls-files -o -i --exclude-standard' # Show files ignored by git:
 alias glc="git cherry -v master" #show changes in branch not merged
 
 # git push/pull
