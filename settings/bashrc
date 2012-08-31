@@ -151,7 +151,7 @@ alias glod='git log --oneline --decorate'
 alias glol='git lol = log --graph --decorate --pretty=oneline --abbrev-commit'
 alias glola='git log --graph --decorate --pretty=oneline --abbrev-commit --all'
 alias gls='git ls-files'
-alias glgn'ls-files -o -i --exclude-standard' # Show files ignored by git:
+alias glgn='ls-files -o -i --exclude-standard' # Show files ignored by git:
 alias glc="git cherry -v master" #show changes in branch not merged
 
 # git push/pull
