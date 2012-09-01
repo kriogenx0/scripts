@@ -43,7 +43,7 @@ egrp() {
 }
 
 #SSH
-alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub'
+alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub; echo "Copied ssh key into clipboard"'
 # postgres
 export PGDATA=/usr/local/var/postgres
 
