@@ -125,7 +125,9 @@ gob() { # go back a branch
 alias gb='git branch'
 alias gbd='git branch -d' # delete
 alias gbdd='git branch -D' # delete!
-gbdr() { git push origin ":$1" } # delete remote
+gbdr() { # delete remote
+  git push origin ":$1"
+}
 alias gba='git branch -a' # all branches
 alias gbr='git branch -r' # remote branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
@@ -234,3 +236,4 @@ cleanup() {
   find . -name '.svn' -type d -print0 | xargs -0 -t rm -rf
   find . -name '_notes' -type d -print0 | xargs -0 -t rm -rf
 }
+
