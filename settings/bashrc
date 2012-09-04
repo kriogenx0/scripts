@@ -126,6 +126,7 @@ alias gb='git branch'
 alias gbd='git branch -d' # delete
 alias gbdd='git branch -D' # delete!
 gbdr() { git push origin ":$1" } # delete remote
+gbda() { gbd $1; gbdr $1 } # delete all
 alias gba='git branch -a' # all branches
 alias gbr='git branch -r' # remote branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
