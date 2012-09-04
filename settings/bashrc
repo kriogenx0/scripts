@@ -44,6 +44,8 @@ egrp() {
 
 #SSH
 alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub; echo "Copied ssh key into clipboard"'
+# Dropbox
+alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
 # postgres
 export PGDATA=/usr/local/var/postgres
 
