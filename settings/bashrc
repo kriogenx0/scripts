@@ -43,7 +43,7 @@ egrp() {
 }
 
 #SSH
-alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub'
+alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub; echo "Copied ssh key into clipboard"'
 # postgres
 export PGDATA=/usr/local/var/postgres
 
@@ -234,4 +234,7 @@ syn() {
 cleanup() {
   find . -name '.svn' -type d -print0 | xargs -0 -t rm -rf
   find . -name '_notes' -type d -print0 | xargs -0 -t rm -rf
+  find . -name '_vti_cnf' -type d -print0 | xargs -0 -t rm -rf
+  find . -name '.DS_Store' -print0 | xargs -0 -t rm -rf
 }
+
