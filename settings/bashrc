@@ -1,6 +1,7 @@
 if [[ -n "echo $0 | grep 'zsh'" && "$0" != "-bash"  ]]; then
   unsetopt correct_all
 fi
+export PATH=$PATH:/usr/local/sbin
 
 # Kriogenx
 alias krc='vi ~/Sites/kriogenx/scripts/settings/bashrc'
