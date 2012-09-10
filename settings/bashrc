@@ -149,6 +149,7 @@ gbt() {
 
 alias gtg='git tag'
 alias gts='git show'
+alias gtp='git push --tags'
 
 # status / diffs
 alias gst='git status'
@@ -174,6 +175,7 @@ alias gpa='git push --all'
 alias gpu='git push -u'
 alias gpo='git push -u origin'
 alias gl='git pull'
+alias gla='git pull -v --all'
 alias glu='git pull --set-upstream'
 alias glr='git pull --rebase'
 alias glm="gom; gl; gol; gl"
@@ -249,7 +251,7 @@ cleanup() {
 
 # go up directories looking for $1
 dirup() {
-  dir=${2:-$(pwd)}
+  dir=${1:-$(pwd)}
   i=0
   while [ "/" != "$dir" -a "$i" -ne 16 ]; do
     if [ -f "$dir/$1" ]; then
