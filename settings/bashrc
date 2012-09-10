@@ -5,7 +5,7 @@ fi
 # Kriogenx
 alias krc='vi ~/Sites/kriogenx/scripts/settings/bashrc'
 alias kd='cd ~/Sites/kriogenx/'
-alias kgitignore='cp ~/Sites/kriogenx/scripts/gitignore ./.gitignore'
+alias kgig='cp ~/Sites/kriogenx/scripts/gitignore ./.gitignore'
 
 # Traversing
 si() {
@@ -192,7 +192,8 @@ alias gmt='git mergetool'
 alias gmf='git merge --no-commit --no-ff -v'
 
 # ignore file
-alias gig="git update-index --assume-unchanged" # then filename, used for ignoring changes to a file locally
+alias gig="vi .gitignore"
+alias gigi="git update-index --assume-unchanged" # then filename, used for ignoring changes to a file locally
 alias gigu="git update-index --no-assume-unchanged" # then filename, used for ignoring changes to a file locally
 
 alias gr='git revert'
@@ -244,4 +245,19 @@ cleanup() {
   find . -name '_notes' -type d -print0 | xargs -0 -t rm -rf
   find . -name '_vti_cnf' -type d -print0 | xargs -0 -t rm -rf
   find . -name '.DS_Store' -print0 | xargs -0 -t rm -rf
+}
+
+# go up directories looking for $1
+dirup() {
+  dir=${2:-$(pwd)}
+  i=0
+  while [ "/" != "$dir" -a "$i" -ne 16 ]; do
+    if [ -f "$dir/$1" ]; then
+      echo "$dir"
+      return 0
+    fi
+    dir="$(dirname "$dir")"
+    i=$(expr $i + 1)
+  done
+  return 1
 }
