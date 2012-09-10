@@ -29,8 +29,13 @@ defaults write com.apple.dashboard mcx-disabled -boolean YES
 
 fi
 
-
+#####################
 # ALL OS'S
+
+# Disable Crash Reporting
+defaults write com.apple.CrashReporter DialogType none
+
+# Dock
 defaults write com.apple.dock orientation right
 
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false

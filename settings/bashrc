@@ -6,7 +6,7 @@ export PATH=$PATH:/usr/local/sbin
 # Kriogenx
 alias krc='vi ~/Sites/kriogenx/scripts/settings/bashrc'
 alias kd='cd ~/Sites/kriogenx/'
-alias kgitignore='cp ~/Sites/kriogenx/scripts/gitignore ./.gitignore'
+alias kgig='cp ~/Sites/kriogenx/scripts/gitignore ./.gitignore'
 
 # Traversing
 si() {
@@ -150,6 +150,7 @@ gbt() {
 
 alias gtg='git tag'
 alias gts='git show'
+alias gtp='git push --tags'
 
 # status / diffs
 alias gst='git status'
@@ -173,7 +174,9 @@ alias glc="git cherry -v master" #show changes in branch not merged
 alias gp='git push'
 alias gpa='git push --all'
 alias gpu='git push -u'
+alias gpo='git push -u origin'
 alias gl='git pull'
+alias gla='git pull -v --all'
 alias glu='git pull --set-upstream'
 alias glr='git pull --rebase'
 alias glm="gom; gl; gol; gl"
@@ -192,7 +195,8 @@ alias gmt='git mergetool'
 alias gmf='git merge --no-commit --no-ff -v'
 
 # ignore file
-alias gig="git update-index --assume-unchanged" # then filename, used for ignoring changes to a file locally
+alias gig="vi .gitignore"
+alias gigi="git update-index --assume-unchanged" # then filename, used for ignoring changes to a file locally
 alias gigu="git update-index --no-assume-unchanged" # then filename, used for ignoring changes to a file locally
 
 alias gr='git revert'
@@ -244,4 +248,19 @@ cleanup() {
   find . -name '_notes' -type d -print0 | xargs -0 -t rm -rf
   find . -name '_vti_cnf' -type d -print0 | xargs -0 -t rm -rf
   find . -name '.DS_Store' -print0 | xargs -0 -t rm -rf
+}
+
+# go up directories looking for $1
+dirup() {
+  dir=${1:-$(pwd)}
+  i=0
+  while [ "/" != "$dir" -a "$i" -ne 16 ]; do
+    if [ -f "$dir/$1" ]; then
+      echo "$dir"
+      return 0
+    fi
+    dir="$(dirname "$dir")"
+    i=$(expr $i + 1)
+  done
+  return 1
 }
