@@ -11,3 +11,6 @@ dwsync.xml
 
 # Revision Control
 .svn
+
+# VIM
+*.un~

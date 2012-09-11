@@ -37,12 +37,21 @@ Thumbs.db
 #####################
 # Apps
 
+# VIM
+*.un~
+
 # Dreamweaver
 _notes
 dwsync.xml
 
 # SVN
 .svn
+
+# Front Page
+_vti_cnf
+_vti_pvt
+_vti_script
+_vti_txt
 
 # Word Press
 */wp-content/uploads/*

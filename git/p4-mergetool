@@ -1,6 +1,5 @@
 #!/bin/sh
-#/Applications/p4merge.app/Contents/MacOS/p4merge $*
+/Applications/p4merge.app/Contents/MacOS/p4merge $*
 
-
-for arg; do [[ $arg = /* ]] || arg=$PWD/$arg; absargs+=("$arg"); done;
-  /Applications/p4merge.app/Contents/Resources/launchp4merge "${absargs[@]}"
+#for arg; do [[ $arg = /* ]] || arg=$PWD/$arg; absargs+=("$arg"); done;
+#  /Applications/p4merge.app/Contents/Resources/launchp4merge "${absargs[@]}"

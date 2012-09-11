@@ -16,7 +16,7 @@ git config --global color.status.changed green
 git config --global color.status.untracked cyan
 
 # Merge & Diff
-git config --global merge.tool opendiff 
+git config --global merge.tool p4
 git config --global merge.prompt false
 git config --global mergetool.keepBackup false
 git config --global mergetool.keepTemporaries 'false'
@@ -64,7 +64,7 @@ if [[ -d "/Applications/kdiff.app/Contents" ]]; then
 fi
 
 # p4merge
-git config --global mergetool.p4.cmd 'p4merge "$BASE" "$LOCAL" "$REMOTE" "$MERGED"'
+git config --global mergetool.p4.cmd '~/Sites/kriogenx/scripts/git/p4-mergetool "$BASE" "$LOCAL" "$REMOTE" "$MERGED"'
 git config --global mergetool.p4.keepTemporaries 'false'
 git config --global mergetool.p4.trustExistCode 'false'
 
