@@ -3,7 +3,7 @@ if ! test -d ~/Sites/kriogenx ; then
   mkdir ~/Sites/kriogenx
   cd ~/Sites/kriogenx
 
-  git clone https://kriogenx:m3d1ag@bitbucket.org/kriogenx/dev.kriogenx.net.git
+  git clone git@bitbucket.org:kriogenx/dev.kriogenx.net.git
 fi
 
 

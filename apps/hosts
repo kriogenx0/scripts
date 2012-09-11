@@ -28,10 +28,12 @@
 # GOOGLE LOCATIONS
 127.0.0.1	tools.l.google.com
 127.0.0.1	l.google.com
+127.0.0.1	gw-in-x8a.1e100.net
 
-# SITES
-127.0.0.1	omnesco.local
-
+# APPLE IPHONE CHECK
 #74.208.105.172 gs.apple.com
 #74.208.10.249 gs.apple.com
 #127.0.0.1 gs.apple.com
+
+# SITES
+127.0.0.1	omnesco.local
