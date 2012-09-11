@@ -195,7 +195,7 @@ alias gr='git rebase'
 alias grc='git rebase --continue'
 alias grc='git rebase --skip'
 alias gra='git rebase --abort'
-alias gnc='gl; gpa'
+alias gnc='glr; gpa'
 
 alias gs='git stash show'
 alias gss='git stash save'
