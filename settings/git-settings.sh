@@ -1,11 +1,5 @@
 #!/bin/sh
 git config --global apply.whitespace nowarn
-git config --global merge.tool opendiff 
-#git config --global diff.tool twdiff #options: opendiff diffmerge kdiff3 bbedit textwrangler
-#git config --global diff.external p4diff
-git config --global merge.prompt false
-git config --global mergetool.keepBackup false
-git config --global mergetool.keepTemporaries 'false'
 
 # Colors
 git config --global color.ui true
@@ -21,10 +15,19 @@ git config --global color.status.added yellow
 git config --global color.status.changed green
 git config --global color.status.untracked cyan
 
+# Merge & Diff
+git config --global merge.tool opendiff 
+git config --global merge.prompt false
+git config --global mergetool.keepBackup false
+git config --global mergetool.keepTemporaries 'false'
+#git config --global diff.tool twdiff #options: opendiff diffmerge kdiff3 bbedit textwrangler
+#git config --global diff.external p4diff
+
+##############
 ### Difftools
 
 # opendiff
-git config --global diff.external ~/Sites/kriogenx/scripts/settings/opendiff-mergetool
+git config --global difftool.opendiff.external ~/Sites/kriogenx/scripts/git/opendiff-mergetool
 
 # diffmerge
 git config --global difftool.diffmerge.cmd "diffmerge \$LOCAL \$REMOTE"
@@ -42,8 +45,9 @@ git config --global difftool.bbedit.cmd "twdiff --wait \"\$LOCAL\" \"\$REMOTE\""
 # textwrangler - install command line tools
 git config --global difftool.twdiff.cmd "twdiff --wait \"\$LOCAL\" \"\$REMOTE\""
 #git config --global diff.external ~/git-twdiff.sh
-#git config --global diff.external ~/Sites/kriogenx/scripts/settings/textwrangler-mergetool
+#git config --global diff.external ~/Sites/kriogenx/scripts/git/textwrangler-mergetool
 
+##############
 ### Mergetools
 
 # araxis
@@ -65,7 +69,7 @@ git config --global mergetool.p4.keepTemporaries 'false'
 git config --global mergetool.p4.trustExistCode 'false'
 
 # bbedit - install command line tools
-git config --global mergetool.bbedit.cmd "twdiff --wait \"\$LOCAL\" \"\$REMOTE\""
+git config --global mergetool.bbedit.cmd "bbdiff --wait \"\$LOCAL\" \"\$REMOTE\""
 
 # textwrangler - install command line tools
 git config --global mergetool.twdiff.cmd "twdiff --wait \"\$LOCAL\" \"\$REMOTE\""
