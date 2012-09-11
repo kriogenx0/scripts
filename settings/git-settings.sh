@@ -3,18 +3,34 @@ git config --global apply.whitespace nowarn
 git config --global core.editor /usr/bin/vim
 
 # Colors
+# OPTIONS ARE
+# normal, black, red, green, yellow, blue, magenta, cyan and white
+# bold, dim, ul, blink and reverse
+# http://shallowsky.com/blog/programming/gitcolors.html
 git config --global color.ui true
-git config --global color.branch.current yellow reverse
+git config --global color.branch.plain normal
+git config --global color.branch.current 'yellow reverse'
 git config --global color.branch.local yellow
 git config --global color.branch.remote green
-git config --global color.diff.meta yellow bold
-git config --global color.diff.frag magenta bold
-git config --global color.diff.old red bold
-git config --global color.diff.new green bold
-git config --global color.diff.white red reverse
+git config --global color.diff.plain normal
+git config --global color.diff.meta 'yellow bold'
+git config --global color.diff.frag 'magenta bold'
+git config --global color.diff.old 'red bold'
+git config --global color.diff.new 'green bold'
+git config --global color.diff.white 'red reverse'
+git config --global color.diff.whitespace normal red
+git config --global color.diff.commit yellow
+git config --global color.status.header normal
 git config --global color.status.added yellow
 git config --global color.status.changed green
+git config --global color.status.updated green
 git config --global color.status.untracked cyan
+git config --global color.status.nobranch red
+git config --global color.grep.match green
+git config --global color.interactive.prompt red
+git config --global color.interactive.header normal
+git config --global color.interactive.help green
+git config --global color.interactive.error red
 
 # Merge & Diff
 git config --global merge.tool p4
@@ -74,7 +90,3 @@ git config --global mergetool.bbedit.cmd "bbdiff --wait \"\$LOCAL\" \"\$REMOTE\"
 
 # textwrangler - install command line tools
 git config --global mergetool.twdiff.cmd "twdiff --wait \"\$LOCAL\" \"\$REMOTE\""
-
-if [ -d "/Applications/Xcode.app/Contents" ]; then
-  sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
-fi

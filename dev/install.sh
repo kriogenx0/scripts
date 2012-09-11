@@ -22,3 +22,8 @@ fi
 
 # POW
 # curl get.pow.cx | sh
+
+# Xcode Select
+if [ -d "/Applications/Xcode.app/Contents" ]; then
+  sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
+fi
