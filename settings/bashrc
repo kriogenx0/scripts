@@ -102,6 +102,9 @@ alias cake='app/Console/cake'
 alias tiga='tig --all'
 alias tigs='tig status'
 
+# Servers
+alias wsports="ps auxwww|grep LISTEN|grep 80; netstat -a | egrep 'Proto|LISTEN'; lsof -i tcp:80;lsof -i tcp:8080; lsof -i tcp:3000"
+
 # apache
 alias asites='sudo vi /etc/apache2/extra/httpd-vhosts.conf; sudo vi /etc/hosts; sudo apachectl restart'
 alias astart='sudo apachectl restart'
