@@ -1,5 +1,6 @@
 #!/bin/sh
 git config --global apply.whitespace nowarn
+git config --global core.editor /usr/bin/vim
 
 # Colors
 git config --global color.ui true
