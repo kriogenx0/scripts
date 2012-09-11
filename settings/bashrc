@@ -8,6 +8,9 @@ export PATH=$PATH:$HOME/.rvm/bin
 alias krc='vi ~/Sites/kriogenx/scripts/settings/bashrc'
 alias kd='cd ~/Sites/kriogenx/'
 alias kgig='cp ~/Sites/kriogenx/scripts/gitignore ./.gitignore'
+kdu() { # Krigoenx Directory Update
+  $( kd; cd scripts; git pull )
+}
 
 # Traversing
 si() {
