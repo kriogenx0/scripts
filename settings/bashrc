@@ -1,3 +1,4 @@
+#!/usr/bin/env sh
 if [[ -n "echo $0 | grep 'zsh'" && "$0" != "-bash"  ]]; then
   unsetopt correct_all
 fi
