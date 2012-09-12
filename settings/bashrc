@@ -1,9 +1,18 @@
 #!/usr/bin/env sh
+
+# ADDITIONAL BINARIES
+export PATH=$PATH:/usr/local/sbin
+
+# ZSH SETTINGS
 if [[ -n "echo $0 | grep 'zsh'" && "$0" != "-bash"  ]]; then
   unsetopt correct_all
 fi
-export PATH=$PATH:/usr/local/sbin
+
+# RVM SETTINGS
 export PATH=$PATH:$HOME/.rvm/bin
+if test -f ~/.rvm/scripts/rvm; then
+  [ "$(type rvm)" = "rvm is a shell function" ] || source ~/.rvm/scripts/rvm
+fi
 
 # Kriogenx
 alias krc='vi ~/Sites/kriogenx/scripts/settings/bashrc'
@@ -40,7 +49,7 @@ alias edi='open -e "$1"'
 
 # builtin apps
 alias vi='vim'
-alias rmf='rm -rf'
+alias rmf='sudo rm -rf'
 #alias grep='grep --color=auto --exclude="*~"'
 grp() {
   grep -rn $1 . --colo=auto --exclude="*~"
@@ -111,7 +120,9 @@ alias astart='sudo apachectl restart'
 alias astop='sudo apachectl stop'
 
 # Nginx
-alias ngconf='vi /usr/local/etc/nginx/nginx.conf'
+alias ngsites='vi /usr/local/etc/nginx/nginx.conf'
+alias ngstart='sudo nginx'
+alias ngstop='nginx -s quit'
 
 # mysql
 #alias mysql=/usr/local/mysql/bin/mysql
