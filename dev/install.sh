@@ -27,3 +27,12 @@ fi
 if [ -d "/Applications/Xcode.app/Contents" ]; then
   sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
 fi
+
+# GCC FIX FOR GEM BUILDING
+if [[ ! -f /usr/bin/g++ && -f /usr/bin/llvm-g++-4.2 ]]; then
+  ln -s /usr/bin/llvm-g++-4.2 /usr/bin/g++
+fi
+
+if [[ ! -f /usr/bin/gcc && -f /usr/bin/llvm-gcc-4.2 ]]; then
+  ln -s /usr/bin/llvm-gcc-4.2 /usr/bin/gcc
+fi
