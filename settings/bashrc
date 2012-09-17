@@ -49,7 +49,8 @@ alias edi='open -e "$1"'
 
 # builtin apps
 alias vi='vim'
-alias rmf='sudo rm -rf'
+alias rmf='rm -rf'
+alias srmf='sudo rm -rf'
 #alias grep='grep --color=auto --exclude="*~"'
 grp() {
   grep -rn $1 . --colo=auto --exclude="*~"
@@ -185,11 +186,13 @@ alias gdl="git show" # diff last changes
 alias gdh='git diff HEAD'
 alias gdm='git diff master'
 
-# logging
+# logging - glo
 alias glod='git log --oneline --decorate'
-#alias glg ='git log -p'
-alias glol='git lol = log --graph --decorate --pretty=oneline --abbrev-commit'
+alias glop='git log -p'
+alias glol='git log --graph --decorate --pretty=oneline --abbrev-commit'
 alias glola='git log --graph --decorate --pretty=oneline --abbrev-commit --all'
+alias glodd='git log --pretty=format:"%h%x09%an%x09%ad%x09%s"'
+alias glodr='git log --pretty=format:"%h%x09%an%x09%ad%x09%s" --date=relative'
 alias gls='git ls-files'
 alias glgn='ls-files -o -i --exclude-standard' # Show files ignored by git:
 alias glc="git cherry -v master" #show changes in branch not merged
