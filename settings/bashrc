@@ -91,10 +91,10 @@ rr() { #rails root
   )
 }
 rssp() {
-  if [ -f "`rr`/script/rails" ]; then
-    S="`rr`/script/rails server"
-  elif [ -f "`rr`/script/server" ]; then
-    S="`rr`/script/server start"
+  if [[ -f "`rr`/script/rails" ]]; then
+    S="$(rr; script/rails start)"
+  elif [[ -f "`rr`/script/server" ]]; then
+    S="$(rr; script/server start)"
   else
     S="rails s"
   fi
@@ -204,7 +204,9 @@ alias gpu='git push -u'
 alias gpo='git push -u origin'
 alias gl='git pull'
 alias gla='git pull -v --all'
-alias glu='git pull --set-upstream'
+glu() {
+  git branch --set-upstream $1 "origin/$1"
+}
 alias glr='git pull --rebase'
 alias glm="gom; gl; gol; gl"
 alias gr='git rebase'
