@@ -92,7 +92,7 @@ rr() { #rails root
 }
 rssp() {
   if [[ -f "`rr`/script/rails" ]]; then
-    S="$(rr; script/rails start)"
+    S="$(rails s)"
   elif [[ -f "`rr`/script/server" ]]; then
     S="$(rr; script/server start)"
   else
@@ -218,6 +218,7 @@ alias gnc='glr; gpa'
 alias gs='git stash show'
 alias gss='git stash save'
 alias gsa='git stash apply'
+alias gsc='git stash clear'
 
 alias gm='git merge'
 alias gmt='git mergetool'
