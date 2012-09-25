@@ -1,7 +1,13 @@
 #!/usr/bin/env sh
 
+# ============
+# ENVIRONMENT
+
 # ADDITIONAL BINARIES
 export PATH=$PATH:/usr/local/sbin
+
+# Postgres
+export PGDATA=/usr/local/var/postgres
 
 # ZSH SETTINGS
 if [[ -n "echo $0 | grep 'zsh'" && "$0" != "-bash"  ]]; then
@@ -14,10 +20,13 @@ if test -f ~/.rvm/scripts/rvm; then
   [ "$(type rvm)" = "rvm is a shell function" ] || source ~/.rvm/scripts/rvm
 fi
 
+# =============
+# ALIASES
+
 # Kriogenx
 alias krc='vi ~/Sites/kriogenx/scripts/settings/bashrc'
 alias kd='cd ~/Sites/kriogenx/'
-alias kgig='cp ~/Sites/kriogenx/scripts/gitignore ./.gitignore'
+alias kgig='cp ~/Sites/kriogenx/scripts/git/gitignore ./.gitignore'
 kdu() { # Krigoenx Directory Update
   $( kd; cd scripts; git pull )
 }
@@ -63,8 +72,6 @@ egrp() {
 alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub; echo "Copied ssh key into clipboard"'
 # Dropbox
 alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
-# postgres
-export PGDATA=/usr/local/var/postgres
 
 # rails
 alias rrvm='vi .rvmrc'
@@ -131,6 +138,13 @@ alias ngstop='nginx -s quit'
 alias mss='mysql.server start'
 alias mystart='mysql.server start'
 alias mystop='mysql.server stop'
+
+# postgres
+alias pgstart='pg_ctl start'
+alias pgstop='pg_ctl stop'
+pgenv() {
+  echo "PGDATA:    $PGDATA"
+}
 
 # git
 alias ga='git add .; git add -u; git status'

@@ -1,5 +1,13 @@
 #!/usr/bin/env sh
 
+# Brew
+sudo chown -R `whoami` /usr/local
+brew update
+
+# Apple GCC
+brew tap homebrew/dupes
+brew install apple-gcc42
+
 # OH MY ZSH
 curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
 

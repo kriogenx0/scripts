@@ -56,6 +56,11 @@ _vti_txt
 # Word Press
 */wp-content/uploads/*
 
+# Graphics
+*.psd
+*.ai
+*.eps
+
 # App
 ignore
 Dropbox
