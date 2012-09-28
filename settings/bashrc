@@ -67,6 +67,9 @@ grp() {
 egrp() {
   egrep -rn $1 .
 }
+fnd() {
+  find . -name $1
+}
 
 #SSH
 alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub; echo "Copied ssh key into clipboard"'
