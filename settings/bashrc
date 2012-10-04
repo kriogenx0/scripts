@@ -10,7 +10,7 @@ export PATH=$PATH:/usr/local/sbin
 export PGDATA=/usr/local/var/postgres
 
 # ZSH SETTINGS
-if [[ -n "echo $0 | grep 'zsh'" && "$0" != "-bash"  ]]; then
+if [[ -n "echo $0 | grep 'zsh'" && "$0" != "-bash" && "$0" != "bash" ]]; then
   unsetopt correct_all
 fi
 
@@ -171,8 +171,13 @@ gob() { # go back a branch
 alias gb='git branch'
 alias gbd='git branch -d' # delete
 alias gbdd='git branch -D' # delete!
-gbdr() { git push origin ":$1" } # delete remote
-gbda() { gbd $1; gbdr $1 } # delete all
+# delete remote
+gbdr() {
+  git push origin ":$1"
+} # delete all
+gbda() {
+  gbd $1; gbdr $1
+}
 alias gbdall='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d' # delete all merged branches
 alias gbp='git prune -v'
 alias gba='git branch -a' # all branches
