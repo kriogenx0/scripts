@@ -123,7 +123,14 @@ alias tiga='tig --all'
 alias tigs='tig status'
 
 # Web Server
-alias wsports="ps auxwww|grep LISTEN|grep 80; netstat -a | egrep 'Proto|LISTEN'; lsof -i tcp:80;lsof -i tcp:8080; lsof -i tcp:3000"
+webports() {
+  ps auxwww | grep LISTEN
+  netstat -a | egrep 'Proto|LISTEN'
+  lsof -i tcp:80
+  lsof -i tcp:8080
+  lsof -i tcp:3000
+}
+alias wsports='webports'
 
 # apache
 alias asites='sudo vi /etc/apache2/extra/httpd-vhosts.conf; sudo vi /etc/hosts; sudo apachectl restart'
