@@ -102,13 +102,13 @@ rr() { #rails root
 }
 rssp() {
   if [[ -f "`rr`/script/rails" ]]; then
-    S="$(rails s)"
+    S="`rr`/script/rails"
   elif [[ -f "`rr`/script/server" ]]; then
-    S="$(rr; script/server start)"
+    S="`rr`/script/server"
   else
     S="rails s"
   fi
-  if [ $1 ]; then
+  if [[ -n $1 ]]; then
     eval "`$S` -p '$1'"
   else
     `$S`
@@ -122,7 +122,7 @@ alias cake='app/Console/cake'
 alias tiga='tig --all'
 alias tigs='tig status'
 
-# Servers
+# Web Server
 alias wsports="ps auxwww|grep LISTEN|grep 80; netstat -a | egrep 'Proto|LISTEN'; lsof -i tcp:80;lsof -i tcp:8080; lsof -i tcp:3000"
 
 # apache
@@ -174,7 +174,8 @@ alias gbdd='git branch -D' # delete!
 # delete remote
 gbdr() {
   git push origin ":$1"
-} # delete all
+}
+# delete all
 gbda() {
   gbd $1; gbdr $1
 }
