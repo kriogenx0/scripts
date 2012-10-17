@@ -140,7 +140,7 @@ alias astop='sudo apachectl stop'
 # Nginx
 alias ngsites='vi /usr/local/etc/nginx/nginx.conf'
 alias ngstart='sudo nginx'
-alias ngstop='nginx -s quit'
+alias ngstop='sudo nginx -s quit'
 
 # mysql
 #alias mysql=/usr/local/mysql/bin/mysql
