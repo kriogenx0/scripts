@@ -1,7 +1,29 @@
 OSX_VERSION=$(sw_vers | grep ProductVersion | awk -F: '{print $2}')
 
+# MOUNTAIN LION
+if [[ $OSX_VERSION =~ "10.8*" ]]; then
 
-if [[ $OSX_VERSION =~ "10.7*" ]]; then
+  # SCROLL DIRECTION
+  defaults write ~/Library/Preferences/. GlobalPreferences com.apple.swipescrolldirection -bool false
+
+  # SPACES DELAY
+  defaults write com.apple.dock workspaces-edge-delay -float 0.1
+
+  # DISABLE ANIMATIONS
+  defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool NO
+  defaults write com.apple.Mail DisableReplyAnimations -bool YES
+  defaults write com.apple.Mail DisableSendAnimations -bool YES
+
+  # MISSION CONTROL ANIMATION
+  defaults write com.apple.dock expose-animation-duration -int 0
+
+  # LAUNCHPAD
+  defaults write com.apple.dock springboard-show-duration -int 0
+  defaults write com.apple.dock springboard-hide-duration -int 0
+
+  defaults write -g ApplePressAndHoldEnabled -bool false
+
+elif [[ $OSX_VERSION =~ "10.7*" ]]; then
 # LION
 
 # DESKTOP SHORTCUT
@@ -42,7 +64,6 @@ defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
 # DOCK MOUSE OVER DELAY
 defaults write com.apple.Dock autohide-delay -float 0
-
 
 
 # Safari Bookmarks
