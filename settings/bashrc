@@ -4,7 +4,8 @@
 # ENVIRONMENT
 
 # ADDITIONAL BINARIES
-export PATH=$PATH:/usr/local/sbin
+#export PATH=$PATH:/usr/local/sbin
+export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
 
 # Postgres
 export PGDATA=/usr/local/var/postgres
@@ -80,6 +81,7 @@ alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
 alias rrvm='vi .rvmrc'
 alias rgems='rvm list gemsets; cat .rvmrc'
 alias rgem='vi Gemfile'
+alias rgemsuninstall='gem list | cut -d" " -f1 | xargs gem uninstall -aIx'
 alias rgembuild='gem pristine --all --no-extensions'
 alias rlog='tail -f log/development.log'
 alias rb='ruby'
@@ -192,10 +194,7 @@ alias gba='git branch -a' # all branches
 alias gbr='git branch -r' # remote branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
 alias gbum="git branch --no-merge" # unmerged
-gbo() {
-  git branch "$1"
-  git checkout "$1"
-}
+alias gbo='git checkout -b'
 gbu() {
   gbo "$1"
   git push -u origin "$1"
