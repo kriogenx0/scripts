@@ -30,6 +30,7 @@ curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | 
 
 # Ruby Install
 sh install-theinstall.sh
+echo 'rvm_auto_reload_flag=1' >> ~/.rvmrc
 
 # Uninstall Native Ruby
 sudo rm -r /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8
@@ -41,8 +42,8 @@ sh move-hashrocket.sh
 sh install-kriogenx.sh
 
 # ZSH THEME
-if [ -d '~/.oh-my-zsh/themes' ]; then
   $(cd ~/.oh-my-zsh/themes; ln -s ~/Sites/kriogenx/scripts/shells/kriogenx.zsh-theme)
+if [ -d '~/.oh-my-zsh/themes' ]; then
 fi
 
 # POW

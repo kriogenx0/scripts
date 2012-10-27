@@ -69,7 +69,7 @@ egrp() {
   egrep -rn $1 .
 }
 fnd() {
-  find . -name $1
+  find . -name "*$1*"
 }
 
 #SSH
@@ -79,11 +79,12 @@ alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
 
 # rails
 alias rrvm='vi .rvmrc'
+alias rversions="gem list -ra rails | grep 'rails ('"
 alias rgems='rvm list gemsets; cat .rvmrc'
-alias rgem='vi Gemfile'
+alias rgem='vi `rr`/Gemfile'
 alias rgemsuninstall='gem list | cut -d" " -f1 | xargs gem uninstall -aIx'
 alias rgembuild='gem pristine --all --no-extensions'
-alias rlog='tail -f log/development.log'
+alias rlog='tail -f `rr`/log/development.log'
 alias rb='ruby'
 alias rss='rails s'
 alias rsc='rails console'
@@ -216,6 +217,7 @@ alias gdc='git diff --cached'
 alias gdl="git show" # diff last changes
 alias gdh='git diff HEAD'
 alias gdm='git diff master'
+alias gsha='git log | head -1'
 
 # logging - glo
 alias glod='git log --oneline --decorate'
