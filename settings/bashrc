@@ -50,9 +50,10 @@ mkd() {
   mkdir $1
   cd $1
 }
-ppath() {
-  for a in ${PATH//:/ }; do echo $a; done
-}
+#ppath() {
+#  for a in ${PATH//:/ }; do echo $a; done
+#}
+alias ppath='echo $PATH | tr ':' "\n"'
 
 # notepad
 alias edi='open -e "$1"'
