@@ -172,8 +172,7 @@ alias gai='git add -i; git status'
 alias gap='git add -p'
 
 alias gc='git commit -v -m'
-alias gca='git commit -a -v'
-alias gcam='git commit --amend'
+alias gca='git commit --amend'
 
 alias gcl="git clone"
 alias gco="git checkout"
