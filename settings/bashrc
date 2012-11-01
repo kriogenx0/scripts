@@ -82,12 +82,16 @@ alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
 alias rrvm='vi .rvmrc'
 alias rversions="gem list -ra rails | grep 'rails ('"
 alias rgems='rvm list gemsets; cat .rvmrc'
+alias rgemsdir='cd `rvm gemdir`/gems'
 alias rgem='vi `rr`/Gemfile'
 alias rgemsuninstall='gem list | cut -d" " -f1 | xargs gem uninstall -aIx'
 alias rgembuild='gem pristine --all --no-extensions'
 alias rlog='tail -f `rr`/log/development.log'
 alias rb='ruby'
 alias rss='rails s'
+alias rss1='rss -p 3001'
+alias rss2='rss -p 3002'
+alias rss3='rss -p 3003'
 alias rsc='rails console'
 rr() { #rails root
   (
