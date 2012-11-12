@@ -1,15 +1,10 @@
+# Kriogenx ZSH Theme
+# Used a big part of...
+#
 # Fino theme by Max Masnick (http://max.masnick.me)
 
 # Use with a dark background and 256-color terminal!
-# Meant for people with RVM and git. Tested only on OS X 10.7.
-
-# You can set your computer name in the ~/.box-name file if you want.
-
-# Borrowing shamelessly from these oh-my-zsh themes:
-#   bira
-#   robbyrussell
-#
-# Also borrowing from http://stevelosh.com/blog/2010/02/my-extravagant-zsh-prompt/
+# Meant for people with RVM and git. Tested only on OS X 10.8.
 
 function virtualenv_info {
     [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
