@@ -64,7 +64,7 @@ alias rmf='rm -rf'
 alias srmf='sudo rm -rf'
 #alias grep='grep --color=auto --exclude="*~"'
 grp() {
-  grep -rn $1 . --colo=auto --exclude="*~"
+  grep -irn $1 . --colo=auto --exclude="*~"
 }
 egrp() {
   egrep -rn $1 .
@@ -80,6 +80,7 @@ alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
 
 # rails
 alias rrvm='vi .rvmrc'
+alias rcuc='cd `rr`; cucumber features'
 alias rversions="gem list -ra rails | grep 'rails ('"
 alias rgems='rvm list gemsets; cat .rvmrc'
 alias rgemsdir='cd `rvm gemdir`/gems'
@@ -87,6 +88,7 @@ alias rgem='vi `rr`/Gemfile'
 alias rgemsuninstall='gem list | cut -d" " -f1 | xargs gem uninstall -aIx'
 alias rgembuild='gem pristine --all --no-extensions'
 alias rlog='tail -f `rr`/log/development.log'
+alias rtlog='tail -f `rr`/log/test.log'
 alias rb='ruby'
 alias rss='rails s'
 alias rss1='rss -p 3001'
@@ -156,6 +158,9 @@ alias ngstop='sudo nginx -s quit'
 alias mss='mysql.server start'
 alias mystart='mysql.server start'
 alias mystop='mysql.server stop'
+
+# cucumber
+alias cuc='cucumber'
 
 # postgres
 #alias pg-start='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
@@ -256,6 +261,7 @@ alias gs='git stash show'
 alias gss='git stash save'
 alias gsa='git stash apply'
 alias gsc='git stash clear'
+alias gsn='gss; glr; gsa'
 
 alias gm='git merge'
 alias gmt='git mergetool'
