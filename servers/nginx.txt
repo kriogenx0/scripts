@@ -31,6 +31,9 @@ http {
     keepalive_timeout  65;
     proxy_read_timeout 180;
 
+    #include conf.d/*;
+    include projects/*;
+
     #gzip  on;
 
     #server {
@@ -78,8 +81,6 @@ http {
     #    #    deny  all;
     #    #}
     #}
-    include conf.d/*;
-    include projects/*;
 
 
     # another virtual host using mix of IP-, name-, and port-based configuration
