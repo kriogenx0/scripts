@@ -43,7 +43,7 @@ export PGDATA=/usr/local/var/postgres
 # ALIASES
 
 # Kriogenx
-alias krc='vi ~/Sites/kriogenx/scripts/settings/bashrc'
+alias krc='vi ~/Sites/kriogenx/scripts/configs/shellrc'
 alias kd='cd ~/Sites/kriogenx/'
 alias kgig='cp ~/Sites/kriogenx/scripts/git/gitignore ./.gitignore'
 kdu() { # Krigoenx Directory Update
