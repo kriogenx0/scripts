@@ -1,4 +1,4 @@
-if ! test -d ~/Sites/kriogenx ; then
+if [[ ! -d ~/Sites/kriogenx ]] ; then
 
   mkdir ~/Sites/kriogenx
   cd ~/Sites/kriogenx

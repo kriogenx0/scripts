@@ -1,3 +1,8 @@
+# Aliases config file to config location
+if [[ -d ~/Sites/webconfig ]]; then
+  mkdir ~/Sites/webconfig
+fi
+
 if [[ -e /usr/local/etc/nginx ]]; then
   mkdir /usr/local/etc/nginx/projects
   ln -s /usr/local/etc/nginx/projects ~/Sites/webconfig/nginx-projects

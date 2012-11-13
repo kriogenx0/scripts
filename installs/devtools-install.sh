@@ -26,28 +26,43 @@ fi
 curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
 
 # Janus
-#curl -Lo- https://bit.ly/janus-bootstrap | bash
+curl -Lo- https://bit.ly/janus-bootstrap | bash
+
+# Get git
+brew install git
+
+# Tig
+brew install tig
+
+# VENDOR INSTALLS
+
+if [[ ! -d ~/Sites/webconfig ]]; then
+  mkdir ~/Sites/webconfig
+fi
 
 # Ruby Install
-sh install-theinstall.sh
+sh vendors/install-theinstall.sh
 echo 'rvm_auto_reload_flag=1' >> ~/.rvmrc
 
 # Uninstall Native Ruby
 sudo rm -r /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8
 
 # Move Hashrocket
-sh move-hashrocket.sh
+sh vendors/move-hashrocket.sh
 
 # Install Kriogenx
-sh install-kriogenx.sh
+#sh kriogenx-install.sh
 
 # ZSH THEME
+if [ -d '~/.oh-my-zsh' ]; then
   $(cd ~/.oh-my-zsh/themes; ln -s ~/Sites/kriogenx/scripts/shells/kriogenx.zsh-theme)
-if [ -d '~/.oh-my-zsh/themes' ]; then
 fi
 
 # POW
 # curl get.pow.cx | sh
+
+# Nginx
+# brew install nginx
 
 # Xcode Select
 if [[ -d "/Applications/Xcode.app/Contents" ]]; then

@@ -1,6 +1,11 @@
 #!/bin/sh
+
+# White space
 git config --global apply.whitespace nowarn
 git config --global core.editor /usr/bin/vim
+
+# Simple Push Default
+git config --global push.default simple
 
 # Colors
 # OPTIONS ARE
@@ -44,7 +49,7 @@ git config --global mergetool.keepTemporaries 'false'
 ### Difftools
 
 # opendiff
-git config --global difftool.opendiff.external ~/Sites/kriogenx/scripts/git/opendiff-mergetool
+git config --global difftool.opendiff.external ~/Sites/kriogenx/scripts/support/git/opendiff-mergetool
 
 # diffmerge
 git config --global difftool.diffmerge.cmd "diffmerge \$LOCAL \$REMOTE"
@@ -62,7 +67,7 @@ git config --global difftool.bbedit.cmd "twdiff --wait \"\$LOCAL\" \"\$REMOTE\""
 # textwrangler - install command line tools
 git config --global difftool.twdiff.cmd "twdiff --wait \"\$LOCAL\" \"\$REMOTE\""
 #git config --global diff.external ~/git-twdiff.sh
-#git config --global diff.external ~/Sites/kriogenx/scripts/git/textwrangler-mergetool
+#git config --global diff.external ~/Sites/kriogenx/scripts/support/git/textwrangler-mergetool
 
 ##############
 ### Mergetools
@@ -81,7 +86,7 @@ if [[ -d "/Applications/kdiff.app/Contents" ]]; then
 fi
 
 # p4merge
-git config --global mergetool.p4.cmd '~/Sites/kriogenx/scripts/git/p4-mergetool "$BASE" "$LOCAL" "$REMOTE" "$MERGED"'
+git config --global mergetool.p4.cmd '~/Sites/kriogenx/scripts/support/git/p4-mergetool "$BASE" "$LOCAL" "$REMOTE" "$MERGED"'
 git config --global mergetool.p4.keepTemporaries 'false'
 git config --global mergetool.p4.trustExistCode 'false'
 
