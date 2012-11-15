@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+# NOT JUST BASH
+# ALSO FOR ZSH
+
 # ============
 # ENVIRONMENT
 
@@ -43,7 +46,7 @@ export PGDATA=/usr/local/var/postgres
 # ALIASES
 
 # Kriogenx
-alias krc='vi ~/Sites/kriogenx/scripts/configs/shellrc'
+alias krc='vi ~/Sites/kriogenx/scripts/configs/bashrc'
 alias kd='cd ~/Sites/kriogenx/'
 alias kgig='cp ~/Sites/kriogenx/scripts/git/gitignore ./.gitignore'
 kdu() { # Krigoenx Directory Update

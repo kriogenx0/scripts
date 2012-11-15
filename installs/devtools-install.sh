@@ -25,7 +25,7 @@ if [[ ! -e /usr/bin/gcc && -e /usr/bin/llvm-gcc-4.2 ]]; then
 fi
 
 # OH MY ZSH
-if [[ -d ~/.oh-my-zsh ]]; then
+if [[ ! -d ~/.oh-my-zsh ]]; then
   curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
 fi
 
@@ -49,11 +49,17 @@ if [[ ! -d ~/Sites/webconfig ]]; then
 fi
 
 # Ruby Install
-sh vendors/install-theinstall.sh
-echo 'rvm_auto_reload_flag=1' >> ~/.rvmrc
+sh installs/vendors/install-theinstall.sh
+
+# Get RVM to reload
+if [[ -f ~/.rvmrc ]]; then
+  echo 'rvm_auto_reload_flag=1' >> ~/.rvmrc
+fi
 
 # Uninstall Native Ruby
-sudo rm -r /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8
+if [[ -d /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8 ]]; then
+  sudo rm -r /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8
+fi
 
 # POW
 # curl get.pow.cx | sh
