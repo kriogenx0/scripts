@@ -1,12 +1,12 @@
-if [[ -f ~/.shellrc ]]; then
-  echo '~/.shellrc exists.  please remove or rename to continue'
-  exit 1
-fi
-
-if [[ -z $ZSH ]] ; then
+if [[ -d ~/.oh-my-zsh ]] ; then
   # Install Theme
   rm -rf ~/.oh-my-zsh/themes/kriogenx.zsh-theme
   ln -s ~/Sites/kriogenx/scripts/configs/kriogenx.zsh-theme ~/.oh-my-zsh/themes/kriogenx.zsh-theme
+fi
+
+if [[ -f ~/.shellrc ]]; then
+  echo '~/.shellrc exists.  please remove or rename to continue'
+  exit 1
 fi
 
 if [[ -f ~/.zshrc && ! -f ~/.zsh-old ]]; then

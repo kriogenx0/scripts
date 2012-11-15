@@ -1,11 +1,28 @@
 #!/bin/sh
 
+if [[ -z $(cat ~/.gitconfig | grep 'email =') ]]; then
+  echo 'Looks like git is not configured for a user'
+  read -p "Enter your git name: " a
+  if [[ -n $a ]]; then
+    git config --global user.name $a
+
+    read -p "Enter your email: " e
+    if [[ -n $e ]]; then
+      git config --global user.email $e
+    fi
+
+  else
+    echo 'Skipping git user configuration'  
+  fi
+fi
+
 # White space
 git config --global apply.whitespace nowarn
 git config --global core.editor /usr/bin/vim
 
 # Simple Push Default
-git config --global push.default simple
+# Need to check version
+#git config --global push.default simple
 
 # Colors
 # OPTIONS ARE
