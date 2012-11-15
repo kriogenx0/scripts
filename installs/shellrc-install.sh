@@ -20,6 +20,6 @@ fi
 echo 'source ~/.shellrc' >> ~/.zshrc
 echo 'source ~/.shellrc' >> ~/.bashrc
 
-echo 'source ~/Sites/kriogenx/scripts/configs/shellrc' > ~/.shellrc
+echo 'source ~/Sites/kriogenx/scripts/configs/bashrc' > ~/.shellrc
 echo 'si' >> ~/.shellrc
 echo '# Customize Here' >> ~/.shellrc

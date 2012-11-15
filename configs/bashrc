@@ -9,6 +9,7 @@
 # ADDITIONAL BINARIES
 #export PATH=$PATH:/usr/local/sbin
 export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
+export PATH=$PATH:/usr/local/sbin:$HOME/.rvm/bin
 
 # RVM SETTINGS before shell so shell knows
 export PATH=$PATH:$HOME/.rvm/bin
@@ -17,8 +18,7 @@ if test -f ~/.rvm/scripts/rvm; then
 fi
 
 # ZSH SETTINGS
-if [[ -n "echo $0 | grep 'zsh'" && "$0" != "-bash" && "$0" != "bash" ]]; then
-
+if [ -n "$ZSH_VERSION" ]; then
   # ZSH THEME
   if [[ -z $ZSH ]]; then
     # ZSH rvm theme support
@@ -35,8 +35,7 @@ if [[ -n "echo $0 | grep 'zsh'" && "$0" != "-bash" && "$0" != "bash" ]]; then
   unsetopt correct_all
 
 # Bash
-else
-  PATH=$PATH:/usr/local/sbin:$HOME/.rvm/bin
+elif [ -n "$BASH_VERSION" ]; then
 fi
 
 # Postgres
