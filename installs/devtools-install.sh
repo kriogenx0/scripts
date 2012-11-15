@@ -11,7 +11,9 @@ fi
 
 # Apple GCC
 brew tap homebrew/dupes
-brew install apple-gcc42
+if [[ ! -e /usr/local/bin/gcc-4.2 ]]; then
+  brew install apple-gcc42
+fi
 
 # GCC FIX FOR GEM BUILDING
 if [[ ! -e /usr/bin/g++ && -e /usr/bin/llvm-g++-4.2 ]]; then
@@ -23,16 +25,22 @@ if [[ ! -e /usr/bin/gcc && -e /usr/bin/llvm-gcc-4.2 ]]; then
 fi
 
 # OH MY ZSH
-curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
+if [[ -d ~/.oh-my-zsh ]]; then
+  curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
+fi
 
 # Janus
-curl -Lo- https://bit.ly/janus-bootstrap | bash
+if [[ ! -d ~/.vim || ! -d ~/.vim/janus ]]; then
+  curl -Lo- https://bit.ly/janus-bootstrap | bash
+fi
 
 # Get git
 brew install git
 
 # Tig
-brew install tig
+if [[ ! -d /usr/local/bin/tig ]]; then
+  brew install tig
+fi
 
 # VENDOR INSTALLS
 
@@ -46,17 +54,6 @@ echo 'rvm_auto_reload_flag=1' >> ~/.rvmrc
 
 # Uninstall Native Ruby
 sudo rm -r /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8
-
-# Move Hashrocket
-sh vendors/move-hashrocket.sh
-
-# Install Kriogenx
-#sh kriogenx-install.sh
-
-# ZSH THEME
-if [ -d '~/.oh-my-zsh' ]; then
-  $(cd ~/.oh-my-zsh/themes; ln -s ~/Sites/kriogenx/scripts/shells/kriogenx.zsh-theme)
-fi
 
 # POW
 # curl get.pow.cx | sh
