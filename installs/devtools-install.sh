@@ -1,6 +1,9 @@
 #!/usr/bin/env sh
 
 # Brew
+if [[ ! -d /usr/local ]]; then
+  sudo mkdir /usr/local
+fi
 sudo chown -R `whoami` /usr/local
 if [[ -e /usr/local/bin/brew ]]; then
   brew update
