@@ -5,6 +5,7 @@ if [[ $OSX_VERSION =~ "10.8*" ]]; then
 
   # SCROLL DIRECTION
   defaults write ~/Library/Preferences/. GlobalPreferences com.apple.swipescrolldirection -bool false
+  defaults write -g com.apple.swipescrolldirection -bool false
 
   # SPACES DELAY
   defaults write com.apple.dock workspaces-edge-delay -float 0.1
@@ -24,31 +25,33 @@ if [[ $OSX_VERSION =~ "10.8*" ]]; then
   defaults write -g ApplePressAndHoldEnabled -bool false
 
 elif [[ $OSX_VERSION =~ "10.7*" ]]; then
-# LION
+  # LION
 
-# DESKTOP SHORTCUT
-defaults write NSGlobalDomain NSSavePanelStandardDesktopShortcutOnly -bool YES
-	
-#DISABLE ANIMATIONS
-defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool NO
-#defaults write com.apple.Mail DisableReplyAnimations -bool YES
-#defaults write com.apple.Mail DisableSendAnimations -bool YES
+  # Scroll Direction
+  defaults write -g com.apple.swipescrolldirection -bool false
 
-defaults write ~/Library/Preferences/. GlobalPreferences com.apple.swipescrolldirection -bool false
+  # DESKTOP SHORTCUT
+  defaults write NSGlobalDomain NSSavePanelStandardDesktopShortcutOnly -bool YES
 
-# MISSION CONTROL ANIMATION
-defaults write com.apple.dock expose-animation-duration -int 0
+  #DISABLE ANIMATIONS
+  defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool NO
+  #defaults write com.apple.Mail DisableReplyAnimations -bool YES
+  #defaults write com.apple.Mail DisableSendAnimations -bool YES
 
-# LAUNCHPAD
-defaults write com.apple.dock springboard-show-duration -int 0 defaults write com.apple.dock springboard-hide-duration -int 0
+  defaults write ~/Library/Preferences/. GlobalPreferences com.apple.swipescrolldirection -bool false
 
-defaults write -g ApplePressAndHoldEnabled -bool false
+  # MISSION CONTROL ANIMATION
+  defaults write com.apple.dock expose-animation-duration -int 0
 
+  # LAUNCHPAD
+  defaults write com.apple.dock springboard-show-duration -int 0
+  defaults write com.apple.dock springboard-hide-duration -int 0
+
+  defaults write -g ApplePressAndHoldEnabled -bool false
 
 elif [[ $OSX_VERSION =~ "10.6*" ]]; then
-# SNOW LEOPARD
-defaults write com.apple.dashboard mcx-disabled -boolean YES
-
+  # SNOW LEOPARD
+  defaults write com.apple.dashboard mcx-disabled -boolean YES
 fi
 
 #####################
@@ -60,6 +63,7 @@ defaults write com.apple.CrashReporter DialogType none
 # Dock
 defaults write com.apple.dock orientation right
 
+# Extension Warning
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
 # DOCK MOUSE OVER DELAY
