@@ -4,11 +4,11 @@ if [[ -z $(cat ~/.gitconfig | grep 'email =') ]]; then
   echo 'Looks like git is not configured for a user'
   read -p "Enter your git name: " a
   if [[ -n $a ]]; then
-    git config --global user.name $a
+    git config --global user.name "$a"
 
     read -p "Enter your email: " e
     if [[ -n $e ]]; then
-      git config --global user.email $e
+      git config --global user.email "$e"
     fi
 
   else

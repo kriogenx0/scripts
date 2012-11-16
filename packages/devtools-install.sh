@@ -33,8 +33,12 @@ if [[ ! -d ~/.oh-my-zsh ]]; then
 fi
 
 # Janus
-if [[ ! -d ~/.vim || ! -d ~/.vim/janus ]]; then
-  curl -Lo- https://bit.ly/janus-bootstrap | bash
+if [[ `which ruby` =~ "gems*" ]]; then
+  if [[ ! -d ~/.vim || ! -d ~/.vim/janus ]]; then
+    curl -Lo- https://bit.ly/janus-bootstrap | bash
+  fi
+else
+  echo 'Latest Ruby required to install Janus'
 fi
 
 # Get git
@@ -51,24 +55,8 @@ if [[ ! -d ~/Sites/webconfig ]]; then
   mkdir ~/Sites/webconfig
 fi
 
-# Ruby Install
-sh installs/vendors/install-theinstall.sh
-
-# Get RVM to reload
-if [[ -f ~/.rvmrc ]]; then
-  echo 'rvm_auto_reload_flag=1' >> ~/.rvmrc
-fi
-
-# Uninstall Native Ruby
-if [[ -d /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8 ]]; then
-  sudo rm -r /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8
-fi
-
-# POW
-# curl get.pow.cx | sh
-
 # Nginx
-# brew install nginx
+brew install nginx
 
 # Xcode Select
 if [[ -d "/Applications/Xcode.app/Contents" ]]; then
