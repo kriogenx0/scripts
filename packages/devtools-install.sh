@@ -62,3 +62,13 @@ brew install nginx
 if [[ -d "/Applications/Xcode.app/Contents" ]]; then
   sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
 fi
+
+# SSH
+if [ ! -d ~/.ssh ]; then
+  echo 'Looks like ssh is not set up'
+  read -p "Enter your email address: " a
+  if [[ -n $a ]]; then
+    ssh-keygen -t rsa -C "$a"
+  fi
+  pbcopy < ~/.ssh/id_rsa.pub; echo "Copied ssh key into clipboard"
+fi
