@@ -86,6 +86,7 @@ kdu() { # Krigoenx Directory Update
 si() {
   cd "$HOME/Sites/$1"
 }
+alias c='clear'
 #alias ci="cd ~/Clients"
 
 # navigation
