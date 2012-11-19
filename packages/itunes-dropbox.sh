@@ -11,3 +11,6 @@ ln -s ~/Backup/Books\ \&\ Tutorials/Books ~/Dropbox/Music/iTunes\ Library/iTunes
 mkdir ~/Backup/Movies
 mkdir ~/Backup/Movies/iTunes\ Movies
 ln -s ~/Backup/Movies/iTunes\ Movies ~/Dropbox/Music/iTunes\ Library/Movies
+
+
+osascript -e 'tell application "Finder" to make alias file to POSIX file "/full/path/to/file" at POSIX file "/full/path/to/folder"'
