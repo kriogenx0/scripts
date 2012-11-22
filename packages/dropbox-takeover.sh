@@ -38,7 +38,28 @@ if [ ! -L ~/Music/iTunes ]; then
     ln -s ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/Music ~/Music/iTunes/iTunes\ Music
     ln -s ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/Books ~/Music/iTunes/iTunes\ Music
     ln -s ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/Voice\ Memos ~/Music/iTunes/iTunes\ Music
+    echo 'iTunes synced with dropbox'
   fi
 else
   echo 'Already syncing iTunes'
+fi
+
+# Takeover Filezilla
+if [ -e ~/.filezilla ]; then
+  if [ ! -L ~/.filezilla ]; then
+    if [ -d ~/Dropbox/Office/Filezilla ]; then
+      mv ~/.filezilla ~/filezilla-old
+      ln -s ~/Dropbox/Office/Filezilla ~/.filezilla
+      echo 'Filezilla dropbox used'
+    else
+      mkdir -p ~/Dropbox/Office/Filezilla
+      mv ~/.filezilla/* ~/Dropbox/Office/Filezilla/
+      ln -s ~/Dropbox/Office/Filezilla ~/.filezilla
+      echo 'Filezilla moved to dropbox'
+    fi
+  else
+    echo 'Already syncing Filezilla'
+  fi
+else
+  echo 'Filezilla not installed'
 fi
