@@ -6,6 +6,10 @@ if [ ! -d ~/Dropbox/Office ]; then
   mkdir ~/Dropbox/Office
 fi
 
+if [ ! -d ~/Dropbox/Office/settings ]; then
+  mkdir -p ~/Dropbox/Office/settings
+fi
+
 # Takeover Desktop
 if [ ! -L ~/Desktop ]; then
   if [ -d ~/Dropbox/Office/Desktop ]; then
@@ -47,14 +51,14 @@ fi
 # Takeover Filezilla
 if [ -e ~/.filezilla ]; then
   if [ ! -L ~/.filezilla ]; then
-    if [ -d ~/Dropbox/Office/Filezilla ]; then
+    if [ -d ~/Dropbox/Office/settings/Filezilla ]; then
       mv ~/.filezilla ~/filezilla-old
-      ln -s ~/Dropbox/Office/Filezilla ~/.filezilla
+      ln -s ~/Dropbox/Office/settings/Filezilla ~/.filezilla
       echo 'Filezilla dropbox used'
     else
-      mkdir -p ~/Dropbox/Office/Filezilla
-      mv ~/.filezilla/* ~/Dropbox/Office/Filezilla/
-      ln -s ~/Dropbox/Office/Filezilla ~/.filezilla
+      mkdir -p ~/Dropbox/Office/settings/Filezilla
+      mv ~/.filezilla/* ~/Dropbox/Office/settings/Filezilla/
+      ln -s ~/Dropbox/Office/settings/Filezilla ~/.filezilla
       echo 'Filezilla moved to dropbox'
     fi
   else
@@ -62,4 +66,39 @@ if [ -e ~/.filezilla ]; then
   fi
 else
   echo 'Filezilla not installed'
+fi
+
+# Photoshop Settings
+if [ ! -L ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ]; then
+  if [[ -d /Applications/"Adobe Photoshop CS6" ]]; then
+    if [ -d ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ]; then
+      mv ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings-old
+    fi
+    ln -s ~/Dropbox/Office/settings/photoshop/Adobe\ Photoshop\ CS6\ Settings ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings
+  fi
+  echo 'Syncing Photoshop settings'
+else
+  echo 'Already syncing Photoshop'
+fi
+
+if [ -d akdslmfalsdmkf ]; then
+
+if [[ -d /Applications/"Adobe Photoshop CS6" ]]; then
+  PS_WS="~/Library/Preferences/Adobe Photoshop CS6 Settings/WorkSpaces"
+elif [[ -d /Applications/"Adobe Photoshop CS5" ]]; then
+  PS_WS="~/Library/Preferences/Adobe Photoshop CS5 Settings/WorkSpaces"
+fi
+
+if [ -e $PS_WS ]; then
+  # Moving Existing Workspaces
+  DROPBOX_PS_WS='~/Dropbox/Office/settings/photoshop/WorkSpaces'
+
+  if [ -d $DROPBOX_PS_WS ]; then
+    mv ${PS_WS}/* ${DROPBOX_PS_WS}/
+    rm -rf $PS_WS
+    ln -s $DROPBOX_PS_WS $PS_WS
+  fi
+
+fi
+
 fi
