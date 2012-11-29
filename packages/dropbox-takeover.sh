@@ -81,24 +81,20 @@ else
   echo 'Already syncing Photoshop'
 fi
 
-if [ -d akdslmfalsdmkf ]; then
-
-if [[ -d /Applications/"Adobe Photoshop CS6" ]]; then
-  PS_WS="~/Library/Preferences/Adobe Photoshop CS6 Settings/WorkSpaces"
-elif [[ -d /Applications/"Adobe Photoshop CS5" ]]; then
-  PS_WS="~/Library/Preferences/Adobe Photoshop CS5 Settings/WorkSpaces"
-fi
-
-if [ -e $PS_WS ]; then
-  # Moving Existing Workspaces
-  DROPBOX_PS_WS='~/Dropbox/Office/settings/photoshop/WorkSpaces'
-
-  if [ -d $DROPBOX_PS_WS ]; then
-    mv ${PS_WS}/* ${DROPBOX_PS_WS}/
-    rm -rf $PS_WS
-    ln -s $DROPBOX_PS_WS $PS_WS
-  fi
-
-fi
-
-fi
+#if [[ -d /Applications/"Adobe Photoshop CS6" ]]; then
+#  PS_WS=~/Library/Preferences/Adobe Photoshop CS6 Settings/WorkSpaces
+#elif [[ -d /Applications/"Adobe Photoshop CS5" ]]; then
+#  PS_WS=~/Library/Preferences/Adobe Photoshop CS5 Settings/WorkSpaces
+#fi
+#
+#if [ -e $PS_WS ]; then
+#  # Moving Existing Workspaces
+#  DROPBOX_PS_WS=~/Dropbox/Office/settings/photoshop/WorkSpaces
+#
+#  if [ -d $DROPBOX_PS_WS ]; then
+#    mv ${PS_WS}/* ${DROPBOX_PS_WS}/
+#    rm -rf $PS_WS
+#    ln -s $DROPBOX_PS_WS $PS_WS
+#  fi
+#
+#fi
