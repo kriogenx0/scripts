@@ -24,6 +24,9 @@ if [[ $OSX_VERSION =~ "10.8*" ]]; then
 
   defaults write -g ApplePressAndHoldEnabled -bool false
 
+  # Change Default Save Location from icloud to local
+  defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
+
 elif [[ $OSX_VERSION =~ "10.7*" ]]; then
   # LION
 
@@ -48,6 +51,9 @@ elif [[ $OSX_VERSION =~ "10.7*" ]]; then
   defaults write com.apple.dock springboard-hide-duration -int 0
 
   defaults write -g ApplePressAndHoldEnabled -bool false
+
+  # Change Default Save Location from icloud to local
+  defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
 elif [[ $OSX_VERSION =~ "10.6*" ]]; then
   # SNOW LEOPARD
