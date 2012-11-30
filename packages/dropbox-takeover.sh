@@ -71,6 +71,14 @@ else
   echo 'Filezilla not installed'
 fi
 
+# Takeover Filezilla Application
+if [ ! -L /Applications/FileZilla.app ]; then
+  if [ -d /Applications/FileZilla.app ]; then
+    sudo mv /Applications/FileZilla{,-old}.app
+  fi
+  ln -s ~/Dropbox/Office/Applications/FileZilla.app /Applications/
+fi
+
 # Photoshop Settings
 if [ ! -L ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ]; then
   if [[ -d /Applications/"Adobe Photoshop CS6" ]]; then
