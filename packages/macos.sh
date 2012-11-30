@@ -75,6 +75,9 @@ defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 # DOCK MOUSE OVER DELAY
 defaults write com.apple.Dock autohide-delay -float 0
 
+# Disable "Are you sure you want to open this"
+defaults write com.apple.LaunchServices LSQuarantine -bool NO
+
 
 # Safari Bookmarks
 defaults write com.apple.Safari ProxiesInBookmarksBar '("Reading List")'
