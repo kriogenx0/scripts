@@ -84,20 +84,29 @@ else
   echo 'Already syncing Photoshop'
 fi
 
-#if [[ -d /Applications/"Adobe Photoshop CS6" ]]; then
-#  PS_WS=~/Library/Preferences/Adobe Photoshop CS6 Settings/WorkSpaces
-#elif [[ -d /Applications/"Adobe Photoshop CS5" ]]; then
-#  PS_WS=~/Library/Preferences/Adobe Photoshop CS5 Settings/WorkSpaces
-#fi
-#
-#if [ -e $PS_WS ]; then
-#  # Moving Existing Workspaces
-#  DROPBOX_PS_WS=~/Dropbox/Office/settings/photoshop/WorkSpaces
-#
-#  if [ -d $DROPBOX_PS_WS ]; then
-#    mv ${PS_WS}/* ${DROPBOX_PS_WS}/
-#    rm -rf $PS_WS
-#    ln -s $DROPBOX_PS_WS $PS_WS
-#  fi
-#
-#fi
+if [[ -e /Applications/"Adobe Photoshop CS6" ]]; then
+  PS_V=CS6
+elif [[ -e /Applications/"Adobe Photoshop CS5" ]]; then
+  PS_V=CS5
+fi
+
+if [ -n $PS_V ]; then
+  PS_FILES=("Actions Palette" Gradients.psp "Keyboard Shortcuts Primary.psp" "Keyboard Shortcuts.psp" )
+  PS_PREFS=~/Library/Preferences/Adobe\ Photoshop\ ${PS_V}\ Settings/
+  PS_PREFS_LENGTH=${#PS_PREFS[@]}
+
+  # Moving Existing Workspaces
+  DROPBOX_PS=~/Dropbox/Office/settings/photoshop/
+
+  for $PS_F in $PS_FILES; do
+    if [ -L  ]; then
+      
+    fi
+  done
+
+  if [ -d $DROPBOX_PS_WS ]; then
+    mv ${PS_WS}/* ${DROPBOX_PS_WS}/
+    rm -rf $PS_WS
+    ln -s $DROPBOX_PS_WS $PS_WS
+  fi
+fi
