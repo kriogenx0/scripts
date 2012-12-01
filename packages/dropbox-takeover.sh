@@ -77,41 +77,46 @@ if [ ! -L /Applications/FileZilla.app ]; then
 fi
 
 # Photoshop Settings
-if [ ! -L ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ]; then
-  if [[ -d /Applications/"Adobe Photoshop CS6" ]]; then
-    if [ -d ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ]; then
-      mv ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings-old
-    fi
-    ln -s ~/Dropbox/Office/settings/photoshop/Adobe\ Photoshop\ CS6\ Settings ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings
-  fi
-  echo 'Syncing Photoshop settings'
-else
-  echo 'Already syncing Photoshop'
-fi
+#if [ ! -L ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ]; then
+#  if [[ -d /Applications/"Adobe Photoshop CS6" ]]; then
+#    if [ -d ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ]; then
+#      mv ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings-old
+#    fi
+#    ln -s ~/Dropbox/Office/settings/photoshop/Adobe\ Photoshop\ CS6\ Settings ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings
+#  fi
+#  echo 'Syncing Photoshop settings'
+#else
+#  echo 'Already syncing Photoshop'
+#fi
+
+#      mv ${PS_F}/* ${DROPBOX_PS}/
+#      rm -rf $PS_WS
+#      ln -s $DROPBOX_PS_WS $PS_WS
 
 if [[ -e /Applications/"Adobe Photoshop CS6" ]]; then
   PS_V=CS6
 elif [[ -e /Applications/"Adobe Photoshop CS5" ]]; then
   PS_V=CS5
+elif [[ -e /Applications/"Adobe Photoshop CS4" ]]; then
+  PS_V=CS4
 fi
 
 if [ -n $PS_V ]; then
-  PS_FILES=("Actions Palette" Gradients.psp "Keyboard Shortcuts Primary.psp" "Keyboard Shortcuts.psp" )
+  PS_FILES=("Actions Palette.psp" Gradients.psp "Keyboard Shortcuts Primary.psp" "Keyboard Shortcuts.psp" "Optimized Output Settings" Patterns.psp Swatches.psp WorkSpaces "WorkSpaces (Modified)"  )
   PS_PREFS=~/Library/Preferences/Adobe\ Photoshop\ ${PS_V}\ Settings/
   PS_PREFS_LENGTH=${#PS_PREFS[@]}
+  DROPBOX_PS=~/Dropbox/Office/settings/photoshop/preferences
 
-  # Moving Existing Workspaces
-  DROPBOX_PS=~/Dropbox/Office/settings/photoshop/
-
-  for $PS_F in $PS_FILES; do
-    if [ -L  ]; then
-      
+  for PS_F in "${PS_FILES[@]}"; do
+    #echo "$PS_PREFS""$PS_F"
+    if [ -e "$PS_PREFS""$PS_F" ] && [ ! -L "$PS_PREFS""$PS_F" ]; then
+      if [ -e "$DROPBOX_PS""$PS_F" ]; then
+        mv "$PS_PREFS""$PS_F" "$PS_PREFS""$PS_F"-old
+      else
+        mv "$PS_PREFS""$PS_F" "$DROPBOX_PS""$PS_F"
+      fi
+      ln -s "$DROPBOX_PS""$PS_F" "$PS_PREFS""$PS_F"
     fi
   done
-
-  if [ -d $DROPBOX_PS_WS ]; then
-    mv ${PS_WS}/* ${DROPBOX_PS_WS}/
-    rm -rf $PS_WS
-    ln -s $DROPBOX_PS_WS $PS_WS
-  fi
 fi
+
