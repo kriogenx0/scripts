@@ -77,7 +77,7 @@ alias krc='vi ~/Sites/kriogenx/scripts/configs/bashrc'
 alias kd='cd ~/Sites/kriogenx/'
 alias kgig='cp ~/Sites/kriogenx/scripts/git/gitignore ./.gitignore'
 kdu() { # Krigoenx Directory Update
-  echo "$( kd; cd scripts; git pull )"
+  echo "$( kd; cd scripts; git pull --rebase)"
 }
 
 # Traversing
