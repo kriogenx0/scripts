@@ -19,7 +19,12 @@ function box_name {
     [ -f ~/.box-name ] && cat ~/.box-name || hostname -s
 }
 
+function time_stamp {
+  echo -n $(date "+%Y-%m-%d %H:%M:%S") | sed "s/^\dm\"//"
+}
 
+
+# Local Vars
 local rvm_ruby=''
 if which rvm-prompt &> /dev/null; then
   rvm_ruby='‹$(rvm-prompt i v g)›%{$reset_color%}'
@@ -30,9 +35,10 @@ else
 fi
 local current_dir='${PWD/#$HOME/~}'
 local git_info='$(git_prompt_info)'
+local theme_time=' $(time_stamp)'
 
 # %{$FG[040]%}%n%{$reset_color%} %{$FG[033]%}$(box_name)%{$reset_color%} 
-PROMPT="╭─ %{$terminfo[bold]$FG[226]%}${current_dir}%{$reset_color%}${git_info} ${rvm_ruby}
+PROMPT="╭─ %{$terminfo[bold]$FG[226]%}${current_dir}%{$reset_color%}${git_info} ${rvm_ruby}${theme_time}
 ╰─$(virtualenv_info)$(prompt_char) "
 
 ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg[255]%}"
