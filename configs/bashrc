@@ -38,25 +38,22 @@ if [ -n "$ZSH_VERSION" ]; then
 # Bash
 elif [ -n "$BASH_VERSION" ]; then
 
-  # PROMPT RVM SUPPORT
   function rvm_prompt_info() {
     ruby_version=$(~/.rvm/bin/rvm-prompt 2> /dev/null) || return
-    [[ ! -z $ruby_version ]] && echo "($ruby_version)"
+    [[ ! -z $ruby_version ]] && echo -en "\033[0m <$ruby_version>"
   }
 
-  #function git_prompt_info() {
-  #  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-  #  branch=${ref#ref/heads/}
-  #  if [[ -n $(git status -s ${SUBMODULE_SYNTAX}  2> /dev/null) ]]; then
-  #    echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
-  #  else
-  #    echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
-  #  fi
-  #  echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$(parse_git_dirty)$ZSH_THEME_G"
-  #}
+  function git_prompt_info() {
+    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+    branch=${ref#ref/heads/}
+    echo -en " \033[0m""${ref#refs/heads/}" #$(parse_git_dirty)"
+    if [[ -n $(git status -s ${SUBMODULE_SYNTAX}  2> /dev/null) ]]; then
+      echo -en "\033[31m✘✘✘"
+    else
+      echo -en "\033[32m✔"
+    fi
+  }
 
-  export CLICOLOR=1
-  export LSCOLORS=gxgxcxdxbxegedabagacad
   bind '"\ep": history-search-backward'
   bind '"\en": history-search-forward'
   bind '"\C-w": backward-kill-word'
@@ -65,7 +62,8 @@ elif [ -n "$BASH_VERSION" ]; then
   [ -z "$PS1" ] || stty -ixon
 
   # Kriogenx Theme
-  [ -z "$PS1" ] || export PS1="╭─ \[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]\$(git_prompt_info '(%s)')$ "
+  #[ -z "$PS1" ] || export PS1="╭─ \[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]\$(git_prompt_info '(%s)')$ "
+  [ -z "$PS1" ] || export PS1="╭─ \[\033[01;36m\]\w\[\033[00m\]\$(git_prompt_info '(%s)')\$(rvm_prompt_info)\033[0m\n╰─ "
 fi
 
 # Postgres
@@ -79,7 +77,7 @@ alias krc='vi ~/Sites/kriogenx/scripts/configs/bashrc'
 alias kd='cd ~/Sites/kriogenx/'
 alias kgig='cp ~/Sites/kriogenx/scripts/git/gitignore ./.gitignore'
 kdu() { # Krigoenx Directory Update
-  $( kd; cd scripts; git pull )
+  echo "$( kd; cd scripts; git pull --rebase)"
 }
 
 # Traversing
@@ -90,6 +88,7 @@ alias c='clear'
 #alias ci="cd ~/Clients"
 
 # navigation
+alias ll='ls -l'
 alias la='ls -lAh'   #Show all, sort by extension
 alias lll='ls -lAh'
 alias lt="ls -R | grep \":$\" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'"
@@ -101,6 +100,7 @@ mkd() {
   mkdir $1
   cd $1
 }
+alias ds='du -hd 1'
 #ppath() {
 #  for a in ${PATH//:/ }; do echo $a; done
 #}

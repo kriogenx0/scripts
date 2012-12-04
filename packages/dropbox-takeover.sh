@@ -42,6 +42,9 @@ if [ ! -L ~/Music/iTunes ]; then
     ln -s ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/Music ~/Music/iTunes/iTunes\ Music
     ln -s ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/Books ~/Music/iTunes/iTunes\ Music
     ln -s ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/Voice\ Memos ~/Music/iTunes/iTunes\ Music
+    #if [ -f ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/.iTunes\ Preferences.plist ]; then
+    #  ln -s ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/.iTunes\ Preferences.plist ~/Music/iTunes/iTunes\ Music
+    #fi
     echo 'iTunes synced with dropbox'
   fi
 else
@@ -105,7 +108,7 @@ if [ -n $PS_V ]; then
   PS_FILES=("Actions Palette.psp" Gradients.psp "Keyboard Shortcuts Primary.psp" "Keyboard Shortcuts.psp" "Optimized Output Settings" Patterns.psp Swatches.psp WorkSpaces "WorkSpaces (Modified)"  )
   PS_PREFS=~/Library/Preferences/Adobe\ Photoshop\ ${PS_V}\ Settings/
   PS_PREFS_LENGTH=${#PS_PREFS[@]}
-  DROPBOX_PS=~/Dropbox/Office/settings/photoshop/preferences
+  DROPBOX_PS=~/Dropbox/Office/settings/photoshop/preferences/
 
   for PS_F in "${PS_FILES[@]}"; do
     #echo "$PS_PREFS""$PS_F"
@@ -115,8 +118,8 @@ if [ -n $PS_V ]; then
       else
         mv "$PS_PREFS""$PS_F" "$DROPBOX_PS""$PS_F"
       fi
-      ln -s "$DROPBOX_PS""$PS_F" "$PS_PREFS""$PS_F"
     fi
+    ln -s "$DROPBOX_PS""$PS_F" "$PS_PREFS""$PS_F"
   done
 fi
 
