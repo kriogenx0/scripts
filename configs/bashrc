@@ -250,6 +250,7 @@ gbda() {
   gbd $1; gbdr $1
 }
 alias gbdall='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d' # delete all merged branches
+alias gbnm="git branch -r --no-merged master | sed 's/^  origin//g'" # show unmerged branches
 alias gbp='git prune -v'
 alias gba='git branch -a' # all branches
 alias gbr='git branch -r' # remote branches
