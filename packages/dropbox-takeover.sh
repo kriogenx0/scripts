@@ -36,6 +36,9 @@ if [ ! -L ~/Music/iTunes ]; then
     ITUNES_FILES=('Album Artwork' 'iTunes Library Extras.itdb' 'iTunes Library Genius.itdb' 'iTunes Library.itl' 'iTunes Library.xml' 'iTunes Music Library Backup.xml' 'iTunes Music Library.xml' 'Previous iTunes Libraries');
     ITUNES_LENGTH=${#ITUNES_FILES[@]}
     for ((i=0;i<$ITUNES_LENGTH;i++)); do
+      if [ -L ~/Dropbox/Music/iTunes\ Library/"${ITUNES_FILES[$i]}" ]; then
+        rm -rf ~/Dropbox/Music/iTunes\ Library/"${ITUNES_FILES[$i]}"
+      fi
       ln -s ~/Dropbox/Music/iTunes\ Library/"${ITUNES_FILES[$i]}" ~/Music/iTunes
     done
     mkdir -p ~/Music/iTunes/iTunes\ Music
@@ -104,7 +107,7 @@ elif [[ -e /Applications/"Adobe Photoshop CS4" ]]; then
   PS_V=CS4
 fi
 
-if [ -n $PS_V ]; then
+if [[ -n $PS_V ]]; then
   #PS_FILES=("Actions Palette.psp" Gradients.psp "Keyboard Shortcuts Primary.psp" "Keyboard Shortcuts.psp" "Optimized Output Settings" Patterns.psp Swatches.psp WorkSpaces "WorkSpaces (Modified)"  )
   PS_FILES=("Actions Palette.psp" Gradients.psp "Keyboard Shortcuts Primary.psp" "Keyboard Shortcuts.psp" Patterns.psp Swatches.psp WorkSpaces "WorkSpaces (Modified)"  )
   PS_PREFS=~/Library/Preferences/Adobe\ Photoshop\ ${PS_V}\ Settings/
