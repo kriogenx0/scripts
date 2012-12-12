@@ -75,7 +75,7 @@ export PGDATA=/usr/local/var/postgres
 # Kriogenx
 alias krc='vi ~/Sites/kriogenx/scripts/configs/bashrc'
 alias kd='cd ~/Sites/kriogenx/'
-alias kgig='cp ~/Sites/kriogenx/scripts/git/gitignore ./.gitignore'
+alias kgig='cp ~/Sites/kriogenx/scripts/support/git/gitignore ./.gitignore'
 kdu() { # Krigoenx Directory Update
   echo "$( kd; cd scripts; git pull --rebase)"
 }
