@@ -129,3 +129,12 @@ if [[ -n $PS_V ]]; then
   done
 fi
 
+# Sequel Pro
+if [[ -e ~/Library/Preferences/com.google.code.sequel-pro.plist ]]; then
+  if [[ -L ~/Library/Preferences/com.google.code.sequel-pro.plist && -e ~/Dropbox/Office/settings/sequelpro ]]; then
+    sudo rm -rf ~/Library/Preferences/com.google.code.sequel-pro.plist
+  else
+    
+  fi
+  ln -s ~/Library/Preferences/com.google.code.sequel-pro.plist ~/Dropbox/Office/settings/sequelpro/
+fi
