@@ -11,7 +11,8 @@ if [[ $OSX_VERSION =~ "10.8*" ]]; then
   defaults write com.apple.dock workspaces-edge-delay -float 0.1
 
   # DISABLE ANIMATIONS
-  defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool NO
+  #defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool NO
+  defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
   defaults write com.apple.Mail DisableReplyAnimations -bool YES
   defaults write com.apple.Mail DisableSendAnimations -bool YES
 
@@ -26,6 +27,15 @@ if [[ $OSX_VERSION =~ "10.8*" ]]; then
 
   # Change Default Save Location from icloud to local
   defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
+
+  # Disable Key Repeat
+  defaults write -g ApplePressAndHoldEnabled -bool false
+
+  # All Network Items including older Air Drop
+  defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
+
+  # Disable Rubberbanding
+  defaults write -g NSScrollViewRubberbanding -int 0
 
 elif [[ $OSX_VERSION =~ "10.7*" ]]; then
   # LION
