@@ -115,7 +115,7 @@ alias rmf='rm -rf'
 alias srmf='sudo rm -rf'
 #alias grep='grep --color=auto --exclude="*~"'
 grp() {
-  grep -irn $1 . --colo=auto --exclude="*~"
+  grep -irn $1 . --color=auto --exclude="*~"
 }
 egrp() {
   egrep -rn $1 .
