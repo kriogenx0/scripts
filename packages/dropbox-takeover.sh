@@ -132,8 +132,8 @@ fi
 # Apache Takeover
 if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
   APACHE_SITES="/Users/"`whoami`"/Dropbox/Office/settings/apache/sites.conf"
-  #echo "\n# Load Dropbox Sites" | sudo tee -a /private/etc/apache2/httpd.conf
-  #echo "Include ${APACHE_SITES}" | sudo tee -a /private/etc/apache2/httpd.conf
+  echo "\n# Load Dropbox Sites" | sudo tee -a /private/etc/apache2/httpd.conf
+  echo "Include ${APACHE_SITES}" | sudo tee -a /private/etc/apache2/httpd.conf
 
   echo '#Add sites here\n' | sudo tee -a "$APACHE_SITES"
   echo 'Apache - Setup sync'
