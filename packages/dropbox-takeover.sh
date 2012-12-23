@@ -135,7 +135,9 @@ if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
   echo "\n# Load Dropbox Sites" | sudo tee -a /private/etc/apache2/httpd.conf
   echo "Include ${APACHE_SITES}" | sudo tee -a /private/etc/apache2/httpd.conf
 
-  echo '#Add sites here\n' | sudo tee -a "$APACHE_SITES"
+  if [[ ! -f "$APACHE_SITES" ]]; then
+    echo '################\n# Add sites here\n' | sudo tee -a "$APACHE_SITES"
+  fi
   echo 'Apache - Setup sync'
 else
   echo 'Apache - Already syncing'
