@@ -19,3 +19,9 @@ fi
 # POW
 # curl get.pow.cx | sh
 
+# Nginx
+if [[ ! `type nginx` =~ "not found"]]; then
+  brew install nginx
+else
+  brew upgrade nginx
+fi

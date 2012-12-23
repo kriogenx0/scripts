@@ -22,7 +22,9 @@ git config --global core.editor /usr/bin/vim
 
 # Simple Push Default
 # Need to check version
-#git config --global push.default simple
+if [[ `git --version` =~ 'version 1\.8' ]]; then 
+  git config --global push.default simple
+fi
 
 # Colors
 # OPTIONS ARE

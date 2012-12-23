@@ -27,36 +27,42 @@ if [[ ! -e /usr/bin/gcc && -e /usr/bin/llvm-gcc-4.2 ]]; then
   ln -s /usr/bin/llvm-gcc-4.2 /usr/bin/gcc
 fi
 
+# git
+if [[ ! `type git` =~ "not found"]]; then
+  brew install git
+else
+  brew upgrade git
+fi
+
 # OH MY ZSH
 if [[ ! -d ~/.oh-my-zsh ]]; then
   curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
 fi
 
 # Janus
-if [[ `which ruby` =~ "gems*" ]]; then
+if [[ ! `type ruby` =~ "not found"]]; then
   if [[ ! -d ~/.vim || ! -d ~/.vim/janus ]]; then
     curl -Lo- https://bit.ly/janus-bootstrap | bash
+  elif [[ -d ~/.vim/janus ]]; then
+    `cd ~/.vim/janus; git pull`
   fi
 else
-  echo 'Latest Ruby required to install Janus'
+  echo 'Janus - Latest Ruby required to install Janus'
 fi
-
-# Get git
-brew install git
 
 # Tig
-if [[ ! -d /usr/local/bin/tig ]]; then
+if [[ ! `type tig` =~ "not found"]]; then
   brew install tig
+else
+  brew upgrade tig
 fi
 
+########
 # VENDOR INSTALLS
 
 if [[ ! -d ~/Sites/webconfig ]]; then
   mkdir ~/Sites/webconfig
 fi
-
-# Nginx
-brew install nginx
 
 # Xcode Select
 if [[ -d "/Applications/Xcode.app/Contents" ]]; then
@@ -69,6 +75,7 @@ if [ ! -d ~/.ssh ]; then
   read -p "Enter your email address: " a
   if [[ -n $a ]]; then
     ssh-keygen -t rsa -C "$a"
+    pbcopy < ~/.ssh/id_rsa.pub;
+    echo "Created SSH key and copied public key to clipboard"
   fi
-  pbcopy < ~/.ssh/id_rsa.pub; echo "Copied ssh key into clipboard"
 fi
