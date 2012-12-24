@@ -75,12 +75,12 @@ else
 fi
 
 # Takeover Filezilla Application
-if [ ! -L /Applications/FileZilla.app ]; then
-  if [ -d /Applications/FileZilla.app ]; then
-    sudo mv /Applications/FileZilla{,-old}.app
-  fi
-  ln -s ~/Dropbox/Office/Applications/FileZilla.app /Applications/
-fi
+#if [ ! -L /Applications/FileZilla.app ]; then
+#  if [ -d /Applications/FileZilla.app ]; then
+#    sudo mv /Applications/FileZilla{,-old}.app
+#  fi
+#  ln -s ~/Dropbox/Office/Applications/FileZilla.app /Applications/
+#fi
 
 # Photoshop Settings
 #if [ ! -L ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ]; then
@@ -137,4 +137,18 @@ if [[ -e ~/Library/Preferences/com.google.code.sequel-pro.plist ]]; then
     
   fi
   ln -s ~/Library/Preferences/com.google.code.sequel-pro.plist ~/Dropbox/Office/settings/sequelpro/
+fi
+
+# Apache Takeover
+if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
+  APACHE_SITES="/Users/"`whoami`"/Dropbox/Office/settings/apache/sites.conf"
+  echo "\n# Load Dropbox Sites" | sudo tee -a /private/etc/apache2/httpd.conf
+  echo "Include ${APACHE_SITES}" | sudo tee -a /private/etc/apache2/httpd.conf
+
+  if [[ ! -f "$APACHE_SITES" ]]; then
+    echo '################\n# Add sites here\n' | sudo tee -a "$APACHE_SITES"
+  fi
+  echo 'Apache - Setup sync'
+else
+  echo 'Apache - Already syncing'
 fi
