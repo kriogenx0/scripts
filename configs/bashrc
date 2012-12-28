@@ -184,6 +184,7 @@ alias tiga='tig --all'
 alias tigs='tig status'
 
 # Web Server
+alias ports='netstat -tulanp'
 webports() {
   ps auxwww | grep LISTEN
   netstat -a | egrep 'Proto|LISTEN'
@@ -197,6 +198,9 @@ alias wsports='webports'
 alias asites='sudo vi /etc/apache2/extra/httpd-vhosts.conf; sudo vi /etc/hosts; sudo apachectl restart'
 alias astart='sudo apachectl restart'
 alias astop='sudo apachectl stop'
+#copter() {
+#  A_SITES=(~/Sites/*)
+#}
 
 # Nginx
 alias ngsites='vi /usr/local/etc/nginx/nginx.conf'
