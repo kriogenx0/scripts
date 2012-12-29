@@ -129,6 +129,17 @@ if [[ -n $PS_V ]]; then
   done
 fi
 
+# Adium
+if [[ -d ~/Library/Application\ Support/"Adium 2.0" ]]; then
+  if [[ ! -L ~/Library/Application\ Support/"Adium 2.0"/Users/Default ]]; then
+    mv ~/Library/Application\ Supoprt/"Adium 2.0"/Users/Default{,-old}
+    ln -s ~/Dropbox/Office/settings/adium/Default ~/Library/Application\ Support/"Adium 2.0"/Users/Default
+    echo 'Adium - Setup sync'
+  else
+    echo 'Adium - Already syncing'
+  fi
+fi
+
 # Apache Takeover
 if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
   APACHE_SITES="/Users/"`whoami`"/Dropbox/Office/settings/apache/sites.conf"
