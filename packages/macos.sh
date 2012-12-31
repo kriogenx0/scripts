@@ -37,6 +37,9 @@ if [[ $OSX_VERSION =~ "10.8*" ]]; then
   # Disable Rubberbanding
   defaults write -g NSScrollViewRubberbanding -int 0
 
+  # Show Library Folder 
+  sudo chflags nohidden ~/Library
+
 elif [[ $OSX_VERSION =~ "10.7*" ]]; then
   # LION
 
