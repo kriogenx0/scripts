@@ -72,6 +72,22 @@ export PGDATA=/usr/local/var/postgres
 # =============
 # ALIASES
 
+# builtin apps
+alias vi='vim'
+alias svi='sudo vim'
+alias rmf='rm -rf'
+alias srmf='sudo rm -rf'
+#alias grep='grep --color=auto --exclude="*~"'
+grp() {
+  grep -irn $1 . --color=auto --exclude="*~"
+}
+egrp() {
+  egrep -rn $1 .
+}
+fnd() {
+  find . -name "*$1*"
+}
+
 # Kriogenx
 alias krc='vi ~/Sites/kriogenx/scripts/configs/bashrc'
 alias kd='cd ~/Sites/kriogenx/'
@@ -108,21 +124,6 @@ alias ppath='echo $PATH | tr ':' "\n"'
 
 # notepad
 alias edi='open -e "$1"'
-
-# builtin apps
-alias vi='vim'
-alias rmf='rm -rf'
-alias srmf='sudo rm -rf'
-#alias grep='grep --color=auto --exclude="*~"'
-grp() {
-  grep -irn $1 . --color=auto --exclude="*~"
-}
-egrp() {
-  egrep -rn $1 .
-}
-fnd() {
-  find . -name "*$1*"
-}
 
 #SSH
 alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub; echo "Copied ssh key into clipboard"'
@@ -212,6 +213,7 @@ alias ngstop='sudo nginx -s quit'
 #alias mysqladmin=/usr/local/mysql/bin/mysqladmin
 alias mss='mysql.server start'
 alias mystart='mysql.server start'
+alias myrestart='mysql.server restart'
 alias mystop='mysql.server stop'
 
 # cucumber
