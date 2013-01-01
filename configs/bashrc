@@ -197,8 +197,12 @@ alias wsports='webports'
 
 # apache
 alias asites='sudo vi /etc/apache2/extra/httpd-vhosts.conf; sudo vi /etc/hosts; sudo apachectl restart'
+alias adsites='sudo vi ~/Dropbox/Office/settings/apache/sites.conf; sudo vi /etc/hosts; sudo apachectl restart'
 alias astart='sudo apachectl restart'
 alias astop='sudo apachectl stop'
+alias alog="tail -f /private/var/log/apache2/error_log"
+
+# copter
 #copter() {
 #  A_SITES=(~/Sites/*)
 #}
