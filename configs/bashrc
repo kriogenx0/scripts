@@ -203,9 +203,19 @@ alias astop='sudo apachectl stop'
 alias alog="tail -f /private/var/log/apache2/error_log"
 
 # copter
-#copter() {
-#  A_SITES=(~/Sites/*)
-#}
+copter() {
+  A_SITES=(~/Sites/*)
+  if [[ $1 == 'r' || $1 == 'rebuild' ]]; then
+    echo 'Rebuilding'
+  else
+    echo "######## Copter ########"
+    echo "Apache:"
+    echo "ar or apache rebuild      Rebuilding Apache sites"
+    echo "as or apache start        Start Apache"
+    echo "MySQL:"
+    echo "ms or mysql start         Start MySQL"
+  fi
+}
 
 # Nginx
 alias ngsites='vi /usr/local/etc/nginx/nginx.conf'
