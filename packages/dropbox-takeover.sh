@@ -131,12 +131,30 @@ fi
 
 # Sequel Pro
 if [[ -e ~/Library/Preferences/com.google.code.sequel-pro.plist ]]; then
-  if [[ -L ~/Library/Preferences/com.google.code.sequel-pro.plist && -e ~/Dropbox/Office/settings/sequelpro ]]; then
-    sudo rm -rf ~/Library/Preferences/com.google.code.sequel-pro.plist
+  SQ_PREF=~/Library/Preferences/com.google.code.sequel-pro.plist
+  SQ_DROPBOX=~/Dropbox/Office/settings/sequelpro
+  SQ_DROPBOX_PREF=${SQ_DROPBOX}"/com.google.sequel-pro-old.plist"
+
+  [[ -d ${SQ_DROPBOX} ]] || mkdir -p ${SQ_DROPBOX}
+  [[ -L ${SQ_PREF} ]] && sudo rm -rf ${SQ_PREF}
+
+  if [[ -f ${SQ_DROPBOX_PREF} ]]; then
+    if [[ -f ${SQ_PREF} ]]; then
+      if [[ -f ${SQ_DROPBOX_PREF} ]]; then
+        sudo mv ${SQ_PREF} ${SQ_DROPBOX_PREF}"-old"
+      else
+        sudo mv ${SQ_PREF} ${SQ_DROPBOX_PREF}
+      fi
+    fi
   else
-    
+    if [[ -f ${SQ_PREF} ]]; then
+      sudo mv ${SQ_PREF} ${SQ_DROPBOX_PREF}
+    fi
   fi
-  ln -s ~/Library/Preferences/com.google.code.sequel-pro.plist ~/Dropbox/Office/settings/sequelpro/
+
+  if [[ -f ${SQ_DROPBOX_PREF} ]]; then
+    ln -s ${SQ_DROPBOX_PREF} ${SQ_PREF}
+  fi
 fi
 
 # Adium
