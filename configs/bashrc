@@ -72,6 +72,22 @@ export PGDATA=/usr/local/var/postgres
 # =============
 # ALIASES
 
+# builtin apps
+alias vi='vim'
+alias svi='sudo vim'
+alias rmf='rm -rf'
+alias srmf='sudo rm -rf'
+#alias grep='grep --color=auto --exclude="*~"'
+grp() {
+  grep -irn $1 . --color=auto --exclude="*~"
+}
+egrp() {
+  egrep -rn $1 .
+}
+fnd() {
+  find . -name "*$1*"
+}
+
 # Kriogenx
 alias krc='vi ~/Sites/kriogenx/scripts/configs/bashrc'
 alias kd='cd ~/Sites/kriogenx/'
@@ -108,21 +124,6 @@ alias ppath='echo $PATH | tr ':' "\n"'
 
 # notepad
 alias edi='open -e "$1"'
-
-# builtin apps
-alias vi='vim'
-alias rmf='rm -rf'
-alias srmf='sudo rm -rf'
-#alias grep='grep --color=auto --exclude="*~"'
-grp() {
-  grep -irn $1 . --color=auto --exclude="*~"
-}
-egrp() {
-  egrep -rn $1 .
-}
-fnd() {
-  find . -name "*$1*"
-}
 
 #SSH
 alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub; echo "Copied ssh key into clipboard"'
@@ -184,6 +185,7 @@ alias tiga='tig --all'
 alias tigs='tig status'
 
 # Web Server
+alias ports='netstat -tulanp'
 webports() {
   ps auxwww | grep LISTEN
   netstat -a | egrep 'Proto|LISTEN'
@@ -195,8 +197,15 @@ alias wsports='webports'
 
 # apache
 alias asites='sudo vi /etc/apache2/extra/httpd-vhosts.conf; sudo vi /etc/hosts; sudo apachectl restart'
+alias adsites='sudo vi ~/Dropbox/Office/settings/apache/sites.conf; sudo vi /etc/hosts; sudo apachectl restart'
 alias astart='sudo apachectl restart'
 alias astop='sudo apachectl stop'
+alias alog="tail -f /private/var/log/apache2/error_log"
+
+# copter
+#copter() {
+#  A_SITES=(~/Sites/*)
+#}
 
 # Nginx
 alias ngsites='vi /usr/local/etc/nginx/nginx.conf'
@@ -208,6 +217,7 @@ alias ngstop='sudo nginx -s quit'
 #alias mysqladmin=/usr/local/mysql/bin/mysqladmin
 alias mss='mysql.server start'
 alias mystart='mysql.server start'
+alias myrestart='mysql.server restart'
 alias mystop='mysql.server stop'
 
 # cucumber

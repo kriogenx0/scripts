@@ -139,6 +139,32 @@ if [[ -e ~/Library/Preferences/com.google.code.sequel-pro.plist ]]; then
   ln -s ~/Library/Preferences/com.google.code.sequel-pro.plist ~/Dropbox/Office/settings/sequelpro/
 fi
 
+# Adium
+if [[ -e /Applications/Adium.app ]]; then
+  if [[ -L ~/Library/Application\ Support/"Adium 2.0"/Users/Default/Accounts.plist ]]; then
+    echo 'Adium - Already syncing'
+  else
+    if [[ -d ~/Library/Application\ Support/Adium\ 2.0/Users/Default/ ]]; then
+      sudo mv ~/Library/Application\ Support/Adium\ 2.0/Users/Default{,-old}
+    fi
+    mkdir -p ~/Library/Application\ Support/Adium\ 2.0/Users/Default
+    ADIUM_FILES=(~/Dropbox/Office/settings/adium/Default/*)
+    #ADIUM_FILES=(~/Library/Application\ Support/Adium\ 2.0/Users/Default/*)
+    for f in "${ADIUM_FILES[@]}"; do
+      if [[ ! "$f" == *ByObjectPrefs* ]]; then
+        #echo $f' synced'
+        #ln -s $f ~/Dropbox/Office/settings/adium/Default/
+        ln -s "$f" ~/Library/Application\ Support/Adium\ 2.0/Users/Default/
+      fi
+    done
+    echo 'Adium - Setup sync'
+  fi
+  #if [[ ! -L ~/Library/Application\ Support/"Adium 2.0"/Users/Default ]]; then
+  #  mv ~/Library/Application\ Supoprt/"Adium 2.0"/Users/Default{,-old}
+  #  ln -s ~/Dropbox/Office/settings/adium/Default ~/Library/Application\ Support/"Adium 2.0"/Users/Default
+  #fi
+fi
+
 # Apache Takeover
 if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
   APACHE_SITES="/Users/"`whoami`"/Dropbox/Office/settings/apache/sites.conf"
