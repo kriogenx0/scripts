@@ -305,7 +305,7 @@ alias glc="git cherry -v master" #show changes in branch not merged
 alias gp='git push'
 alias gpa='git push --all'
 alias gpu='git push -u'
-alias gpo='git push -u origin'
+alias gpo='git push -u origin `gbc`'
 alias gl='git pull'
 alias gla='git pull -v --all'
 glu() {
