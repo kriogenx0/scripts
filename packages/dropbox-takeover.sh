@@ -1,28 +1,31 @@
-if [ ! -d ~/Dropbox ]; then
+# Settings
+DRP_HOME=~/Dropbox
+DRP_SETTINGS=${DRP_HOME}/Office/settings
+
+#######
+
+if [ ! -d $DRP_HOME ]; then
   echo 'Dropbox is required for this script'
   exit 0
 fi
-if [ ! -d ~/Dropbox/Office ]; then
-  mkdir ~/Dropbox/Office
-fi
 
-if [ ! -d ~/Dropbox/Office/settings ]; then
-  mkdir -p ~/Dropbox/Office/settings
-fi
+# Create Directories if they don't exist
+mkdir -p $DRP_SETTINGS
 
 # Takeover Desktop
 if [ ! -L ~/Desktop ]; then
-  if [ -d ~/Dropbox/Office/Desktop ]; then
+  DRP_DESKTOP=${DRP_HOME}/Office/Desktop
+  if [ -d $DRP_DESKTOP ]; then
     # If exists, move contents
-    sudo mv ~/Desktop/* ~/Dropbox/Office/Desktop/
+    sudo mv ~/Desktop/* ${DRP_DESKTOP}/
     sudo rm -rf ~/Desktop
   else
     # If doesnt exist, create and link
-    sudo mv ~/Desktop ~/Dropbox/Office/Desktop
+    sudo mv ~/Desktop ${DRP_DESKTOP}
   fi
-  ln -s ~/Dropbox/Office/Desktop ~/Desktop
+  ln -s $DRP_DESKTOP /~/Desktop
 else
-  echo 'Already syncing Desktop'
+  echo 'Desktop - Already syncing'
 fi
 
 # Takeover iTunes
@@ -48,10 +51,10 @@ if [ ! -L ~/Music/iTunes ]; then
     #if [ -f ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/.iTunes\ Preferences.plist ]; then
     #  ln -s ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/.iTunes\ Preferences.plist ~/Music/iTunes/iTunes\ Music
     #fi
-    echo 'iTunes synced with dropbox'
+    echo 'iTunes - Started syncing'
   fi
 else
-  echo 'Already syncing iTunes'
+  echo 'iTunes - Already syncing'
 fi
 
 # Takeover Filezilla
@@ -60,27 +63,17 @@ if [ -e ~/.filezilla ]; then
     if [ -d ~/Dropbox/Office/settings/Filezilla ]; then
       mv ~/.filezilla ~/filezilla-old
       ln -s ~/Dropbox/Office/settings/Filezilla ~/.filezilla
-      echo 'Filezilla dropbox used'
+      echo 'Filezilla - dropbox used'
     else
       mkdir -p ~/Dropbox/Office/settings/Filezilla
       mv ~/.filezilla/* ~/Dropbox/Office/settings/Filezilla/
       ln -s ~/Dropbox/Office/settings/Filezilla ~/.filezilla
-      echo 'Filezilla moved to dropbox'
+      echo 'Filezilla - moved to dropbox'
     fi
   else
-    echo 'Already syncing Filezilla'
+    echo 'Filezilla - Already syncing'
   fi
-else
-  echo 'Filezilla not installed'
 fi
-
-# Takeover Filezilla Application
-#if [ ! -L /Applications/FileZilla.app ]; then
-#  if [ -d /Applications/FileZilla.app ]; then
-#    sudo mv /Applications/FileZilla{,-old}.app
-#  fi
-#  ln -s ~/Dropbox/Office/Applications/FileZilla.app /Applications/
-#fi
 
 # Photoshop Settings
 #if [ ! -L ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ]; then
@@ -130,10 +123,11 @@ if [[ -n $PS_V ]]; then
 fi
 
 # Sequel Pro
-if [[ -e ~/Library/Preferences/com.google.code.sequel-pro.plist ]]; then
-  SQ_PREF=~/Library/Preferences/com.google.code.sequel-pro.plist
+SQ_PREF=~/Library/Preferences/com.google.code.sequel-pro.plist
+if [[ -e ${SQ_PREF} ]]; then
+  #DRP_SEQUELPRO=~/Library/Preferences/com.google.code.sequel-pro.plist
   SQ_DROPBOX=~/Dropbox/Office/settings/sequelpro
-  SQ_DROPBOX_PREF=${SQ_DROPBOX}"/com.google.sequel-pro-old.plist"
+  SQ_DROPBOX_PREF=${SQ_DROPBOX}"/com.google.code.sequel-pro.plist"
 
   [[ -d ${SQ_DROPBOX} ]] || mkdir -p ${SQ_DROPBOX}
   [[ -L ${SQ_PREF} ]] && sudo rm -rf ${SQ_PREF}
