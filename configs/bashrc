@@ -207,11 +207,16 @@ copter() {
   A_SITES=(~/Sites/*)
   if [[ $1 == 'r' || $1 == 'rebuild' ]]; then
     echo 'Rebuilding'
+  elif [[ $1 == 'apache' || $1 == 'a' ]]; then
+    if [[ $2 == 'l' || $2 == 'log' ]]; then
+      echo `ps ax | grep /usr/sbin/httpd | grep -v grep | cut -c1-5 | paste -s -`
+    fi
   else
     echo "######## Copter ########"
     echo "Apache:"
-    echo "ar or apache rebuild      Rebuilding Apache sites"
-    echo "as or apache start        Start Apache"
+    echo "a r or apache rebuild      Rebuilding Apache sites"
+    echo "a s or apache start        Start Apache"
+    echo "a l or apache log          Apache log or progress"
     echo "MySQL:"
     echo "ms or mysql start         Start MySQL"
   fi
