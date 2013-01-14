@@ -207,14 +207,8 @@ alias alog="tail -f /private/var/log/apache2/error_log"
 
 # copter
 copter() {
-  A_SITES=(~/Sites/*)
-  if [[ $1 == 'r' || $1 == 'rebuild' ]]; then
-    echo 'Rebuilding'
-  elif [[ $1 == 'apache' || $1 == 'a' ]]; then
-    if [[ $2 == 'l' || $2 == 'log' ]]; then
-      echo `ps ax | grep /usr/sbin/httpd | grep -v grep | cut -c1-5 | paste -s -`
-    fi
-  else
+
+  usage() {
     echo "######## Copter ########"
     echo "Apache:"
     echo "a r or apache rebuild      Rebuilding Apache sites"
@@ -222,7 +216,27 @@ copter() {
     echo "a l or apache log          Apache log or progress"
     echo "MySQL:"
     echo "ms or mysql start         Start MySQL"
+  }
+
+  A_SITES=(~/Sites/*)
+  ns=$1
+  #while true
+  #do
+    case "$ns" in
+      r|rebuild)
+        echo 'Rebuilding'
+        action='r'
+      ;;
+    esac
+  #done # while
+
+  if [[ $1 == 'apache' || $1 == 'a' ]]; then
+    if [[ $2 == 'l' || $2 == 'log' ]]; then
+      echo `ps ax | grep /usr/sbin/httpd | grep -v grep | cut -c1-5 | paste -s -`
+    fi
   fi
+
+  usage
 }
 
 # Nginx
