@@ -328,6 +328,7 @@ alias gsn='gss; glr; gsa'
 alias gm='git merge'
 alias gmt='git mergetool'
 alias gmf='git merge --no-commit --no-ff -v'
+alias gmm='git merge master'
 
 # ignore file
 alias gig="vi .gitignore"
