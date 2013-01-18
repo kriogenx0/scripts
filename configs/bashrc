@@ -6,14 +6,17 @@
 # ============
 # ENVIRONMENT
 
+
 # ADDITIONAL BINARIES
-#export PATH=$PATH:/usr/local/sbin
 export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
-export PATH=$PATH:/usr/local/sbin:$HOME/.rvm/bin
+export PATH=$PATH:/usr/local/sbin
+if [[ ! '.rvm/bin' =~ $PATH ]]; then
+  export PATH=$PATH:$HOME/.rvm/bin
+fi
 #export PATH=/Users/alexv/.rvm/gems/ruby-1.9.3-p125/bin:/Users/alexv/.rvm/gems/ruby-1.9.3-p125@global/bin:/Users/alexv/.rvm/rubies/ruby-1.9.3-p125/bin:/Users/alexv/.rvm/bin:/usr/local/bin:/usr/local/sbin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/Users/alexv/.rvm/bin:/Users/alexv/.rvm/bin
+export PATH=$PATH:/Users/`whoami`/Sites/kriogenx/scripts/bin
 
 # RVM SETTINGS before shell so shell knows
-export PATH=$PATH:$HOME/.rvm/bin
 if test -f ~/.rvm/scripts/rvm; then
   [ "$(type rvm)" = "rvm is a shell function" ] || source ~/.rvm/scripts/rvm
 fi
@@ -204,40 +207,6 @@ alias adsites='sudo vi ~/Dropbox/Office/settings/apache/sites.conf; sudo vi /etc
 alias astart='sudo apachectl restart'
 alias astop='sudo apachectl stop'
 alias alog="tail -f /private/var/log/apache2/error_log"
-
-# copter
-copter() {
-
-  usage() {
-    echo "######## Copter ########"
-    echo "Apache:"
-    echo "a r or apache rebuild      Rebuilding Apache sites"
-    echo "a s or apache start        Start Apache"
-    echo "a l or apache log          Apache log or progress"
-    echo "MySQL:"
-    echo "ms or mysql start         Start MySQL"
-  }
-
-  A_SITES=(~/Sites/*)
-  ns=$1
-  #while true
-  #do
-    case "$ns" in
-      r|rebuild)
-        echo 'Rebuilding'
-        action='r'
-      ;;
-    esac
-  #done # while
-
-  if [[ $1 == 'apache' || $1 == 'a' ]]; then
-    if [[ $2 == 'l' || $2 == 'log' ]]; then
-      echo `ps ax | grep /usr/sbin/httpd | grep -v grep | cut -c1-5 | paste -s -`
-    fi
-  fi
-
-  usage
-}
 
 # Nginx
 alias ngsites='vi /usr/local/etc/nginx/nginx.conf'
