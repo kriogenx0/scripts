@@ -72,6 +72,9 @@ export PGDATA=/usr/local/var/postgres
 # =============
 # ALIASES
 
+# Bash Defaults
+alias lns="ln -s"
+
 # builtin apps
 alias vi='vim'
 alias svi='sudo vim'
