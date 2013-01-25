@@ -10,7 +10,7 @@ if [ ! -d ~/Dropbox/Office/settings ]; then
   mkdir -p ~/Dropbox/Office/settings
 fi
 
-# Takeover Desktop
+# Desktop
 if [ ! -L ~/Desktop ]; then
   if [ -d ~/Dropbox/Office/Desktop ]; then
     # If exists, move contents
@@ -21,16 +21,17 @@ if [ ! -L ~/Desktop ]; then
     sudo mv ~/Desktop ~/Dropbox/Office/Desktop
   fi
   ln -s ~/Dropbox/Office/Desktop ~/Desktop
+  echo 'Desktop - Success!'
 else
-  echo 'Already syncing Desktop'
+  echo 'Desktop - Already Syncing'
 fi
 
-# Takeover iTunes
+# iTunes
 if [ ! -L ~/Music/iTunes ]; then
   if [ -d ~/Music/iTunes ]; then
-    echo "Can't continue, iTunes folder exists ~/Music/iTunes"
+    echo "iTunes - Can't continue, iTunes folder exists ~/Music/iTunes"
   elif [ ! -d ~/Dropbox/Music ]; then
-    echo "Can't continue, no Dropox iTunes folder exists ~/Dropbox/Music/iTunes"
+    echo "iTunes - Can't continue, no Dropox iTunes folder exists ~/Dropbox/Music/iTunes"
   else
     mkdir -p ~/Music/iTunes
     ITUNES_FILES=('Album Artwork' 'iTunes Library Extras.itdb' 'iTunes Library Genius.itdb' 'iTunes Library.itl' 'iTunes Library.xml' 'iTunes Music Library Backup.xml' 'iTunes Music Library.xml' 'Previous iTunes Libraries');
@@ -48,19 +49,19 @@ if [ ! -L ~/Music/iTunes ]; then
     #if [ -f ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/.iTunes\ Preferences.plist ]; then
     #  ln -s ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/.iTunes\ Preferences.plist ~/Music/iTunes/iTunes\ Music
     #fi
-    echo 'iTunes synced with dropbox'
+    echo 'iTunes - Success!'
   fi
 else
-  echo 'Already syncing iTunes'
+  echo 'iTunes - Already syncing'
 fi
 
-# Takeover Filezilla
+# Filezilla
 if [ -e ~/.filezilla ]; then
   if [ ! -L ~/.filezilla ]; then
     if [ -d ~/Dropbox/Office/settings/Filezilla ]; then
       mv ~/.filezilla ~/filezilla-old
       ln -s ~/Dropbox/Office/settings/Filezilla ~/.filezilla
-      echo 'Filezilla dropbox used'
+      echo 'Filezilla - Success!'
     else
       mkdir -p ~/Dropbox/Office/settings/Filezilla
       mv ~/.filezilla/* ~/Dropbox/Office/settings/Filezilla/
@@ -68,13 +69,13 @@ if [ -e ~/.filezilla ]; then
       echo 'Filezilla moved to dropbox'
     fi
   else
-    echo 'Already syncing Filezilla'
+    echo 'Filezilla - Already Active'
   fi
 else
-  echo 'Filezilla not installed'
+  echo 'Filezilla - Not installed'
 fi
 
-# Takeover Filezilla Application
+# Filezilla Application
 #if [ ! -L /Applications/FileZilla.app ]; then
 #  if [ -d /Applications/FileZilla.app ]; then
 #    sudo mv /Applications/FileZilla{,-old}.app
@@ -127,13 +128,14 @@ if [[ -n $PS_V ]]; then
     fi
     ln -s "$DROPBOX_PS""$PS_F" "$PS_PREFS""$PS_F"
   done
+  #echo 'Photoshop - Success!'
 fi
 
 # Sequel Pro
 if [[ -e ~/Library/Preferences/com.google.code.sequel-pro.plist ]]; then
   SQ_PREF=~/Library/Preferences/com.google.code.sequel-pro.plist
   SQ_DROPBOX=~/Dropbox/Office/settings/sequelpro
-  SQ_DROPBOX_PREF=${SQ_DROPBOX}"/com.google.sequel-pro-old.plist"
+  SQ_DROPBOX_PREF=${SQ_DROPBOX}/com.google.code.sequel-pro.plist
 
   [[ -d ${SQ_DROPBOX} ]] || mkdir -p ${SQ_DROPBOX}
   [[ -L ${SQ_PREF} ]] && sudo rm -rf ${SQ_PREF}
@@ -154,6 +156,7 @@ if [[ -e ~/Library/Preferences/com.google.code.sequel-pro.plist ]]; then
 
   if [[ -f ${SQ_DROPBOX_PREF} ]]; then
     ln -s ${SQ_DROPBOX_PREF} ${SQ_PREF}
+    echo 'Sequel Pro - Success!'
   fi
 fi
 
@@ -175,7 +178,7 @@ if [[ -e /Applications/Adium.app ]]; then
         ln -s "$f" ~/Library/Application\ Support/Adium\ 2.0/Users/Default/
       fi
     done
-    echo 'Adium - Setup sync'
+    echo 'Adium - Success!'
   fi
   #if [[ ! -L ~/Library/Application\ Support/"Adium 2.0"/Users/Default ]]; then
   #  mv ~/Library/Application\ Supoprt/"Adium 2.0"/Users/Default{,-old}
@@ -192,7 +195,7 @@ if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
   if [[ ! -f "$APACHE_SITES" ]]; then
     echo '################\n# Add sites here\n' | sudo tee -a "$APACHE_SITES"
   fi
-  echo 'Apache - Setup sync'
+  echo 'Apache - Success!'
 else
   echo 'Apache - Already syncing'
 fi
