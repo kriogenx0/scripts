@@ -8,9 +8,13 @@
 
 # ADDITIONAL BINARIES
 #export PATH=$PATH:/usr/local/sbin
-export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
-export PATH=$PATH:/usr/local/sbin:$HOME/.rvm/bin
 #export PATH=/Users/alexv/.rvm/gems/ruby-1.9.3-p125/bin:/Users/alexv/.rvm/gems/ruby-1.9.3-p125@global/bin:/Users/alexv/.rvm/rubies/ruby-1.9.3-p125/bin:/Users/alexv/.rvm/bin:/usr/local/bin:/usr/local/sbin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/Users/alexv/.rvm/bin:/Users/alexv/.rvm/bin
+if [[ ! $PATH =~ '/usr/local/bin' ]]; then
+  export PATH=/usr/local/bin:$PATH
+fi
+if [[ ! $PATH =~ '/usr/local/sbin' ]]; then
+  export PATH=/usr/local/sbin:$PATH
+fi
 
 # RVM SETTINGS before shell so shell knows
 export PATH=$PATH:$HOME/.rvm/bin
