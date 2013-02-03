@@ -30,6 +30,9 @@ fi
 # git
 if [[ ! `type git` =~ "not found"]]; then
   brew install git
+  # OLD APPLE GITS
+  #/usr/bin/git
+  #/usr/local/git
 else
   brew upgrade git
 fi
