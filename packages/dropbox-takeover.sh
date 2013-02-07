@@ -132,13 +132,26 @@ if [[ -n $PS_V ]]; then
 fi
 
 # Sequel Pro
-if [[ -e ~/Library/Preferences/com.google.code.sequel-pro.plist ]]; then
-  SQ_PREF=~/Library/Preferences/com.google.code.sequel-pro.plist
+if [[ -e /Applications/"Sequel Pro.app" ]]; then
   SQ_DROPBOX=~/Dropbox/Office/settings/sequelpro
-  SQ_DROPBOX_PREF=${SQ_DROPBOX}/com.google.code.sequel-pro.plist
+
+  if [[ ! -e /Applications/"Sequel Pro.app"/Contents/Frameworks/BWToolkitFramework.framework ]]; then
+    SQ_OLD=1
+  fi
+
+  if [[ -z $SQL_OLD ]]; then
+    SQ_PREF=~/Library/"Application Support"/"Sequel Pro"
+    SQ_DROPBOX_PREF=${SQ_DROPBOX}/"Sequel Pro"
+  else
+    SQ_PREF=~/Library/Preferences/com.google.code.sequel-pro.plist
+    SQ_DROPBOX_PREF=${SQ_DROPBOX}/com.google.code.sequel-pro.plist
+  fi
 
   [[ -d ${SQ_DROPBOX} ]] || mkdir -p ${SQ_DROPBOX}
-  [[ -L ${SQ_PREF} ]] && sudo rm -rf ${SQ_PREF}
+  if [[ -L ${SQ_PREF} ]]; then
+    sudo rm -rf ${SQ_PREF}
+    echo "Sequel Pro - removed link"
+  fi
 
   if [[ -f ${SQ_DROPBOX_PREF} ]]; then
     if [[ -f ${SQ_PREF} ]]; then
