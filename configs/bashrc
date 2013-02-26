@@ -107,6 +107,11 @@ alias kgig='cp ~/Sites/kriogenx/scripts/support/git/gitignore ./.gitignore'
 kdu() { # Krigoenx Directory Update
   echo "$( kd; cd scripts; git pull --rebase)"
 }
+kupgrade() {
+  brew update
+  brew upgrade
+  brew doctor
+}
 
 # Traversing
 si() {

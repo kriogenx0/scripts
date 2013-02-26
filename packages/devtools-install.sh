@@ -18,7 +18,7 @@ if [[ ! -e /usr/local/bin/gcc-4.2 ]]; then
   brew install apple-gcc42
 fi
 
-# GCC FIX FOR GEM BUILDING
+# GCC FIX
 if [[ ! -e /usr/bin/g++ && -e /usr/bin/llvm-g++-4.2 ]]; then
   ln -s /usr/bin/llvm-g++-4.2 /usr/bin/g++
 fi
@@ -28,7 +28,7 @@ if [[ ! -e /usr/bin/gcc && -e /usr/bin/llvm-gcc-4.2 ]]; then
 fi
 
 # git
-if [[ ! `type git` =~ "not found"]]; then
+if [[ `type git` =~ "not found" ]]; then
   brew install git
   # OLD APPLE GITS
   #/usr/bin/git
@@ -43,7 +43,7 @@ if [[ ! -d ~/.oh-my-zsh ]]; then
 fi
 
 # Janus
-if [[ ! `type ruby` =~ "not found"]]; then
+if [[ ! `type ruby` =~ "not found" ]]; then
   if [[ ! -d ~/.vim || ! -d ~/.vim/janus ]]; then
     curl -Lo- https://bit.ly/janus-bootstrap | bash
   elif [[ -d ~/.vim/janus ]]; then
@@ -54,7 +54,7 @@ else
 fi
 
 # Tig
-if [[ ! `type tig` =~ "not found"]]; then
+if [[ ! `type tig` =~ "not found" ]]; then
   brew install tig
 else
   brew upgrade tig

@@ -4,7 +4,7 @@ if [[ ! -d ~/.rvm ]]; then
 fi
 
 # Ruby Install
-sh installs/vendors/install-theinstall.sh
+sh vendors/install-theinstall.sh
 
 # Get RVM to reload
 if [[ -f ~/.rvmrc ]]; then
@@ -12,15 +12,15 @@ if [[ -f ~/.rvmrc ]]; then
 fi
 
 # Uninstall Native Ruby
-if [[ -d /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8 ]]; then
-  sudo rm -r /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8
+if [[ -d /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems ]]; then
+  sudo rm -r /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems
 fi
 
 # POW
 # curl get.pow.cx | sh
 
 # Nginx
-if [[ ! `type nginx` =~ "not found"]]; then
+if [[ ! `type nginx` =~ "not found" ]]; then
   brew install nginx
 else
   brew upgrade nginx
