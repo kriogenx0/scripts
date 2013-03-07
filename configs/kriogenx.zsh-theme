@@ -20,7 +20,8 @@ function box_name {
 }
 
 function time_stamp {
-  echo -n $(date "+%Y-%m-%d %H:%M:%S") | sed "s/^\dm\"//"
+  #echo -n $(date "+%Y-%m-%d %H:%M:%S") | sed "s/^\dm\"//"
+  echo -n $(date "+%m-%d %H:%M:%S") | sed "s/^\dm\"//"
 }
 
 
