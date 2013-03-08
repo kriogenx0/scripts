@@ -108,9 +108,14 @@ kdu() { # Krigoenx Directory Update
   echo "$( kd; cd scripts; git pull --rebase)"
 }
 kupgrade() {
-  brew update
-  brew upgrade
-  brew doctor
+  if [[ `type rvm` =~ 'function' ]]; then
+    rvm get latest
+  fi
+  if [[ `type brew` =~ 'function' ]]; then
+    brew update
+    brew upgrade
+    brew doctor
+  fi
 }
 
 # Traversing
