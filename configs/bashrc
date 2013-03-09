@@ -111,7 +111,7 @@ kupgrade() {
   if [[ `type rvm` =~ 'function' ]]; then
     rvm get latest
   fi
-  if [[ `type brew` =~ 'function' ]]; then
+  if [[ ! `type brew` =~ 'not found' ]]; then
     brew update
     brew upgrade
     brew doctor
