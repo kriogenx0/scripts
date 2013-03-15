@@ -110,6 +110,9 @@ kdu() { # Krigoenx Directory Update
 kupgrade() {
   if [[ `type rvm` =~ 'function' ]]; then
     rvm get latest
+    // curl https://raw.github.com/wayneeseguin/rvm/stable/VERSION
+    // rvm --version
+    rvmvers=`rvm --version | tr ' ' '\n'`
   fi
   if [[ ! `type brew` =~ 'not found' ]]; then
     brew update
@@ -158,6 +161,7 @@ alias rcuc='cd `rr`; cucumber features'
 alias rversions="gem list -ra rails | grep 'rails ('"
 alias rgems='rvm list gemsets; cat .rvmrc'
 alias rgemsdir='cd `rvm gemdir`/gems'
+alias rvdgems'rvm gemset empty'
 alias rgem='vi `rr`/Gemfile'
 alias rgemsuninstall='gem list | cut -d" " -f1 | xargs gem uninstall -aIx'
 alias rgembuild='gem pristine --all --no-extensions'
@@ -275,7 +279,7 @@ pgenv() {
 }
 
 # git
-alias ga='git add .; git add -u; git status'
+alias ga='git add .; git add -u .; git status'
 alias gai='git add -i; git status'
 alias gap='git add -p'
 
@@ -330,6 +334,7 @@ alias gs='git status'
 alias gd='git diff'
 alias gds='git diff --staged'
 alias gdc='git diff --cached'
+alias gad='ga; gds'
 alias gdl="git show" # diff last changes
 alias gdh='git diff HEAD'
 alias gdm='git diff master'
