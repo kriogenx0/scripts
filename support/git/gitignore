@@ -41,6 +41,7 @@ Thumbs.db
 
 # VIM
 *.un~
+*.swp
 
 # Dreamweaver
 _notes

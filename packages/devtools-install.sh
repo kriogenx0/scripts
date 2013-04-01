@@ -40,6 +40,8 @@ fi
 # OH MY ZSH
 if [[ ! -d ~/.oh-my-zsh ]]; then
   curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
+else
+  $(cd ~/.oh-my-zsh; git pull --rebase)
 fi
 
 # Janus
@@ -63,9 +65,7 @@ fi
 ########
 # VENDOR INSTALLS
 
-if [[ ! -d ~/Sites/webconfig ]]; then
-  mkdir ~/Sites/webconfig
-fi
+mkdir -p ~/Sites/webconfig
 
 # Xcode Select
 if [[ -d "/Applications/Xcode.app/Contents" ]]; then
@@ -82,3 +82,5 @@ if [ ! -d ~/.ssh ]; then
     echo "Created SSH key and copied public key to clipboard"
   fi
 fi
+
+echo 'Done with Devtools'

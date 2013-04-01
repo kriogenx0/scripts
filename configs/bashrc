@@ -4,8 +4,7 @@
 # ALSO FOR ZSH
 
 # ============
-# ENVIRONMENT
-
+# ENVIRONMENT & PATH CHANGES
 
 # ADDITIONAL BINARIES
 export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
@@ -21,6 +20,15 @@ if [[ ! $PATH =~ '/usr/local/sbin' ]]; then
   export PATH=/usr/local/sbin:$PATH
 fi
 export PATH=$PATH:/Users/`whoami`/Sites/kriogenx/scripts/bin
+
+if [[ -e /Applications/Xcode.app/Contents/Developer ]]; then
+  export PATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:$PATH
+fi
+
+if [[ -e /usr/local/bin/gcc-4.2 ]]; then
+  export CC=/usr/local/bin/gcc-4.2
+fi
+export CPPFLAGS=-I/opt/X11/include
 
 # RVM SETTINGS before shell so shell knows
 if test -f ~/.rvm/scripts/rvm; then
@@ -107,17 +115,22 @@ alias kgig='cp ~/Sites/kriogenx/scripts/support/git/gitignore ./.gitignore'
 kdu() { # Krigoenx Directory Update
   echo "$( kd; cd scripts; git pull --rebase)"
 }
+kstatus() {
+  brew doctor
+}
 kupgrade() {
   if [[ `type rvm` =~ 'function' ]]; then
-    rvm get latest
-    // curl https://raw.github.com/wayneeseguin/rvm/stable/VERSION
-    // rvm --version
+    #rvm get stable
+    # curl https://raw.github.com/wayneeseguin/rvm/stable/VERSION
+    # rvm --version
     rvmvers=`rvm --version | tr ' ' '\n'`
   fi
   if [[ ! `type brew` =~ 'not found' ]]; then
     brew update
     brew upgrade
-    brew doctor
+  fi
+  if [[ -d ~/.oh-my-zsh ]]; then
+    $(cd ~/.oh-my-zsh; git pull --rebase; git submodule foreach git pull origin master)
   fi
 }
 
@@ -234,7 +247,7 @@ alias alog="tail -f /private/var/log/apache2/error_log"
 #}
 
 # copter
-copter() {
+cop() {
   A_SITES=(~/Sites/*)
   if [[ $1 == 'r' || $1 == 'rebuild' ]]; then
     echo 'Rebuilding'

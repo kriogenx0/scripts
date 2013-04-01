@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # RVM Install
 if [[ ! -d ~/.rvm ]]; then
   curl -L https://get.rvm.io | bash -s stable --rails
@@ -24,4 +26,16 @@ if [[ ! `type nginx` =~ "not found" ]]; then
   brew install nginx
 else
   brew upgrade nginx
+fi
+
+brew tap homebrew/dupes
+brew install apple-gcc42
+
+brew install automake
+brew install libksba
+brew install imagemagick
+brew install readline
+
+if [[ ! -e /usr/bin/gcc-4.2 && -e /usr/bin/gcc ]]; then
+  sudo ln -s /usr/bin/gcc /usr/bin/gcc-4.2
 fi
