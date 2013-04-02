@@ -447,6 +447,7 @@ alias glodr='git log --pretty=format:"%h%x09%an%x09%ad%x09%s" --date=relative'
 alias gls='git ls-files'
 alias glgn='ls-files -o -i --exclude-standard' # Show files ignored by git:
 alias glc="git cherry -v master" #show changes in branch not merged
+alias gcp="git cherry-pick"
 
 # git push/pull
 alias gp='git push'
