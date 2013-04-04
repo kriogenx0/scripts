@@ -124,12 +124,15 @@ kupgrade() {
     # curl https://raw.github.com/wayneeseguin/rvm/stable/VERSION
     # rvm --version
     rvmvers=`rvm --version | tr ' ' '\n'`
+    echo "RVM Version: "`rvm --version`
   fi
   if [[ ! `type brew` =~ 'not found' ]]; then
+    echo "Upgrading Brew..."
     brew update
     brew upgrade
   fi
   if [[ -d ~/.oh-my-zsh ]]; then
+    echo "Upgrading OH-MY-ZSH"
     $(cd ~/.oh-my-zsh; git pull --rebase; git submodule foreach git pull origin master)
   fi
 }
