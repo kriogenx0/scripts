@@ -119,6 +119,7 @@ kstatus() {
   brew doctor
 }
 kupgrade() {
+  # RVM
   if [[ `type rvm` =~ 'function' ]]; then
     #rvm get stable
     # curl https://raw.github.com/wayneeseguin/rvm/stable/VERSION
@@ -126,14 +127,16 @@ kupgrade() {
     rvmvers=`rvm --version | tr ' ' '\n'`
     echo "RVM Version: "`rvm --version`
   fi
+  # Brew
   if [[ ! `type brew` =~ 'not found' ]]; then
     echo "Upgrading Brew..."
     brew update
     brew upgrade
   fi
+  # OH MY ZSH
   if [[ -d ~/.oh-my-zsh ]]; then
     echo "Upgrading OH-MY-ZSH"
-    $(cd ~/.oh-my-zsh; git pull --rebase; git submodule foreach git pull origin master)
+    echo $(cd ~/.oh-my-zsh; git pull --rebase; git submodule foreach git pull origin master)
   fi
 }
 
