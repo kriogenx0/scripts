@@ -51,6 +51,7 @@ if [ -n "$ZSH_VERSION" ]; then
 
   # Remove Autocorrect
   unsetopt correct_all
+  unsetopt correct
 
 # Bash
 elif [ -n "$BASH_VERSION" ]; then
