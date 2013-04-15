@@ -312,10 +312,20 @@ cop() {
   cop_nginx(){
     case "$2" in
       s|start)
-        sudo nginx;
+        result=`sudo nginx`;
+        if [[ -z $result ]]; then
+          echo 'NGINX started'
+        else
+          echo 'NGINX failed to start'
+        fi
         ;;
       q|quit|stop)
-        sudo nginx -s quit;
+        result=`sudo nginx -s quit`;
+        if [[ -z $result ]]; then
+          echo 'NGINX quit'
+        else
+          echo 'NGINX failed to quit'
+        fi
         ;;
       c|conf|config)
         vi /usr/local/etc/nginx/nginx.conf
