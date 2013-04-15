@@ -136,7 +136,7 @@ kupgrade() {
   fi
   # OH MY ZSH
   if [[ -d ~/.oh-my-zsh ]]; then
-    echo "Upgrading OH-MY-ZSH"
+    echo "Upgrading OH-MY-ZSH..."
     echo $(cd ~/.oh-my-zsh; git pull --rebase; git submodule foreach git pull origin master)
   fi
 }
