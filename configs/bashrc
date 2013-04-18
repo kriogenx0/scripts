@@ -111,15 +111,17 @@ fnd() {
 
 # Kriogenx
 alias krc='vi ~/Sites/kriogenx/scripts/configs/bashrc'
-alias kd='cd ~/Sites/kriogenx/'
+alias kd='cd ~/Sites/kriogenx/scripts'
 alias kgig='cp ~/Sites/kriogenx/scripts/support/git/gitignore ./.gitignore'
-kdu() { # Krigoenx Directory Update
+# Kriogenx Directory Update
+kdu() {
   echo "$( kd; cd scripts; git pull --rebase)"
 }
 kstatus() {
   brew doctor
 }
-kupgrade() {
+kup() {
+  kdu
   # RVM
   if [[ `type rvm` =~ 'function' ]]; then
     #rvm get stable
@@ -138,6 +140,26 @@ kupgrade() {
   if [[ -d ~/.oh-my-zsh ]]; then
     echo "Upgrading OH-MY-ZSH..."
     echo $(cd ~/.oh-my-zsh; git pull --rebase; git submodule foreach git pull origin master)
+  fi
+}
+
+k() {
+  krio_help() {
+    echo 'Kriogenx'
+  }
+  krio_status() {
+    brew doctor
+  }
+  if [ -z $2 ]; then
+    echo "\e[0;31m No Command Given\e[0;0m"
+    krio_help
+  else
+    # Top Wrapper
+    case "$1" in
+      stat|status) krio_status $@ ;;
+      up|update|upgrade) krio_update $@ ;;
+      *) krio_help ;;
+    esac
   fi
 }
 
