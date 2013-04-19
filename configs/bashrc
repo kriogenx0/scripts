@@ -150,14 +150,14 @@ k() {
   krio_status() {
     brew doctor
   }
-  if [ -z $2 ]; then
+  if [ -z $1 ]; then
     echo "\e[0;31m No Command Given\e[0;0m"
     krio_help
   else
     # Top Wrapper
     case "$1" in
       stat|status) krio_status $@ ;;
-      up|update|upgrade) krio_update $@ ;;
+      up|update|upgrade) kup $@ ;;
       *) krio_help ;;
     esac
   fi
