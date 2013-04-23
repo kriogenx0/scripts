@@ -124,11 +124,18 @@ kup() {
   kdu
   # RVM
   if [[ `type rvm` =~ 'function' ]]; then
-    #rvm get stable
-    echo "RVM - Latest: "`curl https://raw.github.com/wayneeseguin/rvm/stable/VERSION`
-    # rvm --version
-    rvmvers=`rvm --version | tr ' ' '\n'`
-    echo "RVM - Current: "`rvm --version`
+    rvm_latest=`curl https://raw.github.com/wayneeseguin/rvm/stable/VERSION`
+    echo "RVM - Latest: $rvm_latest"
+    rvm_current=`rvm --version`
+    rvm_current=${rvm_current:5}
+    rvm_current=${rvm_current//\ */}
+    echo "RVM - Current: $rvm_current"
+    if [[ $rvm_latest != $rvm_current ]]; then
+      echo "RVM - Upgrading..."
+      rvm get latest
+    else
+      echo "RVM - Already latest"
+    fi
   fi
   # Brew
   if [[ ! `type brew` =~ 'not found' ]]; then
