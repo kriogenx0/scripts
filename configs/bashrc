@@ -111,26 +111,26 @@ fnd() {
 
 # Kriogenx
 alias krc='vi ~/Sites/kriogenx/scripts/configs/bashrc'
-alias kd='cd ~/Sites/kriogenx/scripts'
+alias kd='cd ~/Sites/kriogenx'
+alias kds='cd ~/Sites/kriogenx/scripts'
 alias kgig='cp ~/Sites/kriogenx/scripts/support/git/gitignore ./.gitignore'
 # Kriogenx Directory Update
 kdu() {
-  echo "$( kd; cd scripts; git pull --rebase)"
+  echo "$( kds; git pull --rebase)"
 }
 kstatus() {
   brew doctor
 }
 kup() {
   kdu
-  # RVM
+ # RVM
   if [[ `type rvm` =~ 'function' ]]; then
     rvm_latest=`curl https://raw.github.com/wayneeseguin/rvm/stable/VERSION`
-    echo "RVM - Latest: $rvm_latest"
     rvm_current=`rvm --version`
     rvm_current=`echo $rvm_current | tr -d '\n'`
     rvm_current=${rvm_current//rvm\ /}
     rvm_current=${rvm_current//\ */}
-    echo "RVM - Current: $rvm_current"
+    echo "RVM - Latest: $rvm_latest - Current: $rvm_current"
     if [[ $rvm_latest != $rvm_current ]]; then
       echo "RVM - Upgrading..."
       rvm get latest
