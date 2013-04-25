@@ -179,6 +179,7 @@ alias c='clear'
 #alias ci="cd ~/Clients"
 
 # navigation
+alias l='ls -l'
 alias ll='ls -l'
 alias la='ls -lAh'   #Show all, sort by extension
 alias lll='ls -lAh'
