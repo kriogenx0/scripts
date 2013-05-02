@@ -247,7 +247,7 @@ rsc() {
 }
 rss() {
   if [[ -f "`rr`/script/rails" ]]; then
-    S="`rr`/script/rails server"
+    S="rails server"
   elif [[ -f "`rr`/script/server" ]]; then
     S="`rr`/script/server"
   else
@@ -256,7 +256,7 @@ rss() {
   if [[ -n $1 ]]; then
     eval "$S -p '$1'"
   else
-    "$S"
+    eval "$S"
   fi
 }
 alias rss1='rss 3001'
