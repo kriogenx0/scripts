@@ -194,20 +194,21 @@ mkd() {
   cd $1
 }
 alias ds='du -hd 1'
-#ppath() {
-#  for a in ${PATH//:/ }; do echo $a; done
-#}
+
+# Print Path
 alias ppath='echo $PATH | tr ':' "\n"'
 
-# notepad
+# TextEdit
 alias edi='open -e "$1"'
 
-#SSH
+# SSH
 alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub; echo "Copied ssh key into clipboard"'
+
 # Dropbox
 alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
 
-# rails
+##############
+# RAILS
 alias rrvm='vi .rvmrc'
 alias rcuc='cd `rr`; cucumber features'
 alias rversions="gem list -ra rails | grep 'rails ('"
@@ -220,12 +221,7 @@ alias rgembuild='gem pristine --all --no-extensions'
 alias rlog='tail -f `rr`/log/development.log'
 alias rtlog='tail -f `rr`/log/test.log'
 alias rb='ruby'
-alias rss='rails s'
-alias rss1='rss -p 3001'
-alias rss2='rss -p 3002'
-alias rss3='rss -p 3003'
-alias rsc='rails console'
-rr() { #rails root
+rr() { # rails root
   (
     dir=${1:-$(pwd)}
     i=0
@@ -240,20 +236,32 @@ rr() { #rails root
     return 1
   )
 }
-rssp() {
+rsc() {
   if [[ -f "`rr`/script/rails" ]]; then
-    S="`rr`/script/rails"
+    `rr`/script/rails console
+  elif [[ -f "`rr`/script/console" ]]; then
+    `rr`/script/console
+  else
+    rails c
+  fi
+}
+rss() {
+  if [[ -f "`rr`/script/rails" ]]; then
+    S="`rr`/script/rails server"
   elif [[ -f "`rr`/script/server" ]]; then
     S="`rr`/script/server"
   else
     S="rails s"
   fi
   if [[ -n $1 ]]; then
-    eval "`$S` -p '$1'"
+    eval "$S -p '$1'"
   else
-    `$S`
+    "$S"
   fi
 }
+alias rss1='rss 3001'
+alias rss2='rss 3002'
+alias rss3='rss 3003'
 
 # cake
 alias cake='app/Console/cake'
