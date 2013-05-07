@@ -13,6 +13,8 @@ if [[ $OSX_VERSION =~ "10.8*" ]]; then
   # DISABLE ANIMATIONS
   #defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool NO
   defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
+
+  # Mail Animations
   defaults write com.apple.Mail DisableReplyAnimations -bool YES
   defaults write com.apple.Mail DisableSendAnimations -bool YES
 
@@ -39,6 +41,10 @@ if [[ $OSX_VERSION =~ "10.8*" ]]; then
 
   # Show Library Folder 
   sudo chflags nohidden ~/Library
+
+  # Dock Speed
+  defaults write com.apple.dock autohide-time-modifier -int 0
+  # defaults delete com.apple.dock autohide-time-modifier
 
 elif [[ $OSX_VERSION =~ "10.7*" ]]; then
   # LION
@@ -75,6 +81,12 @@ fi
 
 #####################
 # ALL OS'S
+
+# Disable All Animations
+defaults write com.apple.finder DisableAllAnimations -bool true
+
+# Sheet Animations
+defaults write NSGlobalDomain NSWindowResizeTime .001
 
 # Disable Crash Reporting
 defaults write com.apple.CrashReporter DialogType none
