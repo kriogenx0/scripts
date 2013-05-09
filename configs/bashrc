@@ -87,6 +87,9 @@ fi
 # Postgres
 export PGDATA=/usr/local/var/postgres
 
+# RMV
+export rvm_trust_rvmrcs_flag=1
+
 # =============
 # ALIASES
 
@@ -528,7 +531,7 @@ alias gst='git stash show'
 alias gss='git stash save'
 alias gsa='git stash apply'
 alias gsc='git stash clear'
-alias gsn='gss; glr; gsa'
+alias gsn='ga; gss; glr; gsa'
 
 alias gm='git merge'
 alias gmt='git mergetool'
