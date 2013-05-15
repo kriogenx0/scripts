@@ -156,25 +156,6 @@ kup() {
   fi
 }
 
-k() {
-  krio_help() {
-    echo 'Kriogenx'
-  }
-  krio_status() {
-    brew doctor
-  }
-  if [ -z $1 ]; then
-    echo "\e[0;31m No Command Given\e[0;0m"
-    krio_help
-  else
-    # Top Wrapper
-    case "$1" in
-      stat|status) krio_status $@ ;;
-      up|update|upgrade) kup $@ ;;
-      *) krio_help ;;
-    esac
-  fi
-}
 
 # Traversing
 si() {
@@ -291,125 +272,6 @@ alias adsites='sudo vi ~/Dropbox/Office/settings/apache/sites.conf; sudo vi /etc
 alias astart='sudo apachectl restart'
 alias astop='sudo apachectl stop'
 alias alog="tail -f /private/var/log/apache2/error_log"
-
-cop() {
-  A_SITES=(~/Sites/*)
-
-  cop_apache(){
-    case "$2" in
-      s|start)
-        sudo apachectl restart;
-        echo "\e[0;32m Apache Started";
-        ;;
-      r|restart)
-        sudo apachectl restart;
-        echo "\e[0;32m Apache Restarted";
-        ;;
-      q|quit|stop)
-        sudo apachectl stop;
-        echo "\e[0;32m Apache Stopped";
-        ;;
-      l|log)
-        tail -f /private/var/log/apache2/error_log;
-        ;;
-      t|status)
-        APACHE_STATUS=`ps ax | grep /usr/sbin/httpd | grep -v grep | cut -c1-5 | paste -s -`;
-        echo -n "Apache is "
-        if [[ -n $APACHE_STATUS ]]; then
-          echo "running"
-          echo $APACHE_STATUS
-        else
-          echo "not running"
-        fi
-        ;;
-    esac
-  }
-
-  cop_mysql(){
-    case "$2" in
-      s|start)
-        mysql.server start;
-        ;;
-      r|restart)
-        mysql.server restart;
-        ;;
-      q|quit|stop)
-        mysql.server stop;
-        ;;
-    esac
-  }
-
-  cop_postgres(){
-    case "$2" in
-      s|start)
-        pg_ctl start;
-        ;;
-      q|quit|stop)
-        pg_ctl stop
-        ;;
-      e|env)
-        echo "PGDATA:    $PGDATA"
-        ;;
-    esac
-  }
-
-  cop_nginx(){
-    case "$2" in
-      s|start)
-        result=`sudo nginx`;
-        if [[ -z $result ]]; then
-          echo 'NGINX started'
-        else
-          echo 'NGINX failed to start'
-        fi
-        ;;
-      q|quit|stop)
-        result=`sudo nginx -s quit`;
-        if [[ -z $result ]]; then
-          echo 'NGINX quit'
-        else
-          echo 'NGINX failed to quit'
-        fi
-        ;;
-      c|conf|config)
-        vi /usr/local/etc/nginx/nginx.conf
-        ;;
-    esac
-  }
-
-  cop_help(){
-    echo "######## Cop ########"
-    echo "Usage: cop apache start"
-    echo "  Parameter 1: app name or abbreviation"
-    echo "  Parameter 2: app command"
-    echo "Apps:"
-    echo "\e[0;36ma - Apache\e[0m"
-    echo "  r | rebuild      Rebuilding Apache sites"
-    echo "  s | start        Start Apache"
-    echo "  l | log          Apache log or progress"
-    echo "\e[0;36mm - MySQL\e[0m"
-    echo "  s | start        Start MySQL"
-    echo "  q | quit         Stop MySQL"
-    echo ""
-    echo "Commands:"
-    echo "  Commands generally include:"
-    echo "  start, quit, restart, log, config"
-  }
-
-  if [ -z $2 ]; then
-    echo "\e[0;31m No Command Given\e[0;0m"
-    cop_help
-  else
-    # Top Wrapper
-    case "$1" in
-      a|apache) cop_apache $@ ;;
-      m|my|mysql) cop_mysql $@ ;;
-      n|ng|nginx) cop_nginx $@ ;;
-      p|pg|postgres) cop_postgres $@ ;;
-      *) cop_help ;;
-    esac
-  fi
-}
 
 # Nginx
 alias ngsites='vi /usr/local/etc/nginx/nginx.conf'
@@ -610,4 +472,126 @@ dirup() {
     i=$(expr $i + 1)
   done
   return 1
+}
+
+k() {
+  A_SITES=(~/Sites/*)
+
+  krio_help(){
+    echo "######## Kriogenx ########"
+    echo "Usage: k apache start"
+    echo "  Parameter 1: app name or abbreviation"
+    echo "  Parameter 2: app command"
+    echo ""
+    echo "Apps:"
+    echo "\e[0;36ma - Apache\e[0m"
+    echo "  r | rebuild      Rebuilding Apache sites"
+    echo "  s | start        Start Apache"
+    echo "  l | log          Apache log or progress"
+    echo "\e[0;36mm - MySQL\e[0m"
+    echo "  s | start        Start MySQL"
+    echo "  q | quit         Stop MySQL"
+    echo ""
+    echo "Commands:"
+    echo "  Commands generally include:"
+    echo "  start, quit, restart, log, config"
+  }
+
+  krio_apache(){
+    case "$2" in
+      s|start)
+        sudo apachectl restart;
+        echo "\e[0;32m Apache Started";
+        ;;
+      r|restart)
+        sudo apachectl restart;
+        echo "\e[0;32m Apache Restarted";
+        ;;
+      q|quit|stop)
+        sudo apachectl stop;
+        echo "\e[0;32m Apache Stopped";
+        ;;
+      l|log)
+        tail -f /private/var/log/apache2/error_log;
+        ;;
+      t|status)
+        APACHE_STATUS=`ps ax | grep /usr/sbin/httpd | grep -v grep | cut -c1-5 | paste -s -`;
+        echo -n "Apache is "
+        if [[ -n $APACHE_STATUS ]]; then
+          echo "running"
+          echo $APACHE_STATUS
+        else
+          echo "not running"
+        fi
+        ;;
+    esac
+  }
+
+  krio_mysql(){
+    case "$2" in
+      s|start)
+        mysql.server start;
+        ;;
+      r|restart)
+        mysql.server restart;
+        ;;
+      q|quit|stop)
+        mysql.server stop;
+        ;;
+    esac
+  }
+
+  krio_nginx(){
+    case "$2" in
+      s|start)
+        result=`sudo nginx`;
+        if [[ -z $result ]]; then
+          echo 'NGINX started'
+        else
+          echo 'NGINX failed to start'
+        fi
+        ;;
+      q|quit|stop)
+        result=`sudo nginx -s quit`;
+        if [[ -z $result ]]; then
+          echo 'NGINX quit'
+        else
+          echo 'NGINX failed to quit'
+        fi
+        ;;
+      c|conf|config)
+        vi /usr/local/etc/nginx/nginx.conf
+        ;;
+    esac
+  }
+
+  krio_postgres(){
+    case "$2" in
+      s|start)
+        pg_ctl start;
+        ;;
+      q|quit|stop)
+        pg_ctl stop
+        ;;
+      e|env)
+        echo "PGDATA:    $PGDATA"
+        ;;
+    esac
+  }
+
+  if [ -z $2 ]; then
+    echo "\e[0;31m No Command Given\e[0;0m"
+    krio_help
+  else
+    # Top Wrapper
+    case "$1" in
+      a|apache) krio_apache $@ ;;
+      m|my|mysql) krio_mysql $@ ;;
+      n|ng|nginx) krio_nginx $@ ;;
+      p|pg|postgres) krio_postgres $@ ;;
+      t|status) krio_status $@ ;;
+      u|up|update|upgrade) kup $@ ;;
+      *) krio_help ;;
+    esac
+  fi
 }
