@@ -2,7 +2,7 @@
 
 # RVM Install
 if [[ ! -d ~/.rvm ]]; then
-  curl -L https://get.rvm.io | bash -s stable --rails
+  curl -L https://get.rvm.io | bash -s stable --autolibs=3 --rails
 fi
 
 # Ruby Install
