@@ -59,10 +59,15 @@ _vti_txt
 # Word Press
 */wp-content/uploads/*
 
+###############
 # Graphics
 *.psd
 *.ai
 *.eps
+
+##############
+# Common Libraries
+.sass-cache
 
 ##############
 # Explicit Ignores
