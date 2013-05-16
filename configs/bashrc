@@ -612,21 +612,16 @@ k() {
     fi
   }
 
-  if [ -z $2 ]; then
-    echo "\e[0;31m No Command Given\e[0;0m"
-    k_help
-  else
-    # Top Wrapper
-    case "$1" in
-      a|apache) k_apache $@ ;;
-      m|my|mysql) k_mysql $@ ;;
-      n|ng|nginx) k_nginx $@ ;;
-      p|pg|postgres) k_postgres $@ ;;
-      s|status) k_status $@ ;;
-      u|up|update|upgrade) k_update $@ ;;
-      *) k_help ;;
-    esac
-  fi
+  # Top Wrapper
+  case "$1" in
+    a|apache) k_apache $@ ;;
+    m|my|mysql) k_mysql $@ ;;
+    n|ng|nginx) k_nginx $@ ;;
+    p|pg|postgres) k_postgres $@ ;;
+    s|status) k_status $@ ;;
+    u|up|update|upgrade) k_update $@ ;;
+    *) k_help ;;
+  esac
 }
 kup() {
   k up
