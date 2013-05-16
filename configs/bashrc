@@ -21,10 +21,12 @@ if [[ ! $PATH =~ '/usr/local/sbin' ]]; then
 fi
 export PATH=$PATH:/Users/`whoami`/Sites/kriogenx/scripts/bin
 
+# Xcode Developer
 if [[ -e /Applications/Xcode.app/Contents/Developer ]]; then
   #export PATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:$PATH
 fi
 
+# GCC
 if [[ -e /usr/local/bin/gcc-4.2 ]]; then
   export CC=/usr/local/bin/gcc-4.2
 fi
@@ -33,6 +35,10 @@ export CPPFLAGS=-I/opt/X11/include
 # RVM SETTINGS before shell so shell knows
 if test -f ~/.rvm/scripts/rvm; then
   [ "$(type rvm)" = "rvm is a shell function" ] || source ~/.rvm/scripts/rvm
+
+  export rvm_trust_rvmrcs_flag=1
+  export rvm_project_rvmrc_default=1
+  export rvm_auto_reload_flag=2
 fi
 
 # ZSH SETTINGS
@@ -58,8 +64,10 @@ if [ -n "$ZSH_VERSION" ]; then
 elif [ -n "$BASH_VERSION" ]; then
 
   function rvm_prompt_info() {
-    ruby_version=$(~/.rvm/bin/rvm-prompt 2> /dev/null) || return
-    [[ ! -z $ruby_version ]] && echo -en "\033[0m <$ruby_version>"
+    if [[ -e ~/.rvm/bin/rvm-prompt ]]; then
+      ruby_version=$(~/.rvm/bin/rvm-prompt 2> /dev/null) || return
+      [[ ! -z $ruby_version ]] && echo -en "\033[0m <$ruby_version>"
+    fi
   }
 
   function git_prompt_info() {
@@ -87,9 +95,6 @@ fi
 
 # Postgres
 export PGDATA=/usr/local/var/postgres
-
-# RMV
-export rvm_trust_rvmrcs_flag=1
 
 # =============
 # ALIASES
