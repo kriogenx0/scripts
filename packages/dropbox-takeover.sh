@@ -156,13 +156,12 @@ if [[ -e /Applications/"Sequel Pro.app" ]]; then
     echo "Sequel Pro - removed link"
   fi
 
+  # Move Current Prefs if Exist
   if [[ -f ${SQ_DROPBOX_PREF} ]]; then
     if [[ -f ${SQ_PREF} ]]; then
-      if [[ -f ${SQ_DROPBOX_PREF} ]]; then
-        sudo mv ${SQ_PREF} ${SQ_DROPBOX_PREF}"-old"
-      else
-        sudo mv ${SQ_PREF} ${SQ_DROPBOX_PREF}
-      fi
+      sudo mv ${SQ_PREF} ${SQ_DROPBOX_PREF}"-old"
+    else
+      sudo mv ${SQ_PREF} ${SQ_DROPBOX_PREF}
     fi
   else
     if [[ -f ${SQ_PREF} ]]; then
@@ -170,8 +169,9 @@ if [[ -e /Applications/"Sequel Pro.app" ]]; then
     fi
   fi
 
-  if [[ -f ${SQ_DROPBOX_PREF} ]]; then
-    ln -s ${SQ_DROPBOX_PREF} ${SQ_PREF}
+  # Create Link
+  if [[ -e "${SQ_DROPBOX_PREF}" ]]; then
+    ln -s "${SQ_DROPBOX_PREF}" "${SQ_PREF}"
     echo 'Sequel Pro - Success!'
   fi
 fi
