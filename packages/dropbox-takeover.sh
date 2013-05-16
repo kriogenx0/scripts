@@ -23,7 +23,7 @@ if [ ! -L ~/Desktop ]; then
     # If doesnt exist, create and link
     sudo mv ~/Desktop ${DRP_DESKTOP}
   fi
-  ln -s $DRP_DESKTOP /~/Desktop
+  ln -s $DRP_DESKTOP ~/Desktop
   echo 'Desktop - Success!'
 else
   echo 'Desktop - Already Syncing'
