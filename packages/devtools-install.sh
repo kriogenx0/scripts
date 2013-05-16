@@ -41,7 +41,7 @@ fi
 if [[ ! -d ~/.oh-my-zsh ]]; then
   curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
 else
-  $(cd ~/.oh-my-zsh; git pull --rebase)
+  echo $(cd ~/.oh-my-zsh; git pull --rebase)
 fi
 
 # Janus
@@ -49,7 +49,7 @@ if [[ ! `type ruby` =~ "not found" ]]; then
   if [[ ! -d ~/.vim || ! -d ~/.vim/janus ]]; then
     curl -Lo- https://bit.ly/janus-bootstrap | bash
   elif [[ -d ~/.vim/janus ]]; then
-    `cd ~/.vim/janus; git pull`
+    echo `cd ~/.vim/janus; git pull`
   fi
 else
   echo 'Janus - Latest Ruby required to install Janus'
