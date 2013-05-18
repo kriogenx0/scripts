@@ -47,11 +47,11 @@ git config --global color.diff.commit yellow
 git config --global color.status.header normal
 git config --global color.status.added yellow
 git config --global color.status.changed green
-git config --global color.status.updated green
-git config --global color.status.untracked cyan
+git config --global color.status.updated cyan
+git config --global color.status.untracked magenta
 git config --global color.status.nobranch red
 git config --global color.grep.match green
-git config --global color.interactive.prompt red
+git config --global color.interactive.prompt cyan
 git config --global color.interactive.header normal
 git config --global color.interactive.help green
 git config --global color.interactive.error red
