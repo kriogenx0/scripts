@@ -59,8 +59,11 @@ else
 fi
 
 # Filezilla
-if [ -e ~/.filezilla ]; then
-  if [ ! -L ~/.filezilla ]; then
+if [ -e /Applications/FileZilla.app ]; then
+  if [[ ! -e ~/.filezilla ]]; then
+    ln -s ~/Dropbox/Office/settings/Filezilla ~/.filezilla
+    echo 'Filezilla - Success!'
+  elif [ ! -L ~/.filezilla ]; then
     if [ -d ~/Dropbox/Office/settings/Filezilla ]; then
       mv ~/.filezilla ~/filezilla-old
       ln -s ~/Dropbox/Office/settings/Filezilla ~/.filezilla
