@@ -29,6 +29,23 @@ else
   echo 'Desktop - Already Syncing'
 fi
 
+# Hosts File
+HOSTS_PATH=/etc/hosts
+if [ ! -L $HOSTS_PATH ]; then
+  DRP_HOSTS_PATH=${DRP_HOME}/Office/settings/hosts
+
+  # If dropbox exists
+  if [ -e $DRP_HOSTS_PATH ]; then
+    sudo mv $HOSTS_PATH ${DRP_HOSTS_PATH}2
+  else
+    sudo mv $HOSTS_PATH ${DRP_HOSTS_PATH}
+  fi
+  sudo ln -s $DRP_HOSTS_PATH $HOSTS_PATH
+  echo 'Hosts - Success!'
+else
+  echo 'Hosts - Already Syncing'
+fi
+
 # iTunes
 if [ ! -L ~/Music/iTunes ]; then
   if [ -d ~/Music/iTunes ]; then
