@@ -522,6 +522,9 @@ k() {
           echo "not running"
         fi
         ;;
+      i|installed)
+        [[ ! `type apachectl` =~ 'not found' ]] && echo "true" || echo "false"
+        ;;
     esac
   }
 
@@ -536,6 +539,9 @@ k() {
       q|quit|stop)
         mysql.server stop;
         ;;
+      i|installed)
+        [[ ! `type mysql.server` =~ 'not found' ]] && echo "true" || echo "false"
+        ;;
     esac
   }
 
@@ -549,6 +555,9 @@ k() {
         ;;
       t|status)
         echo "PGDATA:    $PGDATA"
+        ;;
+      i|installed)
+        [[ ! `type pg_ctl` =~ 'not found' ]] && echo "true" || echo "false"
         ;;
     esac
   }
@@ -574,11 +583,25 @@ k() {
       c|conf|config)
         vi /usr/local/etc/nginx/nginx.conf
         ;;
+      i|installed)
+        [[ ! `type nginx` =~ 'not found' ]] && echo "true" || echo "false"
+        ;;
     esac
   }
 
   k_status() {
-    brew doctor
+    if [[ `k apache i` == "true" ]]; then
+     echo "Apache..............."`k a t`
+    fi
+    if [[ `k nginx i` == "true" ]]; then
+     echo "Nginx................"`k n t`
+    fi
+    if [[ `k mysql i` == "true" ]]; then
+     echo "Mysql................"`k m t`
+    fi
+    if [[ `k possgres i` == "true" ]]; then
+     echo "Postgres............."`k p t`
+    fi
   }
 
   k_update() {
