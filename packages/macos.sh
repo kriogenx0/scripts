@@ -39,8 +39,9 @@ if [[ $OSX_VERSION =~ "10.8*" ]]; then
   # Disable Rubberbanding
   defaults write -g NSScrollViewRubberbanding -int 0
 
-  # Show Library Folder 
+  # Show Library Folder
   sudo chflags nohidden ~/Library
+  chflags nohidden ~/Library
 
   # Dock Speed
   defaults write com.apple.dock autohide-time-modifier -int 0
