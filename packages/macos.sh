@@ -109,5 +109,8 @@ defaults write com.apple.Safari ProxiesInBookmarksBar '("Reading List")'
 #defaults write com.apple.Safari ProxiesInBookmarksBar '()'
 #defaults write com.apple.Safari ProxiesInBookmarksBar '("Top Sites","Reading List)'
 
+# Kill All Services
+/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -all local,system,user
+
 killall Dock
 killall Finder
