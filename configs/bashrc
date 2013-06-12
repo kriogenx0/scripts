@@ -605,7 +605,8 @@ k() {
   }
 
   k_update() {
-    echo "$(kds; git pull --rebase)"
+    echo "Updating Kriogenx Scripts..."
+    echo "$(kds; git pull --rebase -q)"
     # RVM
     if [[ `type rvm` =~ 'function' ]]; then
       rvm_latest=`curl -s https://raw.github.com/wayneeseguin/rvm/stable/VERSION`
@@ -631,7 +632,7 @@ k() {
     # OH MY ZSH
     if [[ -d ~/.oh-my-zsh ]]; then
       echo "Upgrading OH-MY-ZSH..."
-      echo $(cd ~/.oh-my-zsh; git pull --rebase; git submodule foreach git pull origin master)
+      echo $(cd ~/.oh-my-zsh; git pull --rebase -q; git submodule foreach git pull origin master)
     fi
   }
 
