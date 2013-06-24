@@ -22,9 +22,9 @@ fi
 export PATH=$PATH:/Users/`whoami`/Sites/kriogenx/scripts/bin
 
 # Xcode Developer
-if [[ -e /Applications/Xcode.app/Contents/Developer ]]; then
+#if [[ -e /Applications/Xcode.app/Contents/Developer ]]; then
   #export PATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:$PATH
-fi
+#fi
 
 # GCC
 if [[ -e /usr/local/bin/gcc-4.2 ]]; then
