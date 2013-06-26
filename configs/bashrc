@@ -583,6 +583,9 @@ k() {
       c|conf|config)
         vi /usr/local/etc/nginx/nginx.conf
         ;;
+      a|active|running)
+        ps -ax | grep nginx
+        ;;
       i|installed)
         [[ ! `type nginx` =~ 'not found' ]] && echo "true" || echo "false"
         ;;
