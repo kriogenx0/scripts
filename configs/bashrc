@@ -224,6 +224,7 @@ alias tiga='tig --all'
 alias tigs='tig status'
 
 # Web Server
+alias hosts="sudo vi /etc/hosts"
 alias ports='netstat -tulanp'
 webports() {
   ps auxwww | grep LISTEN
