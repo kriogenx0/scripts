@@ -61,6 +61,7 @@ if [ -n "$ZSH_VERSION" ]; then
 
   # Remove Autocorrect
   unsetopt correct_all
+  unsetopt correctall
   unsetopt correct
 
 # Bash
