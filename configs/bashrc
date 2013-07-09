@@ -300,6 +300,7 @@ gbda() {
 alias gbdall='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d' # delete all merged branches
 alias gbnm="git branch -r --no-merged master | sed 's/^  origin\///g'" # show unmerged branches
 alias gbp='git prune -v'
+alias gbpr='git remote prune origin'
 alias gba='git branch -a' # all branches
 alias gbr='git branch -r' # remote branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
@@ -395,7 +396,7 @@ alias gsu="git submodule update --init; git submodule update"
 alias gclr='git add .; git add -u; git checkout -f'
 alias gconf='vi .git/config'
 alias ggconf='vi ~/.gitconfig'
-alias gfix='git gc; git repack; git fsck --full --progress'
+alias gfix='git gc; git repack; git fsck --full --progress; git remote prune origin'
 
 gsearch() {
   git grep $1 $(git rev-list --all)
