@@ -45,7 +45,10 @@ fi
 if [ -n "$ZSH_VERSION" ]; then
   # ZSH THEME
   if [[ -d ~/.oh-my-zsh ]]; then
-    DISABLE_UPDATE_PROMPT=true
+    # Disable Updating entirely
+    #DISABLE_UPDATE_PROMPT=true
+    DISABLE_AUTO_UPDATE=true
+
     # ZSH rvm theme support
     #source ~/.rvm/scripts/rvm
 
