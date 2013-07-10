@@ -98,7 +98,7 @@ fi
 
 # SET DEFAULT EDITOR
 if [[ -e /Applications/"Coda 2.app" ]]; then
-  EDITOR=/Applications/"Coda 2.app"
+  export EDITOR=/Applications/"Coda 2.app"
 fi
 
 # Postgres
