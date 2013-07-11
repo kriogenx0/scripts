@@ -99,7 +99,7 @@ fi
 
 # SET DEFAULT EDITOR
 if [[ -e /Applications/"Coda 2.app" ]]; then
-  export EDITOR=/Applications/"Coda 2.app"
+  export EDITOR=/Applications/"Coda 2.app"/Contents/MacOS/"Coda 2"
 fi
 
 # Postgres
