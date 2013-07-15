@@ -169,6 +169,11 @@ alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub; echo "Copied ssh key into clipboard"'
 # Dropbox
 alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
 
+# Vagrant
+if [[ ! `type vagrant` =~ 'not found' ]]; then
+  alias vup='vagrant destroy -f; vagrant up'
+fi
+
 ##############
 # RAILS
 alias rrvm='vi .rvmrc'
