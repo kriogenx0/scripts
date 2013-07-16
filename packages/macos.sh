@@ -80,6 +80,9 @@ elif [[ $OSX_VERSION =~ "10.6*" ]]; then
   defaults write com.apple.dashboard mcx-disabled -boolean YES
 fi
 
+mkdir -p ~/Downloads/ScreenShots
+defaults write com.apple.screencapture location ~/Downloads/ScreenShots
+
 #####################
 # ALL OS'S
 
@@ -113,5 +116,6 @@ defaults write com.apple.Safari ProxiesInBookmarksBar '("Reading List")'
 # Kill All Services
 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -all local,system,user
 
+killall SystemUIServer
 killall Dock
 killall Finder
