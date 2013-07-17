@@ -25,8 +25,6 @@ if [[ $OSX_VERSION =~ "10.8*" ]]; then
   defaults write com.apple.dock springboard-show-duration -int 0
   defaults write com.apple.dock springboard-hide-duration -int 0
 
-  defaults write -g ApplePressAndHoldEnabled -bool false
-
   # Change Default Save Location from icloud to local
   defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
