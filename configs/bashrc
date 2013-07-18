@@ -464,12 +464,7 @@ k() {
     echo "######## Kriogenx ########"
     echo ""
     echo "Apps:"
-    echo "\e[0;36ma - apache\e[0m"
-    echo "  s | start          Start Apache"
-    echo "  q | quit           Stop Apache"
-    echo "  r | restart        Restart Apache sites"
-    echo "  t | status         Apache running status"
-    echo "  l | log            Apache log"
+    k_apache h
     echo ""
     echo "\e[0;36mm - mysql\e[0m"
     echo "  s | start          Start MySQL"
@@ -540,6 +535,14 @@ k() {
         ;;
       i|installed)
         [[ ! `type apachectl` =~ 'not found' ]] && echo "true" || echo "false"
+        ;;
+      h|help)
+        echo "\e[0;36ma - apache\e[0m"
+        echo "  s | start          Start Apache"
+        echo "  q | quit           Stop Apache"
+        echo "  r | restart        Restart Apache sites"
+        echo "  t | status         Apache running status"
+        echo "  l | log            Apache log"
         ;;
     esac
   }
