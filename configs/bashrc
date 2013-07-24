@@ -16,8 +16,9 @@
 [[ -d /usr/local/git/bin && ! $PATH =~ '/usr/local/git/bin' ]] && export PATH=/usr/local/git/bin:$PATH
 
 # Homebrew Bin
-[[ ! $PATH =~ '/usr/local/sbin' ]] && export PATH=/usr/local/sbin:$PATH
+export PATH=${PATH//:\/usr\/local\/bin/}
 [[ ! $PATH =~ '/usr/local/bin' ]] && export PATH=/usr/local/bin:$PATH
+[[ ! $PATH =~ '/usr/local/sbin' ]] && export PATH=/usr/local/sbin:$PATH
 
 # Homebrew GCC
 if [[ ! `type CC` =~ 'not found' && -e /usr/local/bin/gcc-4.2 ]]; then
