@@ -31,9 +31,6 @@ if [[ ! '.rvm/bin' =~ $PATH ]]; then
   export PATH=$PATH:$HOME/.rvm/bin
 fi
 
-# RVM Load Gem Bin
-[[ -d $GEM_HOME/bin && ! $PATH =~ $GEM_HOME/bin ]] && export PATH=$GEM_HOME/bin:$PATH
-
 # RVM SETTINGS before shell so shell knows
 if test -f ~/.rvm/scripts/rvm; then
   [ "$(type rvm)" = "rvm is a shell function" ] || source ~/.rvm/scripts/rvm
@@ -42,6 +39,13 @@ if test -f ~/.rvm/scripts/rvm; then
   export rvm_project_rvmrc_default=1
   export rvm_auto_reload_flag=2
 fi
+
+# RVM Gem Error
+#export GEM_BASE=${GEM_HOME//@[a-zA-Z0-9]*/}
+#[[ $GEM_BASE != $GEM_HOME && -d $GEM_BASE/bin ]] && export PATH=$GEM_BASE/bin:$PATH
+
+# RVM Load Gem Bin
+[[ -d $GEM_HOME/bin && ! $PATH =~ $GEM_HOME/bin ]] && export PATH=$GEM_HOME/bin:$PATH
 
 # Kriogenx Bin
 export PATH=$PATH:/Users/`whoami`/Sites/kriogenx/scripts/bin
