@@ -332,6 +332,7 @@ alias gbp='git prune -v'
 alias gbpr='git remote prune origin'
 alias gba='git branch -a' # all branches
 alias gbr='git branch -r' # remote branches
+alias gbs='git branch -a | grep' # search branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
 alias gbum="git branch --no-merge" # unmerged
 alias gbo='git checkout -b'
