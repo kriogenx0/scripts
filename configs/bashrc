@@ -47,6 +47,9 @@ fi
 # RVM Load Gem Bin
 [[ -d $GEM_HOME/bin && ! $PATH =~ $GEM_HOME/bin ]] && export PATH=$GEM_HOME/bin:$PATH
 
+# Apple Command Line
+[[ -d /Developer/usr/bin && ! $PATH =~ /Developer/usr/bin ]] && export PATH=$PATH:/Developer/usr/bin
+
 # Kriogenx Bin
 export PATH=$PATH:/Users/`whoami`/Sites/kriogenx/scripts/bin
 
@@ -188,7 +191,7 @@ alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub; echo "Copied ssh key into clipboard"'
 alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
 
 # Vagrant
-if [[ ! `type vagrant` =~ 'not found' ]]; then
+if [[ ! $(type vagrant 2> /dev/null) =~ 'not found' ]]; then
   alias vup='vagrant destroy -f; vagrant up'
 fi
 
