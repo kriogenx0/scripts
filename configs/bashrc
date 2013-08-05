@@ -429,7 +429,7 @@ alias gsu="git submodule update --init; git submodule update"
 alias gclr='git add .; git add -u; git checkout -f'
 alias gconf='vi .git/config'
 alias ggconf='vi ~/.gitconfig'
-alias gfix='git gc; git repack; git fsck --full --progress; git remote prune origin'
+alias gfix='git gc; git remote prune origin; git repack; git fsck --full --progress'
 
 gsearch() {
   git grep $1 $(git rev-list --all)
