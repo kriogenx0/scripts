@@ -203,9 +203,9 @@ fi
 
 # Adium
 if [[ -e /Applications/Adium.app ]]; then
+  ADIUM_PREF=~/Library/Application\ Support/"Adium 2.0"/Users/Default
   #DROPSYNC_ADIUM=~/
-  #LIBRARY_ADIUM=~/Library/Application\ Support/"Adium 2.0"/Users/Default
-  if [[ -L ~/Library/Application\ Support/"Adium 2.0"/Users/Default/Accounts.plist ]]; then
+  if [[ -L $ADIUM_OREF/Accounts.plist ]]; then
     echo 'Adium - Already syncing'
   else
     if [[ -d ~/Library/Application\ Support/Adium\ 2.0/Users/Default/ ]]; then
