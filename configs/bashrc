@@ -441,25 +441,21 @@ tarc() {
   /usr/bin/tar cvf $a $1 ;
 }
 
-rsnc() {
-  a=${1%.*}'/'
-  rsync -avzr --stats --progress --exclude ".svn" "$a" "$2"
-}
+alias rnc='rsync -avzu --stats --progress --exclude ".svn" --exlclude ".git" --exclude ".DS_Store"'
 # copy sync
 cps() {
   a=${1%.*}'/'
-  rsync -avzur --stats --progress --exclude ".svn" "$a" "$2"
+  rnc "$a" "$2"
 }
-
-syn() {
+rncmirror() {
   a=${1%.*}'/'
-  rsync -avzur --stats --progress --exclude ".svn" --delete "$a" "$2"
+  rnc "$a" "$2" --delete
 }
 
 
-# remove svn and dw files
-cleanup() {
-  find . -name '.svn' -type d -print0 | xargs -0 -t rm -rf
+# Remove Garbage Files
+cleandir() {
+  #find . -name '.svn' -type d -print0 | xargs -0 -t rm -rf
   find . -name '_notes' -type d -print0 | xargs -0 -t rm -rf
   find . -name '_vti_cnf' -type d -print0 | xargs -0 -t rm -rf
   find . -name '.DS_Store' -print0 | xargs -0 -t rm -rf
