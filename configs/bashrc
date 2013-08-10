@@ -50,6 +50,10 @@ fi
 # Apple Command Line
 [[ -d /Developer/usr/bin && ! $PATH =~ /Developer/usr/bin ]] && export PATH=$PATH:/Developer/usr/bin
 
+# MySQL Native Install
+[[ -d /usr/local/mysql/support-files && ! $PATH =~ /usr/local/mysql/support-files ]] && export PATH=$PATH:/usr/local/mysql/support-files
+[[ -d /usr/local/mysql/bin && ! $PATH =~ /usr/local/mysql/bin ]] && export PATH=$PATH:/usr/local/mysql/bin
+
 # Kriogenx Bin
 export PATH=$PATH:/Users/`whoami`/Sites/kriogenx/scripts/bin
 
@@ -536,6 +540,9 @@ k() {
         ;;
       c|config)
         vi /etc/apache2/httpd.conf;
+        ;;
+      d|doctor|check)
+        httpd;
         ;;
       l|log)
         tail -f /private/var/log/apache2/error_log;
