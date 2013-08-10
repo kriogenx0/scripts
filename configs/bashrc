@@ -441,7 +441,7 @@ tarc() {
   /usr/bin/tar cvf $a $1 ;
 }
 
-alias rnc='rsync -avzu --stats --progress --exclude ".svn" --exlclude ".git" --exclude ".DS_Store"'
+alias rnc='rsync -avzu --stats --progress --exclude ".svn" --exclude ".git" --exclude ".DS_Store"'
 # copy sync
 cps() {
   a=${1%.*}'/'
@@ -459,6 +459,8 @@ cleandir() {
   find . -name '_notes' -type d -print0 | xargs -0 -t rm -rf
   find . -name '_vti_cnf' -type d -print0 | xargs -0 -t rm -rf
   find . -name '.DS_Store' -print0 | xargs -0 -t rm -rf
+  find . -name '.BridgeCache' -print0 | xargs -0 -t rm -rf
+  find . -name '.BridgeCacheT' -print0 | xargs -0 -t rm -rf
 }
 
 # go up directories looking for $1
