@@ -468,6 +468,12 @@ cleandir() {
   find . -name '.BridgeCacheT' -print0 | xargs -0 -t rm -rf
 }
 
+# GetSpace
+getspace() {
+  brew cleanup
+  sudo rm -rf /.Spotlight-V100
+}
+
 # go up directories looking for $1
 dirup() {
   dir=${1:-$(pwd)}
