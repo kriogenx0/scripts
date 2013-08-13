@@ -342,10 +342,18 @@ alias gbr='git branch -r' # remote branches
 alias gbs='git branch -a | grep' # search branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
 
+alias gbm="git branch --merged"
+alias gbnm="git branch --no-merged"
 alias gbdm='git branch --merged master | grep -v "\*" | xargs -n 1 git branch -d' # delete all merged branches
-alias gbnm="git branch --no-merge"
 alias gbrm="git branch -r --merged master | sed 's/^  origin\///g'" # Remote Branches already merged to master
 alias gbrnm="git branch -r --no-merged master | sed 's/^  origin\///g'" # show unmerged branches
+gbrdm(){
+  for i in `git branch -r --merged master | sed 's/^  origin\///g'`; do
+    if [[ $i != 'master' && $i != 'HEAD' && $i != '->' && $i != 'origin/master' ]]; then
+      gbdr $i;
+    fi
+  done
+}
 
 alias gbo='git checkout -b'
 gbu() {
