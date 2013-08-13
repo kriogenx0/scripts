@@ -334,15 +334,19 @@ gbdr() {
 gbda() {
   gbd $1; gbdr $1
 }
-alias gbdall='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d' # delete all merged branches
-alias gbnm="git branch -r --no-merged master | sed 's/^  origin\///g'" # show unmerged branches
 alias gbp='git prune -v'
 alias gbpr='git remote prune origin'
+
 alias gba='git branch -a' # all branches
 alias gbr='git branch -r' # remote branches
 alias gbs='git branch -a | grep' # search branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
-alias gbum="git branch --no-merge" # unmerged
+
+alias gbdm='git branch --merged master | grep -v "\*" | xargs -n 1 git branch -d' # delete all merged branches
+alias gbnm="git branch --no-merge"
+alias gbrm="git branch -r --merged master | sed 's/^  origin\///g'" # Remote Branches already merged to master
+alias gbrnm="git branch -r --no-merged master | sed 's/^  origin\///g'" # show unmerged branches
+
 alias gbo='git checkout -b'
 gbu() {
   gbo "$1"
