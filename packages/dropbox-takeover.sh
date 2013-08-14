@@ -151,7 +151,7 @@ if [[ -n $PS_V ]]; then
     fi
     ln -s "$DROPBOX_PS""$PS_F" "$PS_PREFS""$PS_F"
   done
-  #echo 'Photoshop - Success!'
+  echo 'Photoshop - Success!'
 fi
 
 # Sequel Pro
@@ -242,3 +242,26 @@ if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
 else
   echo 'Apache - Already syncing'
 fi
+
+# Safari
+safari_dir=~/Library/Safari/
+safari_dropbox=~/Dropbox/Office/settings/safari/
+if [[ -d "$safari_dir" && -d "$safari_dropbox" ]]; then
+  safari_preferences=(Bookmarks.plist Downloads.plist Extensions History.plist)
+  for safari_pref in "${safari_preferences[@]}"; do
+    safari_pref_file="$safari_dir""safari_pref"
+    safari_dropbox_pref_file="$safari_dropbox""safari_pref"
+    if [ -e "$safari_dir""$safari_pref" ] && [ ! -L "$safari_dir""$safari_pref" ]; then
+      if [ -e "$safari_dropbox""$safari_pref" ]; then
+        mv "$safari_dir""$safari_pref" "$safari_dir""$safari_pref"-old
+      else
+        mv "$safari_dir""$safari_pref" "$safari_pref""$safari_pref"
+      fi
+    else
+      rm -rf "$safari_dir""$safari_pref"
+    fi
+    ln -s "$safari_dropbox""$safari_pref" "$safari_dir""$safari_pref"
+  done
+  echo "Safari - Success!"
+fi
+
