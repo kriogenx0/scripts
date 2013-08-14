@@ -390,6 +390,7 @@ alias glol='git log --graph --decorate --pretty=oneline --abbrev-commit'
 alias glola='git log --graph --decorate --pretty=oneline --abbrev-commit --all'
 alias glodd='git log --pretty=format:"%h%x09%an%x09%ad%x09%s"'
 alias glodr='git log --pretty=format:"%h%x09%an%x09%ad%x09%s" --date=relative'
+alias gbl='glop master..`gbc`' # See a branch's commits
 alias gls='git ls-files'
 alias glgn='ls-files -o -i --exclude-standard' # Show files ignored by git:
 alias glc="git cherry -v master" #show changes in branch not merged
@@ -411,7 +412,7 @@ alias gr='git rebase'
 alias grc='git rebase --continue'
 alias grc='git rebase --skip'
 alias gra='git rebase --abort'
-alias gnc='glr; gpa'
+alias gnc='glr; gp'
 
 alias gst='git stash show'
 alias gss='git stash save'
@@ -484,6 +485,9 @@ cleandir() {
 getspace() {
   brew cleanup
   sudo rm -rf /.Spotlight-V100
+  [[ -e ~/Library/Caches/Adobe/"Bridge CS6"/Cache ]] && sudo rm -rf ~/Library/Caches/Adobe/"Bridge CS6"/Cache/*
+  [[ -e ~/Library/Caches/com.spotify.client/Storage ]] && sudo rm -rf ~/Library/Caches/com.spotify.client/Storage
+  [[ -e ~/Library/Caches/Google/Chrome ]] && sudo rm -rf ~/Library/Caches/Google/Chrome
 }
 
 # go up directories looking for $1
