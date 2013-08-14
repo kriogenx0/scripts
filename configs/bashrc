@@ -318,6 +318,10 @@ alias gca='git commit --amend'
 alias gcl="git clone"
 alias gco="git checkout"
 alias go="git checkout"
+# Checkout first branch that matches search
+gos() {
+  git checkout `gbs $1 | head -n1`
+}
 alias gom="git checkout master"
 alias gol="git checkout @\{-1\}" # checkout last branch
 gob() { # go back a branch
