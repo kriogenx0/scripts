@@ -456,6 +456,9 @@ alias gfix='git gc; git remote prune origin; git repack; git fsck --full --progr
 gsearch() {
   git grep $1 $(git rev-list --all)
 }
+gitpermanentfiledelete() {
+  git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch $1' --prune-empty --tag-name-filter cat -- --all
+}
 
 # tar compress
 tarc() {
