@@ -249,19 +249,26 @@ safari_dropbox=~/Dropbox/Office/settings/safari/
 if [[ -d "$safari_dir" && -d "$safari_dropbox" ]]; then
   safari_preferences=(Bookmarks.plist Downloads.plist Extensions History.plist)
   for safari_pref in "${safari_preferences[@]}"; do
-    safari_pref_file="$safari_dir""safari_pref"
-    safari_dropbox_pref_file="$safari_dropbox""safari_pref"
-    if [ -e "$safari_dir""$safari_pref" ] && [ ! -L "$safari_dir""$safari_pref" ]; then
-      if [ -e "$safari_dropbox""$safari_pref" ]; then
-        mv "$safari_dir""$safari_pref" "$safari_dir""$safari_pref"-old
+    safari_pref_file="$safari_dir""$safari_pref"
+    safari_dropbox_pref_file="$safari_dropbox""$safari_pref"
+
+    # Delete Link if exists
+    [[ -L "$safari_pref_file" ]] && rm -rf "$safari_pref_file"
+
+    if [ -e "$safari_pref_file" ];  then
+      if [ -e "$safari_dropbox_pref_file" ]; then
+        mv "$safari_pref_file" "$safari_dropbox_pref_file"-old
       else
-        mv "$safari_dir""$safari_pref" "$safari_pref""$safari_pref"
+        mv "$safari_pref_file" "$safari_dropbox_pref_file"
       fi
+      ln -s "$safari_dropbox_pref_file" "$safari_dir"
     else
-      rm -rf "$safari_dir""$safari_pref"
+      # If Safari Pref does not exist and dropbox does
+      if [ -e "$safari_dropbox_pref_file" ]; then
+        ln -s "$safari_dropbox_pref_file" "$safari_dir"
+      fi
     fi
-    ln -s "$safari_dropbox""$safari_pref" "$safari_dir""$safari_pref"
   done
-  echo "Safari - Success!"
+  echo "Safari - Ran"
 fi
 
