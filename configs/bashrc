@@ -206,7 +206,7 @@ alias rcuc='cd `rr`; cucumber features'
 alias rversions="gem list -ra rails | grep 'rails ('"
 alias rgems='rvm list gemsets; cat .rvmrc'
 alias rgemsdir='cd `rvm gemdir`/gems'
-alias rvdgems'rvm gemset empty'
+alias rvdgems='rvm gemset empty'
 alias rgem='vi `rr`/Gemfile'
 alias rgemsuninstall='gem list | cut -d" " -f1 | xargs gem uninstall -aIx'
 alias rgembuild='gem pristine --all --no-extensions'
@@ -308,7 +308,7 @@ pgenv() {
 }
 
 # git
-alias ga='git add .; git add -u .; git status'
+alias ga='git add -Av; git status'
 alias gai='git add -i; git status'
 alias gap='git add -p'
 
