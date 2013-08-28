@@ -699,8 +699,8 @@ k() {
   }
 
   k_update() {
-    echo "\033[33mKriogenx\033[0m - Updating..."
-    echo -e "$(kds; git pull --rebase -q)"
+    echo -e "\033[33mKriogenx\033[0m - Updating..."
+    echo -n "$(kds; git pull --rebase -q)"
     # RVM
     if [[ `type rvm` =~ 'function' ]]; then
       rvm_latest=`curl -s https://raw.github.com/wayneeseguin/rvm/stable/VERSION`
@@ -709,25 +709,25 @@ k() {
       rvm_current=${rvm_current//\ */}
       rvm_message="\033[33mRVM\033[0m - Latest: $rvm_latest - Current: $rvm_current - "
       if [[ -z $rvm_latest ]]; then
-        echo "$rvm_message""Could not get version"
+        echo -e "$rvm_message""Could not get version"
       elif [[ $rvm_latest != $rvm_current ]]; then
-        echo "$rvm_message""Upgrading..."
+        echo -e "$rvm_message""Upgrading..."
         rvm get latest
       else
-        echo "$rvm_message""Already latest"
+        echo -e "$rvm_message""Already latest"
       fi
     fi
     # Brew
     if [[ ! `type brew` =~ 'not found' ]]; then
-      echo "\033[33mBrew\033[0m - Updating..."
+      echo -e "\033[33mBrew\033[0m - Updating..."
       brew update
       brew upgrade
       brew cleanup
     fi
     # OH MY ZSH
     if [[ -d ~/.oh-my-zsh ]]; then
-      echo "\033[33mOH-MY-ZSH\033[0m - Updating..."
-      echo $(cd ~/.oh-my-zsh; git pull --rebase -q; git submodule foreach git pull origin master)
+      echo -e "\033[33mOH-MY-ZSH\033[0m - Updating..."
+      echo -n $(cd ~/.oh-my-zsh; git pull --rebase -q; git submodule foreach git pull origin master)
     fi
   }
 
