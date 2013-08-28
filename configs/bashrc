@@ -699,15 +699,15 @@ k() {
   }
 
   k_update() {
-    echo "Updating Kriogenx Scripts..."
-    echo "$(kds; git pull --rebase -q)"
+    echo "\033[33mKriogenx\033[0m - Updating..."
+    echo -e "$(kds; git pull --rebase -q)"
     # RVM
     if [[ `type rvm` =~ 'function' ]]; then
       rvm_latest=`curl -s https://raw.github.com/wayneeseguin/rvm/stable/VERSION`
       rvm_current=`rvm --version | tr -d '\n'`
       rvm_current=${rvm_current//rvm\ /}
       rvm_current=${rvm_current//\ */}
-      rvm_message="RVM - Latest: $rvm_latest - Current: $rvm_current - "
+      rvm_message="\033[33mRVM\033[0m - Latest: $rvm_latest - Current: $rvm_current - "
       if [[ -z $rvm_latest ]]; then
         echo "$rvm_message""Could not get version"
       elif [[ $rvm_latest != $rvm_current ]]; then
@@ -719,14 +719,14 @@ k() {
     fi
     # Brew
     if [[ ! `type brew` =~ 'not found' ]]; then
-      echo "Upgrading Brew..."
+      echo "\033[33mBrew\033[0m - Updating..."
       brew update
       brew upgrade
       brew cleanup
     fi
     # OH MY ZSH
     if [[ -d ~/.oh-my-zsh ]]; then
-      echo "Upgrading OH-MY-ZSH..."
+      echo "\033[33mOH-MY-ZSH\033[0m - Updating..."
       echo $(cd ~/.oh-my-zsh; git pull --rebase -q; git submodule foreach git pull origin master)
     fi
   }
