@@ -21,8 +21,12 @@ export PATH=${PATH//:\/usr\/local\/bin/}
 [[ ! $PATH =~ '/usr/local/sbin' ]] && export PATH=/usr/local/sbin:$PATH
 
 # Homebrew GCC
-if [[ ! `type CC` =~ 'not found' ]] && [[  -e /usr/local/bin/gcc-4.2 ]]; then
-  export CC=/usr/local/bin/gcc-4.2
+if [[ ! `type CC` =~ 'not found' ]]; then
+  if [[  -e /usr/local/bin/gcc-4.2 ]]; then
+    export CC=/usr/local/bin/gcc-4.2
+  elif [[ -e /usr/bin/gcc-4.2 ]]; then
+    export CC=/usr/bin/gcc-4.2
+  fi
 fi
 export CPPFLAGS=-I/opt/X11/include
 
