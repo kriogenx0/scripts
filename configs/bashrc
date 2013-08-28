@@ -722,6 +722,7 @@ k() {
       echo "Upgrading Brew..."
       brew update
       brew upgrade
+      brew cleanup
     fi
     # OH MY ZSH
     if [[ -d ~/.oh-my-zsh ]]; then
