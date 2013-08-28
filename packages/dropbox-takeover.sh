@@ -98,14 +98,6 @@ else
   echo 'Filezilla - Not installed'
 fi
 
-# Filezilla Application
-#if [ ! -L /Applications/FileZilla.app ]; then
-#  if [ -d /Applications/FileZilla.app ]; then
-#    sudo mv /Applications/FileZilla{,-old}.app
-#  fi
-#  ln -s ~/Dropbox/Office/Applications/FileZilla.app /Applications/
-#fi
-
 # Photoshop Settings
 #if [ ! -L ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ]; then
 #  if [[ -d /Applications/"Adobe Photoshop CS6" ]]; then
@@ -203,30 +195,28 @@ fi
 
 # Adium
 if [[ -e /Applications/Adium.app ]]; then
-  ADIUM_PREF=~/Library/Application\ Support/"Adium 2.0"/Users/Default
-  #DROPSYNC_ADIUM=~/
-  if [[ -L $ADIUM_OREF/Accounts.plist ]]; then
+  adium_dir=~/Library/Application\ Support/"Adium 2.0"/Users/Default
+  adium_dropbox=~/Dropbox/Office/settings/adium/Default
+
+  if [[ -L "$adium_dir"/Accounts.plist ]]; then
     echo 'Adium - Already syncing'
   else
-    if [[ -d ~/Library/Application\ Support/Adium\ 2.0/Users/Default/ ]]; then
-      sudo mv ~/Library/Application\ Support/Adium\ 2.0/Users/Default{,-old}
+    if [[ -d "$adium_dir" ]]; then
+      sudo mv "$adium_dir" "$adium_dropbox"-old
+      mkdir -p "$adium_dir"
     fi
-    mkdir -p ~/Library/Application\ Support/Adium\ 2.0/Users/Default
-    ADIUM_FILES=(~/Dropbox/Office/settings/adium/Default/*)
-    #ADIUM_FILES=(~/Library/Application\ Support/Adium\ 2.0/Users/Default/*)
+
+    ADIUM_FILES=("$adium_dir"/*)
+    #ADIUM_FILES=(Accounts.plist Confirmations.plist "Contact Alerts.plist" "Contact List Display.plist" "Detached Groups.plist" "Display Format.plist" "Events Preset.plist" General.plist libpurple/accounts.xml libpurple/certificates libpurple/logs libpurple/prefs.xml libpurple/xmpp-caps.xml Logging.plist Logs "Message Context Display.plist" otr.fingerprints OTR.plist otr.private_key "Saved Status.plist" Sorting.plist "Status Preferences.plist" "URL Handling Group.plist")
+
     for f in "${ADIUM_FILES[@]}"; do
       if [[ ! "$f" == *ByObjectPrefs* ]]; then
         #echo $f' synced'
-        #ln -s $f ~/Dropbox/Office/settings/adium/Default/
-        ln -s "$f" ~/Library/Application\ Support/Adium\ 2.0/Users/Default/
+        ln -s "$f" "$adium_dir"/
       fi
     done
     echo 'Adium - Success!'
   fi
-  #if [[ ! -L ~/Library/Application\ Support/"Adium 2.0"/Users/Default ]]; then
-  #  mv ~/Library/Application\ Supoprt/"Adium 2.0"/Users/Default{,-old}
-  #  ln -s ~/Dropbox/Office/settings/adium/Default ~/Library/Application\ Support/"Adium 2.0"/Users/Default
-  #fi
 fi
 
 # Apache Takeover
@@ -247,28 +237,35 @@ fi
 safari_dir=~/Library/Safari/
 safari_dropbox=~/Dropbox/Office/settings/safari/
 if [[ -d "$safari_dir" && -d "$safari_dropbox" ]]; then
-  safari_preferences=(Bookmarks.plist Downloads.plist Extensions History.plist)
-  for safari_pref in "${safari_preferences[@]}"; do
-    safari_pref_file="$safari_dir""$safari_pref"
-    safari_dropbox_pref_file="$safari_dropbox""$safari_pref"
 
-    # Delete Link if exists
-    [[ -L "$safari_pref_file" ]] && rm -rf "$safari_pref_file"
+  [[ -L "$safari_dir" ]] && sudo rm -f "$safari_dir"
 
-    if [ -e "$safari_pref_file" ];  then
-      if [ -e "$safari_dropbox_pref_file" ]; then
-        mv "$safari_pref_file" "$safari_dropbox_pref_file"-old
-      else
-        mv "$safari_pref_file" "$safari_dropbox_pref_file"
-      fi
-      ln -s "$safari_dropbox_pref_file" "$safari_dir"
-    else
-      # If Safari Pref does not exist and dropbox does
-      if [ -e "$safari_dropbox_pref_file" ]; then
-        ln -s "$safari_dropbox_pref_file" "$safari_dir"
-      fi
-    fi
-  done
+  [[ -d "$safari_dir" ]] && sudo mv "$safari_dir" "$safari_dropbox"-old
+
+  ln -s "$safari_dropbox" ~/Library/
+
+#  safari_preferences=(Bookmarks.plist Downloads.plist Extensions History.plist)
+#  for safari_pref in "${safari_preferences[@]}"; do
+#    safari_pref_file="$safari_dir""$safari_pref"
+#    safari_dropbox_pref_file="$safari_dropbox""$safari_pref"
+#
+#    # Delete Link if exists
+#    [[ -L "$safari_pref_file" ]] && rm -rf "$safari_pref_file"
+#
+#    if [ -e "$safari_pref_file" ];  then
+#      if [ -e "$safari_dropbox_pref_file" ]; then
+#        mv "$safari_pref_file" "$safari_dropbox_pref_file"-old
+#      else
+#        mv "$safari_pref_file" "$safari_dropbox_pref_file"
+#      fi
+#      ln -s "$safari_dropbox_pref_file" "$safari_dir"
+#    else
+#      # If Safari Pref does not exist and dropbox does
+#      if [ -e "$safari_dropbox_pref_file" ]; then
+#        ln -s "$safari_dropbox_pref_file" "$safari_dir"
+#      fi
+#    fi
+#  done
   echo "Safari - Ran"
 fi
 
