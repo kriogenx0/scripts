@@ -139,6 +139,7 @@ fi
 
 # Bash Defaults
 alias lns="ln -s"
+alias bashcommands="bind -p | sed '/self.insert/d;/^#/d;/do-lowercase/d'"
 
 # builtin apps
 alias vi='vim'
