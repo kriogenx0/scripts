@@ -377,6 +377,7 @@ gbt() {
 alias gtg='git tag'
 alias gts='git show'
 alias gtp='git push --tags'
+alias gtd='git tag -d'
 gtdr() { # DELETE REMOTE TAG
   git push origin :refs/tags/$1
 }
