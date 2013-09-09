@@ -78,8 +78,11 @@ elif [[ $OSX_VERSION =~ "10.6*" ]]; then
   defaults write com.apple.dashboard mcx-disabled -boolean YES
 fi
 
+# Downloads
 mkdir -p ~/Downloads/ScreenShots
 defaults write com.apple.screencapture location ~/Downloads/ScreenShots
+
+ln -s ~/Library/Containers/com.apple.mail/Data/Library/Mail\ Downloads ~/Downloads/
 
 #####################
 # ALL OS'S
