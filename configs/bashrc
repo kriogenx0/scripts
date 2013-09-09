@@ -325,7 +325,7 @@ alias gco="git checkout"
 alias go="git checkout"
 # Checkout first branch that matches search
 gos() {
-  git checkout `gbs $1 | head -n1`
+  git checkout `git branch -a | grep $1 | sed 's/remotes\/origin\///g' | head -n1`
 }
 alias gom="git checkout master"
 alias gol="git checkout @\{-1\}" # checkout last branch
@@ -348,6 +348,7 @@ alias gbpr='git remote prune origin'
 
 alias gba='git branch -a' # all branches
 alias gbr='git branch -r' # remote branches
+# Search Branches
 alias gbs='git branch -a | grep' # search branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
 
