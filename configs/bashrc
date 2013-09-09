@@ -498,7 +498,7 @@ cleandir() {
 # GetSpace
 getspace() {
   brew cleanup
-  sudo rm -rf /.Spotlight-V100
+  #sudo rm -rf /.Spotlight-V100
   [[ -e ~/Library/Caches/Adobe/"Bridge CS6"/Cache ]] && sudo rm -rf ~/Library/Caches/Adobe/"Bridge CS6"/Cache/*
   [[ -e ~/Library/Caches/com.spotify.client/Storage ]] && sudo rm -rf ~/Library/Caches/com.spotify.client/Storage
   [[ -e ~/Library/Caches/Google/Chrome ]] && sudo rm -rf ~/Library/Caches/Google/Chrome
