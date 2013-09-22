@@ -80,6 +80,7 @@ if [ -n "$ZSH_VERSION" ]; then
     #source ~/.rvm/scripts/rvm
 
     ZSH=$HOME/.oh-my-zsh # oh-my-zsh config
+    ZSH_CUSTOM=~/Sites/kriogenx/scripts/configs
     ZSH_THEME="kriogenx" # ~/.oh-my-zsh/themes/
 
     plugins=(git rvm fasd rake rails) # ~/.oh-my-zsh/custom/plugins/
