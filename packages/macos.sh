@@ -82,7 +82,8 @@ fi
 mkdir -p ~/Downloads/ScreenShots
 defaults write com.apple.screencapture location ~/Downloads/ScreenShots
 
-ln -s ~/Library/Containers/com.apple.mail/Data/Library/Mail\ Downloads ~/Downloads/
+mail_path=~/Library/Containers/com.apple.mail/Data/Library/"Mail Downloads"
+[[ -e "$mail_path" && ! -e ~/Downloads/"Mail Downloads" ]] && ln -s "$mail_path" ~/Downloads/
 
 #####################
 # ALL OS'S
