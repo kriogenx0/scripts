@@ -17,7 +17,11 @@ Thumbs.db
 *.tar
 *.zip
 
+# Merge Conflicts
+**.orig
+
 # VIM
+*.un
 *.un~
 *.swp
 
@@ -33,6 +37,17 @@ _vti_cnf
 _vti_pvt
 _vti_script
 _vti_txt
+
+# TextMate
+*.tmproj
+tmtags
+
+# Ideas
+.idea
+
+# PivotalTracker
+.pivotalrc
+.pivotal_cache
 
 # Graphics
 *.psd
@@ -50,6 +65,9 @@ _vti_txt
 *.o
 *.so
 
+# Vagrant
+.vagrant
+
 # Logs
 *.log
 
@@ -62,14 +80,27 @@ _vti_txt
 
 # Rails
 /.bundle
+/vendor/bundle
 # Ignore the default SQLite database.
 # /db/*.sqlite3
 # /db/*.sqlite3-journal
-# # Ignore all logfiles and tempfiles.
-# /log/*.log
-# /tmp
 # Common Libraries & Gems
 .sass-cache
+*.rbc
+*.sassc
+capybara-*.html
+.rspec
+#.rvmrc
+# # Ignore all logfiles and tempfiles.
+/log/*
+/tmp/*
+/spec/tmp/*
+# Randoms
+/public/system/*
+/coverage/
+rerun.txt
+pickle-email-*.html
+#config/initializers/secret_token.rb
 
 #######################
 # Explicit Ignores
