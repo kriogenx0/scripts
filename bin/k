@@ -2,11 +2,13 @@
 
 k() {
 
-  help() {
+  A_SITES=(~/Sites/*)
+
+  help(){
     echo "######## Kriogenx ########"
     echo ""
     echo "Apps:"
-    k_apache h
+    apache h
     echo ""
     echo ""
     echo "\e[0;36mn - nginx\e[0m"
@@ -30,9 +32,7 @@ k() {
     echo "  start, quit, restart, log, config"
   }
 
-  A_SITES=(~/Sites/*)
-
-  k_apache(){
+  apache(){
     case "$2" in
       s|start)
         sudo apachectl restart;
@@ -50,3 +50,183 @@ k() {
         if [[ -f ~/Dropbox/Office/settings/apache/sites.conf ]]; then
           sudo vi ~/Dropbox/Office/settings/apache/sites.conf;
         else
+          sudo vi /etc/apache2/extra/httpd-vhosts.conf;
+        fi
+        sudo vi /etc/hosts;
+        sudo apachectl restart;
+        ;;
+      c|config)
+        vi /etc/apache2/httpd.conf;
+        ;;
+      d|doctor|check)
+        httpd;
+        ;;
+      l|log)
+        tail -f /private/var/log/apache2/error_log;
+        ;;
+      t|status)
+        APACHE_STATUS=`ps ax | grep /usr/sbin/httpd | grep -v grep | cut -c1-5 | paste -s -`;
+        echo -n "Apache is "
+        if [[ -n $APACHE_STATUS ]]; then
+          echo "running"
+          echo $APACHE_STATUS
+        else
+          echo "not running"
+        fi
+        ;;
+      i|installed)
+        [[ ! `type apachectl` =~ 'not found' ]] && echo "true" || echo "false"
+        ;;
+      h|help)
+        echo "\e[0;36ma - apache\e[0m"
+        echo "  s | start          Start Apache"
+        echo "  q | quit           Stop Apache"
+        echo "  r | restart        Restart Apache sites"
+        echo "  t | status         Apache running status"
+        echo "  sites              Edit Sites file, then hosts file"
+        echo "  c | config         Edit configuration file"
+        echo "  l | log            Apache log"
+        ;;
+    esac
+  }
+
+  mysql(){
+    case "$2" in
+      s|start)
+        mysql.server start;
+        ;;
+      r|restart)
+        mysql.server restart;
+        ;;
+      q|quit|stop)
+        mysql.server stop;
+        ;;
+      i|installed)
+        [[ ! `type mysql.server` =~ 'not found' ]] && echo "true" || echo "false"
+        ;;
+      h|help)
+        echo "\e[0;36mm - mysql\e[0m"
+        echo "  s | start          Start MySQL"
+        echo "  r | restart        Restart MySQL"
+        echo "  q | quit           Stop MySQL"
+        ;;
+    esac
+  }
+
+  postgres(){
+    case "$2" in
+      s|start)
+        pg_ctl start;
+        ;;
+      q|quit|stop)
+        pg_ctl stop
+        ;;
+      t|status)
+        echo "PGDATA:    $PGDATA"
+        ;;
+      i|installed)
+        [[ ! `type pg_ctl` =~ 'not found' ]] && echo "true" || echo "false"
+        ;;
+    esac
+  }
+
+  nginx(){
+    case "$2" in
+      s|start)
+        result=`sudo nginx`;
+        if [[ -z $result ]]; then
+          echo 'NGINX started'
+        else
+          echo 'NGINX failed to start'
+        fi
+        ;;
+      q|quit|stop)
+        result=`sudo nginx -s quit`;
+        if [[ -z $result ]]; then
+          echo 'NGINX quit'
+        else
+          echo 'NGINX failed to quit'
+        fi
+        ;;
+      c|conf|config)
+        vi /usr/local/etc/nginx/nginx.conf
+        ;;
+      a|active|running)
+        ps -ax | grep nginx
+        ;;
+      i|installed)
+        [[ ! `type nginx` =~ 'not found' ]] && echo "true" || echo "false"
+        ;;
+    esac
+  }
+
+  status() {
+    if [[ `k apache i` == "true" ]]; then
+     echo "Apache..............."`k a t`
+    fi
+    if [[ `k nginx i` == "true" ]]; then
+     echo "Nginx................"`k n t`
+    fi
+    if [[ `k mysql i` == "true" ]]; then
+     echo "Mysql................"`k m t`
+    fi
+    if [[ `k possgres i` == "true" ]]; then
+     echo "Postgres............."`k p t`
+    fi
+  }
+
+  statuses() {
+    echo "######## Kriogenx ########"
+    echo ""
+    apache s
+    nginx s
+    mysql s
+    postgres s
+    echo ""
+    echo "For help, type 'k h'"
+  }
+
+  update() {
+    echo -e "\033[33mKriogenx\033[0m - Updating..."
+    echo -n "$(kds; git pull --rebase -q)"
+    # RVM
+    if [[ `type rvm` =~ 'function' ]]; then
+      rvm_latest=`curl -s https://raw.github.com/wayneeseguin/rvm/stable/VERSION`
+      rvm_current=`rvm --version | tr -d '\n'`
+      rvm_current=${rvm_current//rvm\ /}
+      rvm_current=${rvm_current//\ */}
+      rvm_message="\033[33mRVM\033[0m - Latest: $rvm_latest - Current: $rvm_current - "
+      if [[ -z $rvm_latest ]]; then
+        echo -e "$rvm_message""Could not get version"
+      elif [[ $rvm_latest != $rvm_current ]]; then
+        echo -e "$rvm_message""Upgrading..."
+        rvm get latest
+      else
+        echo -e "$rvm_message""Already latest"
+      fi
+    fi
+    # Brew
+    if [[ ! `type brew` =~ 'not found' ]]; then
+      echo -e "\033[33mBrew\033[0m - Updating..."
+      brew update
+      brew upgrade
+      brew cleanup
+    fi
+    # OH MY ZSH
+    if [[ -d ~/.oh-my-zsh ]]; then
+      echo -e "\033[33mOH-MY-ZSH\033[0m - Updating..."
+      echo -n $(cd ~/.oh-my-zsh; git pull --rebase -q; git submodule foreach git pull origin master)
+    fi
+  }
+
+  # Top Wrapper
+  case "$1" in
+    a|apache) apache $@ ;;
+    m|my|mysql) mysql $@ ;;
+    n|ng|nginx) nginx $@ ;;
+    p|pg|postgres) postgres $@ ;;
+    s|status) status $@ ;;
+    u|up|update|upgrade) update $@ ;;
+    *) help ;;
+  esac
+}
