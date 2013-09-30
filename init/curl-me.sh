@@ -10,6 +10,9 @@ fi
 if [[ ! -d ~/Sites/kriogenx ]]; then
   mkdir ~/Sites/kriogenx
 fi
+if [[ `type git` =~ 'not found' ]]; then
+  echo "Git is needed to get started"
+fi
 if [[ ! -d ~/Sites/kriogenx/scripts ]]; then
   git clone git://github.com/kriogenx0/scripts.git ~/Sites/kriogenx/scripts
 fi

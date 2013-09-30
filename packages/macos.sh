@@ -1,3 +1,4 @@
+#!/usr/bin/env sh
 OSX_VERSION=$(sw_vers | grep ProductVersion | awk -F: '{print $2}')
 
 # MOUNTAIN LION
@@ -78,10 +79,11 @@ elif [[ $OSX_VERSION =~ "10.6*" ]]; then
   defaults write com.apple.dashboard mcx-disabled -boolean YES
 fi
 
-# Downloads
+# ScreenShots
 mkdir -p ~/Downloads/ScreenShots
 defaults write com.apple.screencapture location ~/Downloads/ScreenShots
 
+# Mail Downloads
 mail_path=~/Library/Containers/com.apple.mail/Data/Library/"Mail Downloads"
 [[ -e "$mail_path" && ! -e ~/Downloads/"Mail Downloads" ]] && ln -s "$mail_path" ~/Downloads/
 
@@ -109,6 +111,11 @@ defaults write com.apple.Dock autohide-delay -float 0
 # Disable "Are you sure you want to open this"
 defaults write com.apple.LaunchServices LSQuarantine -bool NO
 
+# Ignore accidental trackpad input
+defaults write -g com.apple.mouse.ignoreTypingFilter -bool true
+
+# Disable Quarantine
+defaults write /Library/Preferences/com.apple.LaunchServices LSQuarantine -bool false
 
 # Safari Bookmarks
 defaults write com.apple.Safari ProxiesInBookmarksBar '("Reading List")'

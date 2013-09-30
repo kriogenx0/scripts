@@ -18,16 +18,7 @@ if [[ ! -e /usr/local/bin/gcc-4.2 ]]; then
   brew install apple-gcc42
 fi
 
-# GCC FIX
-if [[ ! -e /usr/bin/g++ && -e /usr/bin/llvm-g++-4.2 ]]; then
-  ln -s /usr/bin/llvm-g++-4.2 /usr/bin/g++
-fi
-
-if [[ ! -e /usr/bin/gcc && -e /usr/bin/llvm-gcc-4.2 ]]; then
-  ln -s /usr/bin/llvm-gcc-4.2 /usr/bin/gcc
-fi
-
-# git
+# Git
 if [[ `type git` =~ "not found" ]]; then
   brew install git
   # OLD APPLE GITS
@@ -61,11 +52,6 @@ if [[ ! `type tig` =~ "not found" ]]; then
 else
   brew upgrade tig
 fi
-
-########
-# VENDOR INSTALLS
-
-mkdir -p ~/Sites/webconfig
 
 # Xcode Select
 if [[ -d "/Applications/Xcode.app/Contents" ]]; then

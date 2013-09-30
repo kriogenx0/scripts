@@ -1,0 +1,52 @@
+#!/usr/bin/env sh
+
+k() {
+
+  help() {
+    echo "######## Kriogenx ########"
+    echo ""
+    echo "Apps:"
+    k_apache h
+    echo ""
+    echo ""
+    echo "\e[0;36mn - nginx\e[0m"
+    echo "  s | start          Start"
+    echo "  q | quit           Stop"
+    echo "  c | config         Edit Config file"
+    echo ""
+    echo "\e[0;36mp - postgres\e[0m"
+    echo "  s | start          Start"
+    echo "  q | stop | quit    Stop"
+    echo ""
+    echo "Usage: k [appname] [command]"
+    echo "  Example: k apache start"
+    echo "  Example: k a s"
+    echo ""
+    echo "Apps:"
+    echo "  apache, mysql, nginx, postgres, update"
+    echo ""
+    echo "Commands:"
+    echo "  Commands generally include:"
+    echo "  start, quit, restart, log, config"
+  }
+
+  A_SITES=(~/Sites/*)
+
+  k_apache(){
+    case "$2" in
+      s|start)
+        sudo apachectl restart;
+        echo "\e[0;32m Apache Started";
+        ;;
+      r|restart)
+        sudo apachectl restart;
+        echo "\e[0;32m Apache Restarted";
+        ;;
+      q|quit|stop)
+        sudo apachectl stop;
+        echo "\e[0;32m Apache Stopped";
+        ;;
+      sites)
+        if [[ -f ~/Dropbox/Office/settings/apache/sites.conf ]]; then
+          sudo vi ~/Dropbox/Office/settings/apache/sites.conf;
+        else
