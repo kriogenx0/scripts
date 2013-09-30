@@ -90,6 +90,10 @@ mail_path=~/Library/Containers/com.apple.mail/Data/Library/"Mail Downloads"
 #####################
 # ALL OS'S
 
+# Keyboard Repeat
+defaults write NSGlobalDomain InitialKeyRepeat -int 30
+defaults write NSGlobalDomain KeyRepeat -int 1
+
 # Disable All Animations
 defaults write com.apple.finder DisableAllAnimations -bool true
 
@@ -108,14 +112,11 @@ defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 # DOCK MOUSE OVER DELAY
 defaults write com.apple.Dock autohide-delay -float 0
 
-# Disable "Are you sure you want to open this"
+# Disable Quarantine "Are you sure you want to open this"
 defaults write com.apple.LaunchServices LSQuarantine -bool NO
 
 # Ignore accidental trackpad input
-defaults write -g com.apple.mouse.ignoreTypingFilter -bool true
-
-# Disable Quarantine
-defaults write /Library/Preferences/com.apple.LaunchServices LSQuarantine -bool false
+defaults write -g com.apple.mouse.ignoreTypingFilter -bool false
 
 # Safari Bookmarks
 defaults write com.apple.Safari ProxiesInBookmarksBar '("Reading List")'
