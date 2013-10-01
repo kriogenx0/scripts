@@ -3,26 +3,58 @@
 
 tput sgr0
 if [[ -n $2 ]]; then
-  color=''
-  case "$2" in
-    k|black)
-      color="\033[30m" ;;
-    r|red)
-      color="\033[31m" ;;
-    g|green)
-      color="\033[32m" ;;
-    y|yellow)
-      color="\033[33m" ;;
-    b|blue)
-      color="\033[34m" ;;
-    m|magenta)
-      color="\033[35m" ;;
-    c|cyan)
-      color="\033[36m" ;;
-    w|white)
-      color="\033[37m" ;;
-  esac
-  echo -e "$color""${1}""\033[0;32m"
+  color='0'
+  message=$1
+  shift
+  for a in "$@"; do
+    #echo $a
+    case "$a" in
+      k|black)
+        color=30 ;;
+      r|red)
+        color=31 ;;
+      g|green)
+        color=32 ;;
+      y|yellow)
+        color=33 ;;
+      b|blue)
+        color=34 ;;
+      m|magenta)
+        color=35 ;;
+      c|cyan)
+        color=36 ;;
+      w|white)
+        color=37 ;;
+      k-bg|black-background)
+        color=40 ;;
+      r-bg|red-background)
+        color=41 ;;
+      g-bg|green-background)
+        color=42 ;;
+      y-bg|yellow-background)
+        color=43 ;;
+      b-bg|blue-background)
+        color=44 ;;
+      m-bg|magenta-background)
+        color=45 ;;
+      c-bg|cyan-background)
+        color=46 ;;
+      w-bg|white-background)
+        color=47 ;;
+      o|bold)
+        bold=1 ;;
+      u|underline)
+        underline=1 ;;
+      i|invert|reverse)
+        invert=1 ;;
+    esac
+  done
+  str="\033[""$color"
+  [[ -n $bold ]] && str+=";1"
+  [[ -n $underline ]] && str+=$str";4"
+  [[ -n $invert ]] && str+=$str";7"
+  str+="m"
+  echo -e "$str""$message"
 else
   echo $1
 fi
