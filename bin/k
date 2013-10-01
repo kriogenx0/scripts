@@ -184,7 +184,7 @@ nginx(){
       [[ -n `which nginx` ]] && echo "true" || echo "false"
       ;;
     t|status)
-      [[ -n `ps -ax | grep nginx` ]] && echo "Running" || echo "Not running"
+      [[ -n `ps aux | grep nginx | grep -v grep` ]] && echo "Running" || echo "Not running"
       ;;
     *)
       echo "\e[0;36mn - nginx\e[0m"
