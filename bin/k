@@ -5,20 +5,34 @@ k() {
   A_SITES=(~/Sites/*)
 
   help(){
-    echo "######## Kriogenx ########"
+    msg "Kriogenx" y
+    echo 'useage: k [appname] <command>'
+    echo ''
+    echo 'Commands:'
+    echo '  update'
+    echo ''
+    echo 'Apps:'
+    echo '  apache'
+    echo '  mysql'
+    echo '  nginx'
+    echo '  postgres'
     echo ""
-    echo "Apps:"
-    apache h
+    echo 'App Commands generally include:'
+    echo '  s, start'
+    echo '  r, restart'
+    echo '  q, stop'
+    echo '  h, help'
+    echo '  c, config'
+    echo '  t, status'
+    echo ''
+    statuses
+  }
+
+  status(){
+    apache t
     echo ""
+    nginx t
     echo ""
-    echo "\e[0;36mn - nginx\e[0m"
-    echo "  s | start          Start"
-    echo "  q | quit           Stop"
-    echo "  c | config         Edit Config file"
-    echo ""
-    echo "\e[0;36mp - postgres\e[0m"
-    echo "  s | start          Start"
-    echo "  q | stop | quit    Stop"
     echo ""
     echo "Usage: k [appname] [command]"
     echo "  Example: k apache start"
@@ -127,6 +141,11 @@ k() {
       i|installed)
         [[ ! `type pg_ctl` =~ 'not found' ]] && echo "true" || echo "false"
         ;;
+      h|help)
+        echo "\e[0;36mp - postgres\e[0m"
+        echo "  s | start          Start"
+        echo "  q | stop | quit    Stop"
+        ;;
     esac
   }
 
@@ -156,6 +175,12 @@ k() {
         ;;
       i|installed)
         [[ ! `type nginx` =~ 'not found' ]] && echo "true" || echo "false"
+        ;;
+      h|help)
+        echo "\e[0;36mn - nginx\e[0m"
+        echo "  s | start          Start"
+        echo "  q | quit           Stop"
+        echo "  c | config         Edit Config file"
         ;;
     esac
   }
@@ -221,12 +246,17 @@ k() {
 
   # Top Wrapper
   case "$1" in
+    # Apps
     a|apache) apache $@ ;;
     m|my|mysql) mysql $@ ;;
     n|ng|nginx) nginx $@ ;;
     p|pg|postgres) postgres $@ ;;
+    # Commands
+    msg) msg $@ ;;
     s|status) status $@ ;;
     u|up|update|upgrade) update $@ ;;
     *) help ;;
   esac
 }
+
+k

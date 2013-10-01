@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+
+
+msg() {
+  tput sgr0
+  if [[ -n $2 ]]; then
+    color=''
+    case "$2" in
+      y|yellow)
+        color="\033[32m" ;;
+      r|red)
+        color="\e[0;32m" ;;
+      g|green)
+        color="\e[0;32m" ;;
+      b|blue)
+        color="\e[0;32m" ;;
+      c|cyan)
+        color="\e[0;32m" ;;
+      m|magenta)
+        color="\e[0;32m" ;;
+      w|white)
+        color="\e[0;32m" ;;
+    esac
+    echo -e $color${1}"\033[0;32m"
+  else
+    echo $1
+  fi
+}
