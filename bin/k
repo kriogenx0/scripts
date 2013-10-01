@@ -49,15 +49,15 @@ apache(){
   case "$2" in
     s|start)
       sudo apachectl restart;
-      echo "\e[0;32m Apache Started";
+      msg "Apache Started" g
       ;;
     r|restart)
       sudo apachectl restart;
-      echo "\e[0;32m Apache Restarted";
+      msg "Apache Restarted" g
       ;;
     q|quit|stop)
       sudo apachectl stop;
-      echo "\e[0;32m Apache Stopped";
+      msg "Apache Stopped" y
       ;;
     sites)
       if [[ -f ~/Dropbox/Office/settings/apache/sites.conf ]]; then
@@ -81,17 +81,17 @@ apache(){
       APACHE_STATUS=`ps ax | grep /usr/sbin/httpd | grep -v grep | cut -c1-5 | paste -s -`;
       echo -n "Apache is "
       if [[ -n $APACHE_STATUS ]]; then
-        echo "running"
+        msg "running" g
         echo $APACHE_STATUS
       else
-        echo "not running"
+        msg "not running" r
       fi
       ;;
     i|installed)
       [[ -n `which apachectl` ]] && echo "true" || echo "false"
       ;;
     *)
-      echo "\e[0;36ma - apache\e[0m"
+      msg "a - apache" w o
       echo "  s | start          Start Apache"
       echo "  q | quit           Stop Apache"
       echo "  r | restart        Restart Apache sites"
@@ -129,7 +129,7 @@ mysql(){
       fi
       ;;
     *)
-      echo "\e[0;36mm - mysql\e[0m"
+      msg "m - mysql" w o
       echo "  s | start          Start MySQL"
       echo "  r | restart        Restart MySQL"
       echo "  q | quit           Stop MySQL"
@@ -194,35 +194,36 @@ nginx(){
       ;;
   esac
 }
+
 update() {
-  echo -e "\033[33mKriogenx\033[0m - Updating..."
-  echo -n "$(kds; git pull --rebase -q)"
+  msg "Kriogenx" w o n; msg " - " n; msg "Updating..." y
+  echo -n "$(cd ~/Sites/kriogenx/scripts; git pull --rebase -q)"
   # RVM
-  if [[ `type rvm` =~ 'function' ]]; then
+  if [[ -n `which rvm` ]]; then
     rvm_latest=`curl -s https://raw.github.com/wayneeseguin/rvm/stable/VERSION`
     rvm_current=`rvm --version | tr -d '\n'`
     rvm_current=${rvm_current//rvm\ /}
     rvm_current=${rvm_current//\ */}
-    rvm_message="\033[33mRVM\033[0m - Latest: $rvm_latest - Current: $rvm_current - "
+    msg "RVM" w o n; msg " - Latest: " n; msg "$rvm_latest" y n; msg " - Current: " n; msg "$rvm_current" y n; msg " - " n
     if [[ -z $rvm_latest ]]; then
-      echo -e "$rvm_message""Could not get version"
+      msg "Could not get version" r
     elif [[ $rvm_latest != $rvm_current ]]; then
-      echo -e "$rvm_message""Upgrading..."
+      msg "Upgrading..." y
       rvm get latest
     else
-      echo -e "$rvm_message""Already latest"
+      msg "Already latest" g
     fi
   fi
   # Brew
   if [[ ! `type brew` =~ 'not found' ]]; then
-    echo -e "\033[33mBrew\033[0m - Updating..."
+    msg "Brew" w o n; msg " - " n; msg "Updating..." y
     brew update
     brew upgrade
     brew cleanup
   fi
   # OH MY ZSH
   if [[ -d ~/.oh-my-zsh ]]; then
-    echo -e "\033[33mOH-MY-ZSH\033[0m - Updating..."
+    msg "OH-MY-ZSH" w o n; msg " - " n; msg "Updating..." y
     echo -n $(cd ~/.oh-my-zsh; git pull --rebase -q; git submodule foreach git pull origin master)
   fi
 }

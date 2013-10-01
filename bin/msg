@@ -4,6 +4,16 @@
 tput sgr0
 if [[ -n $2 ]]; then
   color='0'
+  if [[ $1 == "-n" ]]; then
+    noline=1
+    shift
+  elif [[ $1 == "-r" ]]; then
+    ret=1
+    shift
+  # Ignore certain things
+  elif [[ $1 == "-e" ]]; then
+    shift
+  fi
   message=$1
   shift
   for a in "$@"; do
@@ -41,12 +51,16 @@ if [[ -n $2 ]]; then
         color=46 ;;
       w-bg|white-background)
         color=47 ;;
-      o|bold)
+      o|bb|bold)
         bold=1 ;;
       u|underline)
         underline=1 ;;
       i|invert|reverse)
         invert=1 ;;
+      "-n"|n)
+        noline=1 ;;
+      "-r")
+        ret=1 ;;
     esac
   done
   str="\033[""$color"
@@ -54,7 +68,14 @@ if [[ -n $2 ]]; then
   [[ -n $underline ]] && str+=$str";4"
   [[ -n $invert ]] && str+=$str";7"
   str+="m"
-  echo -e "$str""$message"
+  str="$str""$message""\033[0m"
+  if [[ -n $ret ]]; then
+    $str
+  elif [[ -n $noline ]]; then
+    echo -en "$str"
+  else
+    echo -e "$str"
+  fi
 else
   echo $1
 fi
