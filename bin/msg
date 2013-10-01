@@ -1,34 +1,29 @@
 #!/bin/bash
 #!/usr/bin/env sh
 
-
-msg() {
-  tput sgr0
-  if [[ -n $2 ]]; then
-    color=''
-    case "$2" in
-      k|black)
-        color="\033[30m" ;;
-      r|red)
-        color="\033[31m" ;;
-      g|green)
-        color="\033[32m" ;;
-      y|yellow)
-        color="\033[33m" ;;
-      b|blue)
-        color="\033[34m" ;;
-      m|magenta)
-        color="\033[35m" ;;
-      c|cyan)
-        color="\033[36m" ;;
-      w|white)
-        color="\033[37m" ;;
-    esac
-    echo -e $color${1}"\033[0;32m"
-  else
-    echo $1
-  fi
-  tput sgr0
-}
-
-msg $@
+tput sgr0
+if [[ -n $2 ]]; then
+  color=''
+  case "$2" in
+    k|black)
+      color="\033[30m" ;;
+    r|red)
+      color="\033[31m" ;;
+    g|green)
+      color="\033[32m" ;;
+    y|yellow)
+      color="\033[33m" ;;
+    b|blue)
+      color="\033[34m" ;;
+    m|magenta)
+      color="\033[35m" ;;
+    c|cyan)
+      color="\033[36m" ;;
+    w|white)
+      color="\033[37m" ;;
+  esac
+  echo -e "$color""${1}""\033[0;32m"
+else
+  echo $1
+fi
+tput sgr0
