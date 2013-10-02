@@ -525,13 +525,3 @@ dirup() {
 kup() {
   k up
 }
-krepeat() {
-  if [[ $2 -lt 2 || $2 -gt 1000 ]]; then
-    exit 0
-  fi
-  i=0
-  while [ "$i" -ne $2 ]; do
-    eval "$1"
-    i=$(expr $i + 1)
-  done
-}

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-# Brew
+# HomeBrew
 if [[ ! -d /usr/local ]]; then
   sudo mkdir /usr/local
 fi
@@ -8,7 +8,7 @@ sudo chown -R `whoami` /usr/local
 if [[ -e /usr/local/bin/brew ]]; then
   brew update
 else
-  ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
+  ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
   brew doctor
 fi
 
