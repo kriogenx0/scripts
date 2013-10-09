@@ -8,3 +8,7 @@ fi
 if [[ ! -e /usr/bin/gcc && -e /usr/bin/llvm-gcc-4.2 ]]; then
   ln -s /usr/bin/llvm-gcc-4.2 /usr/bin/gcc
 fi
+
+if [[ ! -e /usr/bin/gcc-4.2 && -e /usr/bin/gcc ]]; then
+  ln -s /usr/bin/gcc /usr/bin/gcc-4.2
+fi
