@@ -307,7 +307,8 @@ alias myrestart='mysql.server restart'
 alias mystop='mysql.server stop'
 
 # cucumber
-alias cuc='cucumber'
+alias cuc='cucumber --format pretty -v'
+alias cucb='bundle exec `alias cuc`'
 
 # postgres
 #alias pg-start='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
