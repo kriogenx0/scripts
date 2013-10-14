@@ -20,6 +20,11 @@ fi
 echo 'source ~/.profile' >> ~/.zshrc
 echo 'source ~/.profile' >> ~/.bashrc
 
+echo '#!/bin/bash' > ~/.profile
 echo 'source ~/Sites/kriogenx/scripts/configs/bashrc' > ~/.profile
 echo 'si' >> ~/.profile
 echo '# Customize Here' >> ~/.profile
+
+if [[ ! -f ~/.bash_profile ]] || [[ -z `cat ~/.bash_profile | grep '~/.profile' ]]; then
+  echo 'source ~/.profile' >> ~/.bash_profile
+fi
