@@ -389,6 +389,10 @@ alias gtd='git tag -d'
 gtdr() { # DELETE REMOTE TAG
   git push origin :refs/tags/$1
 }
+gtda() {
+  gtd $1
+  gtdr $1
+}
 
 # status / diffs
 alias gs='git status'
