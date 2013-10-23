@@ -9,6 +9,16 @@ if [ ! -d $DRP_HOME ]; then
   exit 0
 fi
 
+dropbox_takeover_help() {
+  cat << EOF
+a | all           All packages
+d | desktop       Desktop
+h | host Hosts file
+i) iTunes
+
+EOF
+}
+
 # Create Directories if they don't exist
 mkdir -p $DRP_SETTINGS
 
