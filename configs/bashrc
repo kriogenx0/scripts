@@ -309,6 +309,10 @@ alias mystop='mysql.server stop'
 # cucumber
 alias cuc='cucumber --format pretty -v'
 alias cucb='bundle exec cucumber --format pretty -v'
+alias cucs='RAILS_ENV=cucumber rss1'
+cucf() {
+  cucb "features/""$1"".feature"
+}
 
 # postgres
 #alias pg-start='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
