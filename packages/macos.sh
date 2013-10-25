@@ -102,6 +102,9 @@ defaults write NSGlobalDomain KeyRepeat -int 1
 # Disable All Animations
 defaults write com.apple.finder DisableAllAnimations -bool true
 
+# Swoosh Animation
+defaults write com.apple.dock workspaces-swoosh-animation-off -bool YES
+
 # Sheet Animations
 defaults write NSGlobalDomain NSWindowResizeTime .001
 
