@@ -311,7 +311,11 @@ alias cuc='cucumber --format pretty -v'
 alias cucb='bundle exec cucumber --format pretty -v'
 alias cucs='RAILS_ENV=cucumber rss1'
 cucf() {
-  cucb "features/""$1"".feature"
+  if [[ -n "$1" ]]; then
+    cucb "features/""${1/\.feature/}"".feature"
+  else
+    ls features | grep ".feature"
+  fi
 }
 
 # postgres
