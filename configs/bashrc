@@ -135,44 +135,10 @@ if [[ -e /usr/local/var/postgres ]]; then
   export PGDATA=/usr/local/var/postgres
 fi
 
-# =============
+# ====================
 # ALIASES
 
-# Bash Defaults
-alias lns="ln -s"
-alias bashcommands="bind -p | sed '/self.insert/d;/^#/d;/do-lowercase/d'"
-
-# builtin apps
-alias vi='vim'
-alias svi='sudo vim'
-alias rmf='rm -rf'
-alias srmf='sudo rm -rf'
-#alias grep='grep --color=auto --exclude="*~"'
-grp() {
-  grep -irn $1 . --color=auto --exclude="*~"
-}
-egrp() {
-  egrep -rn $1 .
-}
-fnd() {
-  find . -name "*$1*"
-}
-
-# Kriogenx
-alias krc='vi ~/Sites/kriogenx/scripts/configs/bashrc'
-alias kd='cd ~/Sites/kriogenx'
-alias kds='cd ~/Sites/kriogenx/scripts'
-alias kgig='cp ~/Sites/kriogenx/scripts/support/git/gitignore ./.gitignore'
-# Kriogenx Directory Update
-
 # Traversing
-si() {
-  cd "$HOME/Sites/$1"
-}
-alias c='clear'
-#alias ci="cd ~/Clients"
-
-# navigation
 alias l='ls -l'
 alias ll='ls -l'
 alias la='ls -lAh'   #Show all, sort by extension
@@ -187,9 +153,59 @@ mkd() {
   cd $1
 }
 alias ds='du -hd 1'
+si() {
+  cd "$HOME/Sites/$1"
+}
+
+# Common Binaries
+alias c='clear'
+alias lns="ln -s"
+alias bashcommands="bind -p | sed '/self.insert/d;/^#/d;/do-lowercase/d'"
+alias vi='vim'
+alias svi='sudo vim'
+alias rmf='rm -rf'
+alias srmf='sudo rm -rf'
+alias tailf='tail -f'
+grp() {
+  grep -irn $1 . --color=auto --exclude="*~"
+}
+egrp() {
+  egrep -rn $1 .
+}
+fnd() {
+  find . -name "*$1*"
+}
 
 # Print Path
 alias ppath='echo $PATH | tr ':' "\n"'
+
+# tar compress
+tarc() {
+  a=${1%.*}'.tar.gz'
+  /usr/bin/tar cvf $a $1 ;
+}
+
+# rsync
+alias rnc='rsync -avzu --stats --progress --exclude ".svn" --exclude ".git" --exclude ".DS_Store"'
+# copy sync
+cps() {
+  rnc "${1%.*}"/ "$2"
+}
+rncmirror() {
+  rnc "${1%.*}"/ "$2" --delete
+}
+
+# Web Server
+alias hosts="sudo vi /etc/hosts"
+alias ports='netstat -tulanp'
+webports() {
+  ps auxwww | grep LISTEN
+  netstat -a | egrep 'Proto|LISTEN'
+  lsof -i tcp:80
+  lsof -i tcp:8080
+  lsof -i tcp:3000
+}
+alias wsports='webports'
 
 # TextEdit
 alias edi='open -e "$1"'
@@ -201,12 +217,13 @@ alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub; echo "Copied ssh key into clipboard"'
 alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
 
 # Vagrant
-if [[ ! $(type vagrant 2> /dev/null) =~ 'not found' ]]; then
-  alias vup='vagrant destroy -f; vagrant up'
-fi
+alias vagu='vagrant up'
+alias vagd='vagrant destroy -f'
 
-# ==========
-# RAILS
+# ===================
+# RUBY & RAILS
+
+alias rb='ruby'
 alias rrvm='vi .rvmrc'
 alias rcuc='cd `rr`; cucumber features'
 alias rversions="gem list -ra rails | grep 'rails ('"
@@ -223,8 +240,8 @@ rgemsuninstall(){
 alias rgembuild='gem pristine --all --no-extensions'
 alias rlog='tail -f `rr`/log/development.log'
 alias rtlog='tail -f `rr`/log/test.log'
-alias rb='ruby'
-rr() { # rails root
+# Rails Root
+rr() {
   (
     dir=${1:-$(pwd)}
     i=0
@@ -273,18 +290,6 @@ alias cake='app/Console/cake'
 alias tiga='tig --all'
 alias tigs='tig status'
 
-# Web Server
-alias hosts="sudo vi /etc/hosts"
-alias ports='netstat -tulanp'
-webports() {
-  ps auxwww | grep LISTEN
-  netstat -a | egrep 'Proto|LISTEN'
-  lsof -i tcp:80
-  lsof -i tcp:8080
-  lsof -i tcp:3000
-}
-alias wsports='webports'
-
 # apache
 alias asites='sudo vi /etc/apache2/extra/httpd-vhosts.conf; sudo vi /etc/hosts; sudo apachectl restart'
 alias adsites='sudo vi ~/Dropbox/Office/settings/apache/sites.conf; sudo vi /etc/hosts; sudo apachectl restart'
@@ -299,12 +304,9 @@ alias ngstop='sudo nginx -s quit'
 
 # mysql
 [[ `which mysql` =~ 'aliased to nocorrect' ]] && unalias mysql
-#alias mysql=/usr/local/mysql/bin/mysql
-#alias mysqladmin=/usr/local/mysql/bin/mysqladmin
-alias mss='mysql.server start'
-alias mystart='mysql.server start'
-alias myrestart='mysql.server restart'
-alias mystop='mysql.server stop'
+alias mys='mysql.server start'
+alias myr='mysql.server restart'
+alias myq='mysql.server stop'
 
 # cucumber
 alias cuc='cucumber --format pretty -v'
@@ -489,24 +491,6 @@ gitpermanentfiledelete() {
   git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch $1' --prune-empty --tag-name-filter cat -- --all
 }
 
-# tar compress
-tarc() {
-  a=${1%.*}'.tar.gz'
-  /usr/bin/tar cvf $a $1 ;
-}
-
-alias rnc='rsync -avzu --stats --progress --exclude ".svn" --exclude ".git" --exclude ".DS_Store"'
-# copy sync
-cps() {
-  a=${1%.*}'/'
-  rnc "$a" "$2"
-}
-rncmirror() {
-  a=${1%.*}'/'
-  rnc "$a" "$2" --delete
-}
-
-
 # Remove Garbage Files
 cleandir() {
   #find . -name '.svn' -type d -print0 | xargs -0 -t rm -rf
@@ -540,6 +524,12 @@ dirup() {
   done
   return 1
 }
+
+# Kriogenx
+alias krc='vi ~/Sites/kriogenx/scripts/configs/bashrc'
+alias kd='cd ~/Sites/kriogenx'
+alias kds='cd ~/Sites/kriogenx/scripts'
+alias kgig='cp ~/Sites/kriogenx/scripts/support/git/gitignore ./.gitignore'
 kup() {
   k up
 }
