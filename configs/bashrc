@@ -339,7 +339,11 @@ alias gca='git commit --amend'
 
 alias gcl="git clone"
 alias gco="git checkout"
-alias go="git checkout"
+# Git Checkout (removing remote/origin)
+#alias go="git checkout"
+go() {
+  git checkout `echo $1 | sed 's/remotes\/origin\///g'`
+}
 # Checkout first branch that matches search
 gos() {
   git checkout `git branch -a | grep $1 | sed 's/remotes\/origin\///g' | head -n1`
