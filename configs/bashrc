@@ -186,13 +186,17 @@ tarc() {
 }
 
 # rsync
-alias rnc='rsync -avzu --stats --progress --exclude ".svn" --exclude ".git" --exclude ".DS_Store"'
+alias rnc='rsync -avu --stats --progress --exclude ".svn" --exclude ".git" --exclude ".DS_Store"'
 # copy sync
 cps() {
-  rnc "${1%.*}"/ "$2"
+  rnc -z "${1%.*}"/ "$2"
+}
+# move sync
+mvs() {
+  rnc --remove-source-files "${1%.*}"/ "$2"
 }
 rncmirror() {
-  rnc "${1%.*}"/ "$2" --delete
+  rnc -z --delete "${1%.*}"/ "$2"
 }
 
 # Web Server
