@@ -1,9 +1,9 @@
 #!/bin/sh
 
 while true; do
-    read -p "Install kriogenx devtools? y/n " yn
+    read -p "Install developer essentials? y/n " yn
     case $yn in
-        [Yy]* ) sh packages/devtools-install.sh; break;;
+        [Yy]* ) sh packages/developer-essentials.sh; break;;
         [Nn]* ) break;;
         * ) echo "Please answer [y]es or [n]o.";;
     esac
@@ -19,9 +19,9 @@ while true; do
 done
 
 while true; do
-    read -p "Hijack bashrc and zshrc, and make shellrc? y/n " yn
+    read -p "Pimp My Shell? y/n " yn
     case $yn in
-        [Yy]* ) sh packages/shellrc-install.sh; break;;
+        [Yy]* ) sh packages/pimp-my-shell.sh; break;;
         [Nn]* ) break;;
         * ) echo "Please answer [y]es or [n]o.";;
     esac
