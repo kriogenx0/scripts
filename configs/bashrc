@@ -287,6 +287,8 @@ alias rss1='rss 3001'
 alias rss2='rss 3002'
 alias rss3='rss 3003'
 
+alias bex="bundle exec"
+
 # cake
 alias cake='app/Console/cake'
 
@@ -314,7 +316,7 @@ alias myq='mysql.server stop'
 
 # cucumber
 alias cuc='cucumber --format pretty -v'
-alias cucb='bundle exec cucumber --format pretty -v'
+alias cucb='bex cucumber --format pretty -v'
 alias cucs='RAILS_ENV=cucumber rss1'
 cucf() {
   if [[ -n "$1" ]]; then
