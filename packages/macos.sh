@@ -1,8 +1,11 @@
 #!/usr/bin/env sh
 OSX_VERSION=$(sw_vers | grep ProductVersion | awk -F: '{print $2}')
 
-# MOUNTAIN LION
-if [[ $OSX_VERSION =~ "10.8*" ]]; then
+# MAVERICKS & MOUNTAIN LION
+if [[ $OSX_VERSION =~ "10.8*" ]] || [[ $OSX_VERSION =~ "10.9*" ]]; then
+
+  # DEBUG APP STORE
+  defaults write com.apple.appstore ShowDebugMenu -bool TRUE
 
   # SCROLL DIRECTION
   defaults write ~/Library/Preferences/. GlobalPreferences com.apple.swipescrolldirection -bool false
