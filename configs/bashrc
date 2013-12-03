@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
 
-# NOT JUST FOR BASH
-# ALSO FOR ZSH
+# Kriogenx Scripts
+# FOR ZSH AND BASH
+# scripts.kriogenx.net
 
 # =====================
 # SETTINGS
@@ -232,7 +233,14 @@ alias wsports='webports'
 alias edi='open -e "$1"'
 
 # SSH
-alias sshcopy='pbcopy < ~/.ssh/id_rsa.pub; echo "Copied ssh key into clipboard"'
+sshcopy() {
+  if [[ -e ~/.ssh/id_rsa.pub ]]; then
+    pbcopy < ~/.ssh/id_rsa.pub
+    echo "Copied ssh key into clipboard"
+  else
+    echo "SSH key could not be found"
+  fi
+}
 
 # Dropbox
 alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
