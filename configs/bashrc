@@ -4,9 +4,46 @@
 # ALSO FOR ZSH
 
 # =====================
-# ENVIRONMENT & PATH CHANGES
+# SETTINGS
 
-# ADDITIONAL BINARIES
+kriogenx_dir=~/Sites/kriogenx
+kriogenx_rc="$kriogenx_dir"/scripts/configs/bashrc
+
+
+# ====================
+# ENVIRONMENT VARIABLES
+
+# Homebrew GCC
+if [[ ! `type CC` =~ 'not found' ]]; then
+  if [[  -e /usr/local/bin/gcc-4.2 ]]; then
+    export CC=/usr/local/bin/gcc-4.2
+  elif [[ -e /usr/bin/gcc-4.2 ]]; then
+    export CC=/usr/bin/gcc-4.2
+  fi
+fi
+export CPPFLAGS=-I/opt/X11/include
+
+# RVM SETTINGS before shell so shell knows
+if test -f ~/.rvm/scripts/rvm; then
+  [ "$(type rvm)" = "rvm is a shell function" ] || source ~/.rvm/scripts/rvm
+
+  export rvm_trust_rvmrcs_flag=1
+  export rvm_project_rvmrc_default=1
+  export rvm_auto_reload_flag=2
+fi
+
+# SET DEFAULT EDITOR
+if [[ -e /Applications/"Coda 2.app" ]]; then
+  export EDITOR=/Applications/"Coda 2.app"/Contents/MacOS/"Coda 2"
+fi
+
+# Postgres
+if [[ -e /usr/local/var/postgres ]]; then
+  export PGDATA=/usr/local/var/postgres
+fi
+
+# =====================
+# PATH CHANGES
 
 #if [[ ! $PATH =~ '~/bin' && -e ~/bin ]]; then
 #  export PATH=$PATH:~/bin
@@ -20,28 +57,9 @@ export PATH=${PATH//:\/usr\/local\/bin/}
 [[ ! $PATH =~ '/usr/local/bin' ]] && export PATH=/usr/local/bin:$PATH
 [[ ! $PATH =~ '/usr/local/sbin' ]] && export PATH=/usr/local/sbin:$PATH
 
-# Homebrew GCC
-if [[ ! `type CC` =~ 'not found' ]]; then
-  if [[  -e /usr/local/bin/gcc-4.2 ]]; then
-    export CC=/usr/local/bin/gcc-4.2
-  elif [[ -e /usr/bin/gcc-4.2 ]]; then
-    export CC=/usr/bin/gcc-4.2
-  fi
-fi
-export CPPFLAGS=-I/opt/X11/include
-
 # RVM Bin
 if [[ ! '.rvm/bin' =~ $PATH ]]; then
   export PATH=$PATH:$HOME/.rvm/bin
-fi
-
-# RVM SETTINGS before shell so shell knows
-if test -f ~/.rvm/scripts/rvm; then
-  [ "$(type rvm)" = "rvm is a shell function" ] || source ~/.rvm/scripts/rvm
-
-  export rvm_trust_rvmrcs_flag=1
-  export rvm_project_rvmrc_default=1
-  export rvm_auto_reload_flag=2
 fi
 
 # RVM Gem Error
@@ -59,14 +77,15 @@ fi
 [[ -d /usr/local/mysql/bin && ! $PATH =~ /usr/local/mysql/bin ]] && export PATH=$PATH:/usr/local/mysql/bin
 
 # Kriogenx Bin
-export PATH=$PATH:/Users/`whoami`/Sites/kriogenx/scripts/bin
-
-# Compiling
+export PATH=$PATH:"$kriogenx_dir"/scripts/bin
 
 # Xcode Developer
 #if [[ -e /Applications/Xcode.app/Contents/Developer ]]; then
   #export PATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:$PATH
 #fi
+
+# =========================
+# PIMP MY SHELL
 
 # ZSH SETTINGS
 if [ -n "$ZSH_VERSION" ]; then
@@ -80,7 +99,7 @@ if [ -n "$ZSH_VERSION" ]; then
     #source ~/.rvm/scripts/rvm
 
     ZSH=$HOME/.oh-my-zsh # oh-my-zsh config
-    ZSH_CUSTOM=~/Sites/kriogenx/scripts/configs
+    ZSH_CUSTOM="$kriogenx_dir"/scripts/configs
     ZSH_THEME="kriogenx" # ~/.oh-my-zsh/themes/
 
     plugins=(git rvm fasd rake rails) # ~/.oh-my-zsh/custom/plugins/
@@ -125,16 +144,6 @@ elif [ -n "$BASH_VERSION" ]; then
   [ -z "$PS1" ] || export PS1="╭─ \[\033[01;36m\]\w\[\033[00m\]\$(git_prompt_info '(%s)')\$(rvm_prompt_info)\033[0m\n╰─ "
 fi
 
-# SET DEFAULT EDITOR
-if [[ -e /Applications/"Coda 2.app" ]]; then
-  export EDITOR=/Applications/"Coda 2.app"/Contents/MacOS/"Coda 2"
-fi
-
-# Postgres
-if [[ -e /usr/local/var/postgres ]]; then
-  export PGDATA=/usr/local/var/postgres
-fi
-
 # ====================
 # ALIASES
 
@@ -145,6 +154,7 @@ alias la='ls -lAh'   #Show all, sort by extension
 alias lll='ls -lAh'
 alias lt="ls -R | grep \":$\" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'"
 alias ltl="lt | less"
+
 # Search Directory
 lss() {
   [[ -n $1 ]] && la | grep $1 || la
@@ -159,7 +169,7 @@ mkd() {
 }
 alias ds='du -hd 1'
 si() {
-  cd "$HOME/Sites/$1"
+  cd "~/Sites/$1"
 }
 
 # Common Binaries
@@ -551,10 +561,10 @@ dirup() {
 }
 
 # Kriogenx
-alias krc='vi ~/Sites/kriogenx/scripts/configs/bashrc'
-alias kd='cd ~/Sites/kriogenx'
-alias kds='cd ~/Sites/kriogenx/scripts'
-alias kgig='cp ~/Sites/kriogenx/scripts/support/git/gitignore ./.gitignore'
+alias krc='vi "$kriogenx_rc"; source "$kriogenx_rc"'
+alias kd='cd "$kriogenx_dir"'
+alias kds='cd "$kriogenx_dir"/scripts'
+alias kgig='cp "$kriogenx_dir"/scripts/support/git/gitignore ./.gitignore'
 kup() {
   k up
 }

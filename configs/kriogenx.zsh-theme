@@ -12,7 +12,7 @@ function virtualenv_info {
 
 function prompt_char {
     git branch >/dev/null 2>/dev/null && echo '±' && return
-    #echo '○'
+    echo '○'
 }
 
 function box_name {
@@ -40,7 +40,8 @@ local theme_time=' $(time_stamp)'
 
 # %{$FG[040]%}%n%{$reset_color%} %{$FG[033]%}$(box_name)%{$reset_color%} 
 PROMPT="╭─ %{$terminfo[bold]$FG[226]%}${current_dir}%{$reset_color%}${git_info} ${rvm_ruby}${theme_time}
-╰─$(virtualenv_info)$(prompt_char) "
+╰─$(virtualenv_info) "
+#╰─$(virtualenv_info)$(prompt_char) "
 
 ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg[255]%}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
