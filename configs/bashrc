@@ -314,6 +314,8 @@ alias rss3='rss 3003'
 
 alias bex="bundle exec"
 
+[[ `which rake` =~ 'aliased to _rake_command' ]] && unalias rake
+
 # cake
 alias cake='app/Console/cake'
 
