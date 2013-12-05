@@ -170,7 +170,7 @@ mkd() {
 }
 alias ds='du -hd 1'
 si() {
-  cd "~/Sites/$1"
+  cd "$HOME/Sites/$1"
 }
 
 # Common Binaries
