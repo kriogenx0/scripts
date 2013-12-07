@@ -77,21 +77,23 @@ elif [[ $OSX_VERSION =~ "10.7*" ]]; then
   # Change Default Save Location from icloud to local
   defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
-elif [[ $OSX_VERSION =~ "10.6*" ]]; then
-  # SNOW LEOPARD
-  defaults write com.apple.dashboard mcx-disabled -boolean YES
 fi
 
+#####################
+# ALL OS'S
+
 # ScreenShots
-mkdir -p ~/Downloads/ScreenShots
-defaults write com.apple.screencapture location ~/Downloads/ScreenShots
+if [[ `defaults read com.apple.screencapture location` =~ 'Desktop' ]]; then
+  mkdir -p ~/Downloads/ScreenShots
+  defaults write com.apple.screencapture location ~/Downloads/ScreenShots
+fi
 
 # Mail Downloads
 mail_path=~/Library/Containers/com.apple.mail/Data/Library/"Mail Downloads"
 [[ -e "$mail_path" && ! -e ~/Downloads/"Mail Downloads" ]] && ln -s "$mail_path" ~/Downloads/
 
-#####################
-# ALL OS'S
+# Kill Dashboard
+defaults write com.apple.dashboard mcx-disabled -boolean YES
 
 # Keyboard Repeat
 defaults write NSGlobalDomain InitialKeyRepeat -int 30
