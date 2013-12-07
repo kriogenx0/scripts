@@ -8,7 +8,7 @@ if [[ `sw_vers` =~ 'Mac OS X' ]]; then
 
   # Install Homebrew
   if [[ -z `which brew` ]]; then
-    ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
+    ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
   fi
 
   # Git
