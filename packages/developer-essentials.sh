@@ -1,46 +1,65 @@
 #!/usr/bin/env sh
 
-# HomeBrew
-if [[ ! -d /usr/local ]]; then
-  sudo mkdir /usr/local
-fi
-sudo chown -R `whoami` /usr/local
-if [[ -e /usr/local/bin/brew ]]; then
-  brew update
-else
-  ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
-  brew doctor
-fi
+# Mac OS X
+if [[ `sw_vers` =~ 'Mac OS X' ]]; then
 
-# Apple GCC
-brew tap homebrew/dupes
-if [[ ! -e /usr/local/bin/gcc-4.2 ]]; then
-  brew install apple-gcc42
+  # HomeBrew
+  if [[ ! -d /usr/local ]]; then
+    sudo mkdir -p /usr/local
+  fi
+  sudo chown -R `whoami` /usr/local
+  if [[ -e /usr/local/bin/brew ]]; then
+    brew update
+  else
+    ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
+    brew doctor
+  fi
+
+  # Apple GCC
+  if [[ ! -e /usr/local/bin/gcc-4.2 ]]; then
+    brew install apple-gcc42
+  fi
+  brew tap homebrew/dupes
+
+# Linux
+else
+  # Git
+  sudo apt-get install git -yf
+  # Curl
+  sudo apt-get install curl -yf
 fi
 
 # Git
 if [[ `type git` =~ "not found" ]]; then
+  echo 'Installing git...'
   brew install git
-  # OLD APPLE GITS
-  #/usr/bin/git
-  #/usr/local/git
+
+  echo 'Your git Name and Email are not set up'
+  echo 'It is recommended to configure your git name and email for git commits.'
+  read -p "Configure name and email now? " configuregit
+  case $configuregit in
+    Y|y|yes )
+      read -p "Enter your git name: " gitname
+      [[ -n $a ]] && git config --global user.name "$gitname"
+
+      read -p "Enter your email: " gitemail
+      [[ -n $e ]] && git config --global user.email "$gitemail"
+      break;;
+    * )
+      echo 'Skipping git user configuration.';;
+  esac
+
 else
   brew upgrade git
 fi
 
-# OH MY ZSH
-if [[ ! -d ~/.oh-my-zsh ]]; then
-  curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
-else
-  echo $(cd ~/.oh-my-zsh; git pull --rebase)
-fi
-
 # Janus
 if [[ ! `type ruby` =~ "not found" ]]; then
-  if [[ ! -d ~/.vim || ! -d ~/.vim/janus ]]; then
-    curl -Lo- https://bit.ly/janus-bootstrap | bash
-  elif [[ -d ~/.vim/janus ]]; then
+  if [[ -d ~/.vim/janus ]]; then
     echo `cd ~/.vim/janus; git pull`
+  else
+    echo 'Install Janus...'
+    curl -Lo- https://bit.ly/janus-bootstrap | bash
   fi
 else
   echo 'Janus - Latest Ruby required to install Janus'
@@ -60,7 +79,8 @@ fi
 
 # SSH
 if [ ! -d ~/.ssh ]; then
-  echo 'Looks like ssh is not set up'
+  echo 'Looks like SSH is not set up.'
+  echo 'SSH is used for git to connect to repositories.'
   read -p "Enter your email address: " a
   if [[ -n $a ]]; then
     ssh-keygen -t rsa -C "$a"
@@ -69,4 +89,4 @@ if [ ! -d ~/.ssh ]; then
   fi
 fi
 
-echo 'Done with Devtools'
+echo 'Developer Essentials complete'

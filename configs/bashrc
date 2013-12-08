@@ -177,6 +177,7 @@ si() {
 alias c='clear'
 alias lns="ln -s"
 alias bashcommands="bind -p | sed '/self.insert/d;/^#/d;/do-lowercase/d'"
+alias v='vim'
 alias vi='vim'
 alias svi='sudo vim'
 alias rmf='rm -rf'

@@ -1,13 +1,19 @@
 #!/usr/bin/env sh
 
+# Pimp My Shell
+
 if [[ ! -e ~/.oh-my-zsh ]]; then
   read -p "Install ZSH? y/n" install_zsh
 
-  # Install ZSH
+  # Install OH MY ZSH
   if [[ $install_zsh = 'y' ]]; then
     curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
   fi
+
 else
+  # Update ZSH
+  echo $(cd ~/.oh-my-zsh; git pull --rebase)
+
   # Install Theme
   rm -rf ~/.oh-my-zsh/themes/kriogenx.zsh-theme
   ln -s ~/Sites/kriogenx/scripts/configs/kriogenx.zsh-theme ~/.oh-my-zsh/themes/kriogenx.zsh-theme
@@ -21,9 +27,7 @@ if [[ -f ~/.bashrc && ! -f ~/.bash-old ]]; then
   mv ~/.bashrc{,-old}
 fi
 
-echo 'source ~/.profile' >> ~/.zshrc
-echo 'source ~/.profile' >> ~/.bashrc
-
+# Build .profile
 if [[ ! -e ~/.profile ]]; then
   echo '#!/usr/bin/env sh' > ~/.profile
 fi
@@ -33,6 +37,7 @@ if [[ -e ~/.profile ]] && [[ ! `cat ~/.profile` =~ 'kriogenx' ]]; then
   echo '# Customize Here' >> ~/.profile
 fi
 
-if [[ ! -f ~/.bash_profile ]] || [[ -z `cat ~/.bash_profile | grep '~/.profile'` ]]; then
-  echo 'source ~/.profile' >> ~/.bash_profile
-fi
+# Link .profile
+[[ -e ~/.zshrc ]] && [[ `cat ~/.zshrc` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.zshrc
+[[ -e ~/.bashrc ]] && [[ `cat ~/.bashrc` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.bashrc
+[[ -e ~/.bash_profile ]] && [[ `cat ~/.bash_profile` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.bash_profile
