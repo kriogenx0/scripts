@@ -58,8 +58,14 @@ if [[ ! `type ruby` =~ "not found" ]]; then
   if [[ -d ~/.vim/janus ]]; then
     echo `cd ~/.vim/janus; git pull`
   else
-    echo 'Install Janus...'
-    curl -Lo- https://bit.ly/janus-bootstrap | bash
+    read -p "Install Janus? y/n " install_janus
+
+    case $install_janus in
+      Y|y|yes )
+        echo 'Install Janus...'
+        curl -Lo- https://bit.ly/janus-bootstrap | bash
+        break;;
+    esac
   fi
 else
   echo 'Janus - Latest Ruby required to install Janus'
@@ -84,8 +90,11 @@ if [ ! -d ~/.ssh ]; then
   read -p "Enter your email address: " a
   if [[ -n $a ]]; then
     ssh-keygen -t rsa -C "$a"
+    ssh-add ~/.ssh/id_rsa
     pbcopy < ~/.ssh/id_rsa.pub;
-    echo "Created SSH key and copied public key to clipboard"
+    echo 'Testing SSH...'
+    [[ `ssh -T git@github.com` =~ 'success' ]] && echo 'SSH Success!'
+    echo 'Created SSH key and copied public key to clipboard'
   fi
 fi
 
