@@ -30,7 +30,9 @@ else
 fi
 
 # Git
-if [[ `type git` =~ "not found" ]]; then
+if [[ `which git` =~ "usr/local" ]]; then
+  brew upgrade git
+else
   echo 'Installing git...'
   brew install git
 
@@ -48,10 +50,9 @@ if [[ `type git` =~ "not found" ]]; then
     * )
       echo 'Skipping git user configuration.';;
   esac
-
-else
-  brew upgrade git
 fi
+
+
 
 # Janus
 if [[ ! `type ruby` =~ "not found" ]]; then
