@@ -3,6 +3,8 @@
 # TO USE THIS SCRIPT, RUN THIS IN TERMINAL
 # curl https://raw.github.com/kriogenx0/scripts/master/init/curl-me.sh | sh
 
+kriogenx_dir=$HOME/Sites/kriogenx
+
 # Mac OS X
 if [[ `sw_vers` =~ 'Mac OS X' ]]; then
 
@@ -12,9 +14,9 @@ if [[ `sw_vers` =~ 'Mac OS X' ]]; then
   fi
 
   # Git
-  #iif [[ -z `which git` ]]; then
-  brew install git
-  #fi
+  if [[ ! `which git` =~ 'usr/local' ]]; then
+    brew install git
+  fi
 
 # Linux
 else
@@ -24,15 +26,18 @@ else
   sudo apt-get install curl -yf
 fi
 
-# Kriogenx
 if [[ ! `type git` =~ 'not found' ]]; then
-  mkdir -p ~/Sites/kriogenx
-  if [[ ! -d ~/Sites/kriogenx/scripts ]]; then
-    git clone git://github.com/kriogenx0/scripts.git ~/Sites/kriogenx/scripts
+  # Kriogenx
+  mkdir -p "$kriogenx_dir"
+  if [[ ! -d "$kriogenx_dir"/scripts ]]; then
+    git clone git://github.com/kriogenx0/scripts.git "$kriogenx_dir"/scripts
   else
-    cd ~/Sites/kriogenx/scripts
+    cd "$kriogenx_dir"/scripts
     git pull --rebase
   fi
+
+  # Run
+  [[ -e "$kriogenx_dir" ]] && sh "$kriogenx_dir"/scripts/install.sh
 else
   echo 'Git not found'
 fi
