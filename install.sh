@@ -12,59 +12,71 @@ package_install() {
   fi
 }
 
-while true; do
-  read -p "Install developer essentials? y/n " yn
-  case $yn in
-    Y|y|yes )
-      package_install developer-essentials.sh
-      break;;
-    N|n|no ) break;;
-    * ) echo "Please answer [y]es or [n]o.";;
-  esac
-done
+read -p "Install developer essentials? y/n " yn
+case $yn in
+  Y|y|yes )
+    package_install developer-essentials.sh
+    break;;
+  N|n|no ) break;;
+  * ) echo "Please answer [y]es or [n]o.";;
+esac
 
-while true; do
+if [[ ! -e "$kriogenx_dir" ]]; then
   read -p "Install Kriogenx Scripts? y/n " yn
   case $yn in
     Y|y|yes )
-      package_install developer-essentials.sh
+      package_install kriogenx-install.sh
       break;;
     N|n|no ) break;;
     * ) echo "Please answer [y]es or [n]o.";;
   esac
-done
+fi
 
-while true; do
-  read -p "Pimp My Shell? y/n " yn
+read -p "Pimp My Shell? y/n " yn
+case $yn in
+  Y|y|yes )
+    package_install pimp-my-shell.sh
+    break;;
+  N|n|no ) break;;
+  * ) echo "Please answer [y]es or [n]o.";;
+esac
+
+read -p "Install Ruby tools? y/n " yn
+case $yn in
+  Y|y|yes )
+     package_install ruby-install.sh
+     break;;
+  N|n|no ) break;;
+  * ) echo "Please answer [y]es or [n]o.";;
+esac
+
+read -p "Pimp My Git? y/n " yn
+case $yn in
+  Y|y|yes )
+    package_install git-settings.sh
+    break;;
+  N|n|no ) break;;
+  * ) echo "Please answer [y]es or [n]o.";;
+esac
+
+read -p "Run Mac OS X Hacks? y/n " yn
+case $yn in
+  Y|y|yes )
+    package_install macos.sh
+    break;;
+  N|n|no ) break;;
+  * ) echo "Please answer [y]es or [n]o.";;
+esac
+
+if [[ -e /Applications/Dropbox.app ]]; then
+  read -p "Sync Applications with Dropbox? y/n " yn
   case $yn in
     Y|y|yes )
-      package_install pimp-my-shell.sh
+      package_install dropbox-takeover.sh
       break;;
     N|n|no ) break;;
     * ) echo "Please answer [y]es or [n]o.";;
   esac
-done
-
-while true; do
-  read -p "Install Ruby tools? y/n " yn
-  case $yn in
-    Y|y|yes )
-       package_install ruby-install.sh
-       break;;
-    N|n|no ) break;;
-    * ) echo "Please answer [y]es or [n]o.";;
-  esac
-done
-
-while true; do
-  read -p "Pimp My Git? y/n " yn
-  case $yn in
-    Y|y|yes )
-      package_install git-settings.sh
-      break;;
-    N|n|no ) break;;
-    * ) echo "Please answer [y]es or [n]o.";;
-  esac
-done
+fi
 
 echo 'Done!'

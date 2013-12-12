@@ -9,9 +9,12 @@ kriogenx_dir=$HOME/Sites/kriogenx
 if [[ `sw_vers` =~ 'Mac OS X' ]]; then
 
   # Install Homebrew
-  if [[ -z `which brew` ]]; then
+  if [[ ! -d /usr/local ]]; then
     ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
+  else
+    brew update
   fi
+  brew doctor
 
   # Git
   if [[ ! `which git` =~ 'usr/local' ]]; then

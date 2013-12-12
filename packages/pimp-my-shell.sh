@@ -13,18 +13,16 @@ if [[ ! -e ~/.oh-my-zsh ]]; then
 else
   # Update ZSH
   echo $(cd ~/.oh-my-zsh; git pull --rebase)
+fi
 
+if [[ -e ~/.oh-my-zsh ]]; then
   # Install Theme
   rm -rf ~/.oh-my-zsh/themes/kriogenx.zsh-theme
   ln -s ~/Sites/kriogenx/scripts/configs/kriogenx.zsh-theme ~/.oh-my-zsh/themes/kriogenx.zsh-theme
 fi
 
-if [[ -f ~/.zshrc && ! -f ~/.zsh-old ]]; then
+if [[ -f ~/.zshrc && ! -f ~/.zshrc-old ]]; then
   mv ~/.zshrc{,-old}
-fi
-
-if [[ -f ~/.bashrc && ! -f ~/.bash-old ]]; then
-  mv ~/.bashrc{,-old}
 fi
 
 # Build .profile

@@ -22,12 +22,22 @@ EOF
 # Create Directories if they don't exist
 mkdir -p $DRP_SETTINGS
 
+# SSH
+if [[ -e ~/.ssh ]] && [[ -e "$DRP_HOME"/Office/settings/ssh ]]; then
+  mkdir -p "$DRP_HOME"/Office/settings/ssh
+  sudo mv ~/.ssh "$DRP_HOME"/Office/settings/ssh-old
+fi
+if [[ -e "$DRP_HOME"/Office/settings/ssh ]]; then
+  ln -s "$DRP_HOME"/Office/settings/ssh ~/.ssh
+fi
+
+
 # Desktop
 if [ ! -L ~/Desktop ]; then
   DRP_DESKTOP=${DRP_HOME}/Office/Desktop
   if [ -d $DRP_DESKTOP ]; then
     # If exists, move contents
-    sudo mv ~/Desktop/* ${DRP_DESKTOP}/
+    $(sudo mv ~/Desktop/* ${DRP_DESKTOP}/) >> /dev/null
     sudo rm -rf ~/Desktop
   else
     # If doesnt exist, create and link
@@ -175,7 +185,7 @@ if [[ -e /Applications/"Sequel Pro.app" ]]; then
   [[ -d ${SQ_DROPBOX} ]] || mkdir -p ${SQ_DROPBOX}
   if [[ -L ${SQ_PREF} ]]; then
     sudo rm -rf ${SQ_PREF}
-    echo "Sequel Pro - removed link"
+    #echo "Sequel Pro - removed link"
     SQ_RECREATED=1
   fi
 
@@ -193,7 +203,7 @@ if [[ -e /Applications/"Sequel Pro.app" ]]; then
   fi
 
   # Create Link
-  if [[ -e "${SQ_DROPBOX_PREF}" ]]; then
+  if [[ -e "${SQ_DROPBOX_PREF}" ]] && [[ ! -L "${SQ_PREF}" ]]; then
     ln -s "${SQ_DROPBOX_PREF}" "${SQ_PREF}"
     if [[ -n $SQ_RECREATED ]]; then
       echo "Sequel Pro - Link recreated"
@@ -207,6 +217,8 @@ fi
 if [[ -e /Applications/Adium.app ]]; then
   adium_dir=~/Library/Application\ Support/"Adium 2.0"/Users/Default
   adium_dropbox=~/Dropbox/Office/settings/adium/Default
+
+  mkdir -p "$adium_dir"
 
   if [[ -L "$adium_dir"/Accounts.plist ]]; then
     echo 'Adium - Already syncing'
