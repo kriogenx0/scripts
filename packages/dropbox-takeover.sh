@@ -23,27 +23,38 @@ EOF
 mkdir -p $DRP_SETTINGS
 
 # SSH
-if [[ -e ~/.ssh ]] && [[ -e "$DRP_HOME"/Office/settings/ssh ]]; then
-  mkdir -p "$DRP_HOME"/Office/settings/ssh
-  sudo mv ~/.ssh "$DRP_HOME"/Office/settings/ssh-old
-fi
-if [[ -e "$DRP_HOME"/Office/settings/ssh ]]; then
-  ln -s "$DRP_HOME"/Office/settings/ssh ~/.ssh
-fi
+O_SSH=~/.ssh
+DRP_SSH="$DRP_SETTINGS"/ssh
 
+if [[ -L $O_SSH ]]; then
+  sudo rm -rf $O_SSH
+fi
+if [[ `file ~/.ssh` =~ 'directory' ]]; then
+  #if [[ -e "$DRP_HOME"/Office/settings/ssh ]]; then
+  #  sudo mv ~/.ssh "$DRP_HOME"/Office/settings/ssh-old
+  #fi
+  if [[ -e "$DRP_HOME"/Office/settings/ssh ]]; then
+    ln -s "$DRP_HOME"/Office/settings/ssh ~/.ssh
+  fi
+fi
 
 # Desktop
-if [ ! -L ~/Desktop ]; then
+O_DESKTOP=$HOME/Desktop
+
+# Delete if already syncing but broken
+[[ `file "$O_DESKTOP"` =~ 'broken' ]] && sudo rm -rf "$O_DESKTOP"
+
+if [[ ! -L "$O_DESKTOP" ]]; then
   DRP_DESKTOP=${DRP_HOME}/Office/Desktop
   if [ -d $DRP_DESKTOP ]; then
-    # If exists, move contents
-    $(sudo mv ~/Desktop/* ${DRP_DESKTOP}/) >> /dev/null
-    sudo rm -rf ~/Desktop
+    # Move contents if exist
+    `sudo mv "$O_DESKTOP"/* ${DRP_DESKTOP}/` >> /dev/null
+    sudo rm -rf $O_DESKTOP
   else
     # If doesnt exist, create and link
-    sudo mv ~/Desktop ${DRP_DESKTOP}
+    sudo mv $O_DESKTOP $DRP_DESKTOP
   fi
-  ln -s $DRP_DESKTOP ~/Desktop
+  ln -s $DRP_DESKTOP "$O_DESKTOP"
   echo 'Desktop - Success!'
 else
   echo 'Desktop - Already Syncing'
