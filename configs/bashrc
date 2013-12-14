@@ -572,6 +572,17 @@ dirup() {
   return 1
 }
 
+# SET LAST DIR
+lastdir()
+{
+  pwd > ~/.lastdir
+}
+# CD LAST DIR
+cdl() {
+  [[ -e ~/.lastdir ]] && cd `cat ~/.lastdir`
+}
+
+
 # Kriogenx
 alias krc='vi "$kriogenx_rc"; source "$kriogenx_rc"'
 alias kd='cd "$kriogenx_dir"'
