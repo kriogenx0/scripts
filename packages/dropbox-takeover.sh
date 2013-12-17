@@ -1,10 +1,10 @@
 # Settings
-DRP_HOME=~/Dropbox
-DRP_SETTINGS=${DRP_HOME}/Office/settings
+DROP_HOME=~/Dropbox
+DROP_SETTINGS=${DROP_HOME}/Office/settings
 
 #######
 
-if [ ! -d $DRP_HOME ]; then
+if [ ! -d $DROP_HOME ]; then
   echo 'Dropbox is required for this script'
   exit 0
 fi
@@ -20,41 +20,49 @@ EOF
 }
 
 # Create Directories if they don't exist
-mkdir -p $DRP_SETTINGS
+mkdir -p $DROP_SETTINGS
 
 # SSH
-O_SSH=~/.ssh
-DRP_SSH="$DRP_SETTINGS"/ssh
+SSH_PATH=~/.ssh
+SSH_DROP="$DROP_SETTINGS"/ssh
 
-if [[ -L $O_SSH ]]; then
-  sudo rm -rf $O_SSH
+if [[ -L $SSH_PATH ]]; then
+  read -p "SSH - Already syncing.  Recreate link? y|n " SSH_SYNC
+  case $SSH_SYNC in
+    Y|y|yes)
+      sudo rm -rf $SSH_PATH
+  esac
+elif [[ ! -d $SSH_DROP ]]; then
+  read -p "SSH - Move .ssh to Dropbox? y|n " SSH_SYNC
+else
+  SSH_SYNC=y
 fi
-if [[ `file ~/.ssh` =~ 'directory' ]]; then
-  #if [[ -e "$DRP_HOME"/Office/settings/ssh ]]; then
-  #  sudo mv ~/.ssh "$DRP_HOME"/Office/settings/ssh-old
-  #fi
-  if [[ -e "$DRP_HOME"/Office/settings/ssh ]]; then
-    ln -s "$DRP_HOME"/Office/settings/ssh ~/.ssh
-  fi
-fi
+
+case $SSH_SYNC in
+  Y|y|yes)
+    [[ -e $SSH_PATH ]] && sudo mv $SSH_PATH "$SSH_DROP"-old
+    mkdir -p "$SSH_DROP"
+    ln -s "$SSH_DROP" $SSH_PATH
+esac
+
 
 # Desktop
-O_DESKTOP=$HOME/Desktop
+DESK_PATH=$HOME/Desktop
+DESK_DROP="$DROP_SETTINGS"/Desktop
 
 # Delete if already syncing but broken
-[[ `file "$O_DESKTOP"` =~ 'broken' ]] && sudo rm -rf "$O_DESKTOP"
+[[ `file "$DESK_PATH"` =~ 'broken' ]] && sudo rm -rf "$DESK_PATH"
 
-if [[ ! -L "$O_DESKTOP" ]]; then
-  DRP_DESKTOP=${DRP_HOME}/Office/Desktop
-  if [ -d $DRP_DESKTOP ]; then
+if [[ ! -L "$DESK_PATH" ]]; then
+  if [ -d $DESK_DROP ]; then
     # Move contents if exist
-    `sudo mv "$O_DESKTOP"/* ${DRP_DESKTOP}/` >> /dev/null
-    sudo rm -rf $O_DESKTOP
+    `sudo mv "$DESK_PATH"/* ${DESK_DROP}/` >> /dev/null
+    sudo rm -rf $DESK_PATH
   else
     # If doesnt exist, create and link
-    sudo mv $O_DESKTOP $DRP_DESKTOP
+    sudo mv $DESK_PATH $DESK_DROP
   fi
-  ln -s $DRP_DESKTOP "$O_DESKTOP"
+  ln -s $DESK_DROP "$DESK_PATH"
   echo 'Desktop - Success!'
 else
   echo 'Desktop - Already Syncing'
@@ -62,31 +70,34 @@ fi
 
 # Hosts File
 HOSTS_PATH=/etc/hosts
+HOSTS_DROP=${DROP_SETTINGS}/hosts
+
 if [ ! -L $HOSTS_PATH ]; then
-  DRP_HOSTS_PATH=${DRP_HOME}/Office/settings/hosts
 
   # If dropbox exists
-  if [ -e $DRP_HOSTS_PATH ]; then
-    sudo mv $HOSTS_PATH ${DRP_HOSTS_PATH}2
+  if [ -e $HOSTS_DROP ]; then
+    sudo mv $HOSTS_PATH ${HOSTS_DROP}-old
   else
-    sudo mv $HOSTS_PATH ${DRP_HOSTS_PATH}
+    sudo mv $HOSTS_PATH ${HOSTS_DROP}
   fi
-  sudo ln -s $DRP_HOSTS_PATH $HOSTS_PATH
+  sudo ln -s $HOSTS_DROP $HOSTS_PATH
   echo 'Hosts - Success!'
 else
   echo 'Hosts - Already Syncing'
 fi
 
 # iTunes
+ITUNES_PATH=~/Music/iTunes
+ITUNES_FILES=('Album Artwork' 'iTunes Library Extras.itdb' 'iTunes Library Genius.itdb' 'iTunes Library.itl' 'iTunes Library.xml' 'iTunes Music Library Backup.xml' 'iTunes Music Library.xml' 'Previous iTunes Libraries');
+ITUNES_LENGTH=${#ITUNES_FILES[@]}
+
 if [ ! -L ~/Music/iTunes ]; then
   if [ -d ~/Music/iTunes ]; then
-    echo "iTunes - Can't continue, iTunes folder exists ~/Music/iTunes"
+    echo "iTunes - No iTunes folder found at ~/Music/iTunes"
   elif [ ! -d ~/Dropbox/Music ]; then
     echo "iTunes - Can't continue, no Dropox iTunes folder exists ~/Dropbox/Music/iTunes"
   else
     mkdir -p ~/Music/iTunes
-    ITUNES_FILES=('Album Artwork' 'iTunes Library Extras.itdb' 'iTunes Library Genius.itdb' 'iTunes Library.itl' 'iTunes Library.xml' 'iTunes Music Library Backup.xml' 'iTunes Music Library.xml' 'Previous iTunes Libraries');
-    ITUNES_LENGTH=${#ITUNES_FILES[@]}
     for ((i=0;i<$ITUNES_LENGTH;i++)); do
       if [ -L ~/Dropbox/Music/iTunes\ Library/"${ITUNES_FILES[$i]}" ]; then
         rm -rf ~/Dropbox/Music/iTunes\ Library/"${ITUNES_FILES[$i]}"
@@ -107,17 +118,21 @@ else
 fi
 
 # Filezilla
-if [ -e /Applications/FileZilla.app ]; then
-  if [[ ! -e ~/.filezilla ]]; then
-    ln -s ~/Dropbox/Office/settings/Filezilla ~/.filezilla
+FZ_APP=/Applications/FileZilla.app
+FZ_PATH=~/.filezilla
+FZ_DROP="$DROP_SETTINGS"/Filezilla
+
+if [ -e $FZ_APP ]; then
+  if [[ ! -e $FZ_PATH ]]; then
+    ln -s $FZ_DROP $FZ_PATH
     echo 'Filezilla - Success!'
-  elif [ ! -L ~/.filezilla ]; then
-    if [ -d ~/Dropbox/Office/settings/Filezilla ]; then
-      mv ~/.filezilla ~/filezilla-old
-      ln -s ~/Dropbox/Office/settings/Filezilla ~/.filezilla
+  elif [ ! -L $FZ_PATH ]; then
+    if [ -d $FZ_DROP ]; then
+      mv $FZ_PATH $FZ_PATH-old
+      ln -s $FZ_DROP $FZ_PATH
       echo 'Filezilla - Success!'
     else
-      mkdir -p ~/Dropbox/Office/settings/Filezilla
+      mkdir -p $FZ_DROP
       mv ~/.filezilla/* ~/Dropbox/Office/settings/Filezilla/
       ln -s ~/Dropbox/Office/settings/Filezilla ~/.filezilla
       echo 'Filezilla - moved to dropbox'
@@ -142,9 +157,9 @@ fi
 #  echo 'Already syncing Photoshop'
 #fi
 
-#      mv ${PS_F}/* ${DROPBOX_PS}/
+#      mv ${PS_F}/* ${PS_DROP}/
 #      rm -rf $PS_WS
-#      ln -s $DROPBOX_PS_WS $PS_WS
+#      ln -s $PS_DROP_WS $PS_WS
 
 if [[ -e /Applications/"Adobe Photoshop CS6" ]]; then
   PS_V=CS6
@@ -159,29 +174,31 @@ if [[ -n $PS_V ]]; then
   PS_FILES=("Actions Palette.psp" Gradients.psp "Keyboard Shortcuts Primary.psp" "Keyboard Shortcuts.psp" Patterns.psp Swatches.psp WorkSpaces "WorkSpaces (Modified)"  )
   PS_PREFS=~/Library/Preferences/Adobe\ Photoshop\ ${PS_V}\ Settings/
   PS_PREFS_LENGTH=${#PS_PREFS[@]}
-  DROPBOX_PS=~/Dropbox/Office/settings/photoshop/preferences/
+  PS_DROP=$DRP_SETTINGS/photoshop/preferences/
 
   for PS_F in "${PS_FILES[@]}"; do
     #echo "$PS_PREFS""$PS_F"
     if [ -e "$PS_PREFS""$PS_F" ] && [ ! -L "$PS_PREFS""$PS_F" ]; then
-      if [ -e "$DROPBOX_PS""$PS_F" ]; then
+      if [ -e "$PS_DROP""$PS_F" ]; then
         mv "$PS_PREFS""$PS_F" "$PS_PREFS""$PS_F"-old
       else
-        mv "$PS_PREFS""$PS_F" "$DROPBOX_PS""$PS_F"
+        mv "$PS_PREFS""$PS_F" "$PS_DROP""$PS_F"
       fi
     else
       rm -rf "$PS_PREFS""$PS_F"
     fi
-    ln -s "$DROPBOX_PS""$PS_F" "$PS_PREFS""$PS_F"
+    ln -s "$PS_DROP""$PS_F" "$PS_PREFS""$PS_F"
   done
   echo 'Photoshop - Success!'
 fi
 
 # Sequel Pro
-if [[ -e /Applications/"Sequel Pro.app" ]]; then
+SQ_APP=/Applications/"Sequel Pro.app"
+
+if [[ -e "$SQ_APP" ]]; then
   SQ_DROPBOX=~/Dropbox/Office/settings/sequelpro
 
-  if [[ ! -e /Applications/"Sequel Pro.app"/Contents/Frameworks/BWToolkitFramework.framework ]]; then
+  if [[ ! -e "$SQ_APP"/Contents/Frameworks/BWToolkitFramework.framework ]]; then
     SQ_OLD=1
   fi
 
@@ -225,7 +242,9 @@ if [[ -e /Applications/"Sequel Pro.app" ]]; then
 fi
 
 # Adium
-if [[ -e /Applications/Adium.app ]]; then
+ADIUM_APP=/Application/Adium.app
+
+if [[ -e $ADIUM_APP ]]; then
   adium_dir=~/Library/Application\ Support/"Adium 2.0"/Users/Default
   adium_dropbox=~/Dropbox/Office/settings/adium/Default
 
@@ -267,38 +286,44 @@ else
 fi
 
 # Safari
-safari_dir=~/Library/Safari/
-safari_dropbox=~/Dropbox/Office/settings/safari/
-if [[ -d "$safari_dir" && -d "$safari_dropbox" ]]; then
+#read -p 'Sync Safari? y/n ' safari
 
-  [[ -L "$safari_dir" ]] && sudo rm -f "$safari_dir"
-
-  [[ -d "$safari_dir" ]] && sudo mv "$safari_dir" "$safari_dropbox"-old
-
-  ln -s "$safari_dropbox" ~/Library/
-
-#  safari_preferences=(Bookmarks.plist Downloads.plist Extensions History.plist)
-#  for safari_pref in "${safari_preferences[@]}"; do
-#    safari_pref_file="$safari_dir""$safari_pref"
-#    safari_dropbox_pref_file="$safari_dropbox""$safari_pref"
+#case $safari in
+#  Y|y|yes)
 #
-#    # Delete Link if exists
-#    [[ -L "$safari_pref_file" ]] && rm -rf "$safari_pref_file"
+#    safari_dir=~/Library/Safari/
+#    safari_dropbox=~/Dropbox/Office/settings/safari/
+#    if [[ -d "$safari_dir" && -d "$safari_dropbox" ]]; then
 #
-#    if [ -e "$safari_pref_file" ];  then
-#      if [ -e "$safari_dropbox_pref_file" ]; then
-#        mv "$safari_pref_file" "$safari_dropbox_pref_file"-old
-#      else
-#        mv "$safari_pref_file" "$safari_dropbox_pref_file"
-#      fi
-#      ln -s "$safari_dropbox_pref_file" "$safari_dir"
-#    else
-#      # If Safari Pref does not exist and dropbox does
-#      if [ -e "$safari_dropbox_pref_file" ]; then
-#        ln -s "$safari_dropbox_pref_file" "$safari_dir"
-#      fi
+#      [[ -L "$safari_dir" ]] && sudo rm -f "$safari_dir"
+#
+#      [[ -d "$safari_dir" ]] && sudo mv "$safari_dir" "$safari_dropbox"-old
+#
+#      ln -s "$safari_dropbox" ~/Library/
+#
+#      #  safari_preferences=(Bookmarks.plist Downloads.plist Extensions History.plist)
+#      #  for safari_pref in "${safari_preferences[@]}"; do
+#      #    safari_pref_file="$safari_dir""$safari_pref"
+#      #    safari_dropbox_pref_file="$safari_dropbox""$safari_pref"
+#      #
+#      #    # Delete Link if exists
+#      #    [[ -L "$safari_pref_file" ]] && rm -rf "$safari_pref_file"
+#      #
+#      #    if [ -e "$safari_pref_file" ];  then
+#      #      if [ -e "$safari_dropbox_pref_file" ]; then
+#      #        mv "$safari_pref_file" "$safari_dropbox_pref_file"-old
+#      #      else
+#      #        mv "$safari_pref_file" "$safari_dropbox_pref_file"
+#      #      fi
+#      #      ln -s "$safari_dropbox_pref_file" "$safari_dir"
+#      #    else
+#      #      # If Safari Pref does not exist and dropbox does
+#      #      if [ -e "$safari_dropbox_pref_file" ]; then
+#      #        ln -s "$safari_dropbox_pref_file" "$safari_dir"
+#      #      fi
+#      #    fi
+#      #  done
+#      echo "Safari - Ran"
 #    fi
-#  done
-  echo "Safari - Ran"
-fi
+#esac
 
