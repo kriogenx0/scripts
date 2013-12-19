@@ -114,7 +114,7 @@ if [ -n "$ZSH_VERSION" ]; then
   unsetopt correct
 
   # Enable Help
-  unalias run-help
+  [[ `which run-help` =~ 'aliased to' ]] && unalias run-help
   autoload run-help
   HELPDIR=/usr/local/share/zsh/helpfiles
 
