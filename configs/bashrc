@@ -113,6 +113,11 @@ if [ -n "$ZSH_VERSION" ]; then
   unsetopt correctall
   unsetopt correct
 
+  # Enable Help
+  unalias run-help
+  autoload run-help
+  HELPDIR=/usr/local/share/zsh/helpfiles
+
 # Bash
 elif [ -n "$BASH_VERSION" ]; then
 
