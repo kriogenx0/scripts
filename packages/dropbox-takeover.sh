@@ -242,33 +242,36 @@ if [[ -e "$SQ_APP" ]]; then
 fi
 
 # Adium
-ADIUM_APP=/Application/Adium.app
+ADIUM_APP=/Applications/Adium.app
 
 if [[ -e $ADIUM_APP ]]; then
-  adium_dir=~/Library/Application\ Support/"Adium 2.0"/Users/Default
-  adium_dropbox=~/Dropbox/Office/settings/adium/Default
+  ADIUM_PREF=~/Library/Application\ Support/"Adium 2.0"/Users/Default
+  ADIUM_DROP="$DROP_SETTINGS"/adium/Default
 
-  mkdir -p "$adium_dir"
+  mkdir -p "$ADIUM_PREF"
 
-  if [[ -L "$adium_dir"/Accounts.plist ]]; then
-    echo 'Adium - Already syncing'
-  else
-    if [[ -d "$adium_dir" ]]; then
-      sudo mv "$adium_dir" "$adium_dropbox"-old
-      mkdir -p "$adium_dir"
+  #if [[ -L "$ADIUM_PREF"/Accounts.plist ]]; then
+  #  echo 'Adium - Already syncing'
+  #else
+    if [[ -d "$ADIUM_PREF" ]]; then
+      sudo mv "$ADIUM_PREF" "$adium_dropbox"-old
+      mkdir -p "$ADIUM_PREF"
     fi
 
-    ADIUM_FILES=("$adium_dir"/*)
-    #ADIUM_FILES=(Accounts.plist Confirmations.plist "Contact Alerts.plist" "Contact List Display.plist" "Detached Groups.plist" "Display Format.plist" "Events Preset.plist" General.plist libpurple/accounts.xml libpurple/certificates libpurple/logs libpurple/prefs.xml libpurple/xmpp-caps.xml Logging.plist Logs "Message Context Display.plist" otr.fingerprints OTR.plist otr.private_key "Saved Status.plist" Sorting.plist "Status Preferences.plist" "URL Handling Group.plist")
+    #ADIUM_FILES=("$ADIUM_PREF"/*)
+    ADIUM_FILES=(Accounts.plist Confirmations.plist "Contact Alerts.plist" "Contact List Display.plist" "Detached Groups.plist" "Display Format.plist" "Events Preset.plist" General.plist libpurple/accounts.xml libpurple/certificates libpurple/logs libpurple/prefs.xml libpurple/xmpp-caps.xml Logging.plist Logs "Message Context Display.plist" otr.fingerprints OTR.plist otr.private_key "Saved Status.plist" Sorting.plist "Status Preferences.plist" "URL Handling Group.plist")
 
-    for f in "${ADIUM_FILES[@]}"; do
-      if [[ ! "$f" == *ByObjectPrefs* ]]; then
-        #echo $f' synced'
-        ln -s "$f" "$adium_dir"/
+    for pref in "${ADIUM_FILES[@]}"; do
+      if [[ ! "$pref" == *ByObjectPrefs* ]]; then
+        f="$ADIUM_PREF"/"$pref"
+        [[ -L $f ]] && rm -rf "$f" && "$f removed"
+
+        ln -s "$ADIUM_DROP"/"$pref" "$ADIUM_PREF"/
+        echo $pref' synced'
       fi
     done
     echo 'Adium - Success!'
-  fi
+  #fi
 fi
 
 # Apache Takeover
