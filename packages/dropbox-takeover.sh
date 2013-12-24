@@ -250,28 +250,53 @@ if [[ -e $ADIUM_APP ]]; then
 
   mkdir -p "$ADIUM_PREF"
 
-  #if [[ -L "$ADIUM_PREF"/Accounts.plist ]]; then
-  #  echo 'Adium - Already syncing'
-  #else
-    if [[ -d "$ADIUM_PREF" ]]; then
-      sudo mv "$ADIUM_PREF" "$adium_dropbox"-old
-      mkdir -p "$ADIUM_PREF"
+  if [[ -L "$ADIUM_PREF"/Accounts.plist ]]; then
+    read -p "Adium - Already syncing.  Recreate link? y|n " ADIUM_SYNC
+    #case $SSH_SYNC in
+    #  Y|y|yes)
+        #sudo rm -rf $ADIUM_PREF
+    #esac
+  else
+    ADIUM_SYNC=y
+  fi
+
+  # ACTION
+  case $ADIUM_SYNC in
+    Y|y|yes)
+      ;;
+    *)
+      echo 'Adium - Cancelled'
+      return
+      ;;
+  esac
+
+  #if [[ -d "$ADIUM_PREF" ]]; then
+  #  sudo mv "$ADIUM_PREF" "$ADIUM_DROP"-old
+  #  mkdir -p "$ADIUM_PREF"
+  #fi
+
+  ADIUM_FILES=(Accounts.plist Confirmations.plist "Contact Alerts.plist" "Contact List Display.plist" "Detached Groups.plist" "Display Format.plist" "Event Presets.plist" General.plist libpurple/accounts.xml libpurple/certificates libpurple/logs libpurple/prefs.xml libpurple/xmpp-caps.xml Logging.plist Logs "Message Context Display.plist" otr.fingerprints OTR.plist otr.private_key "Saved Status.plist" Sorting.plist "Status Preferences.plist" "URL Handling Group.plist")
+
+  for pref in "${ADIUM_FILES[@]}"; do
+    if [[ "$pref" == *ByObjectPrefs* ]]; then
+      continue
     fi
 
-    #ADIUM_FILES=("$ADIUM_PREF"/*)
-    ADIUM_FILES=(Accounts.plist Confirmations.plist "Contact Alerts.plist" "Contact List Display.plist" "Detached Groups.plist" "Display Format.plist" "Events Preset.plist" General.plist libpurple/accounts.xml libpurple/certificates libpurple/logs libpurple/prefs.xml libpurple/xmpp-caps.xml Logging.plist Logs "Message Context Display.plist" otr.fingerprints OTR.plist otr.private_key "Saved Status.plist" Sorting.plist "Status Preferences.plist" "URL Handling Group.plist")
+    f="$ADIUM_PREF"/"$pref"
 
-    for pref in "${ADIUM_FILES[@]}"; do
-      if [[ ! "$pref" == *ByObjectPrefs* ]]; then
-        f="$ADIUM_PREF"/"$pref"
-        [[ -L $f ]] && rm -rf "$f" && "$f removed"
+    # Remove if alias
+    if [[ -L $f ]]; then
+      rm -rf "$f"
+    elif [[ -e $f ]]; then
+      [[ -e "$f"-old ]] && rm -rf "$f"-old
+      mv "$f" "$f"-old
+    fi
 
-        ln -s "$ADIUM_DROP"/"$pref" "$ADIUM_PREF"/
-        echo $pref' synced'
-      fi
-    done
-    echo 'Adium - Success!'
-  #fi
+    # Create alias
+    ln -s "$ADIUM_DROP"/"$pref" "$ADIUM_PREF"/"$pref"
+    #echo $pref' synced'
+  done
+  echo 'Adium - Success!'
 fi
 
 # Apache Takeover
