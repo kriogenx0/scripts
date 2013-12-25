@@ -247,7 +247,8 @@ ADIUM_APP=/Applications/Adium.app
 if [[ -e $ADIUM_APP ]]; then
   ADIUM_PREF=~/Library/Application\ Support/"Adium 2.0"/Users/Default
   ADIUM_DROP="$DROP_SETTINGS"/adium/Default
-  ADIUM_FILES=(Accounts.plist Confirmations.plist "Contact Alerts.plist" "Contact List Display.plist" "Detached Groups.plist" "Display Format.plist" "Event Presets.plist" General.plist libpurple/accounts.xml libpurple/certificates libpurple/logs libpurple/prefs.xml libpurple/xmpp-caps.xml Logging.plist Logs "Message Context Display.plist" otr.fingerprints OTR.plist otr.private_key "Saved Status.plist" Sorting.plist "Status Preferences.plist" "URL Handling Group.plist")
+  #ADIUM_FILES=(Accounts.plist Confirmations.plist "Contact Alerts.plist" "Contact List Display.plist" "Detached Groups.plist" "Display Format.plist" "Event Presets.plist" General.plist libpurple/accounts.xml libpurple/certificates libpurple/logs libpurple/prefs.xml libpurple/xmpp-caps.xml Logging.plist Logs "Message Context Display.plist" otr.fingerprints OTR.plist otr.private_key "Saved Status.plist" Sorting.plist "Status Preferences.plist" "URL Handling Group.plist")
+  ADIUM_FILES=(Accounts.plist Confirmations.plist "Contact Alerts.plist" "Contact List Display.plist" "Detached Groups.plist" "Display Format.plist" "Event Presets.plist" General.plist libpurple Logging.plist Logs "Message Context Display.plist" otr.fingerprints OTR.plist otr.private_key "Saved Status.plist" Sorting.plist "Status Preferences.plist" "URL Handling Group.plist")
 
   mkdir -p "$ADIUM_PREF"
 
@@ -274,14 +275,14 @@ if [[ -e $ADIUM_APP ]]; then
         # Remove if alias
         if [[ -L $f ]]; then
           rm -rf "$f"
-        elif [[ -e $f ]]; then
-          [[ -e "$f"-old ]] && rm -rf "$f"-old
-          mv "$f" "$f"-old
+        #elif [[ -e $f ]]; then
+        #  [[ -e "$f"-old ]] && rm -rf "$f"-old
+        #  mv "$f" "$f"-old
         fi
 
         # Create alias
-        ln -s "$ADIUM_DROP"/"$pref" "$ADIUM_PREF"/"$pref"
-        #echo $pref' synced'
+        [[ -e "$ADIUM_DROP" ]] && ln -s "$ADIUM_DROP"/"$pref" "$ADIUM_PREF"/"$pref"
+
       done
       echo 'Adium - Success!'
       ;;
@@ -289,11 +290,6 @@ if [[ -e $ADIUM_APP ]]; then
       echo 'Adium - Cancelled'
       ;;
   esac
-
-  #if [[ -d "$ADIUM_PREF" ]]; then
-  #  sudo mv "$ADIUM_PREF" "$ADIUM_DROP"-old
-  #  mkdir -p "$ADIUM_PREF"
-  #fi
 
 fi
 
