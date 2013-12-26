@@ -22,6 +22,8 @@ EOF
 # Create Directories if they don't exist
 mkdir -p $DROP_SETTINGS
 
+#################################
+
 # SSH
 SSH_PATH=~/.ssh
 SSH_DROP="$DROP_SETTINGS"/ssh
@@ -45,6 +47,7 @@ case $SSH_SYNC in
     ln -s "$SSH_DROP" $SSH_PATH
 esac
 
+#################################
 
 # Desktop
 DESK_PATH=$HOME/Desktop
@@ -68,6 +71,8 @@ else
   echo 'Desktop - Already Syncing'
 fi
 
+#################################
+
 # Hosts File
 HOSTS_PATH=/etc/hosts
 HOSTS_DROP=${DROP_SETTINGS}/hosts
@@ -85,6 +90,8 @@ if [ ! -L $HOSTS_PATH ]; then
 else
   echo 'Hosts - Already Syncing'
 fi
+
+#################################
 
 # iTunes
 ITUNES_PATH=~/Music/iTunes
@@ -117,6 +124,8 @@ else
   echo 'iTunes - Already syncing'
 fi
 
+#################################
+
 # Filezilla
 FZ_APP=/Applications/FileZilla.app
 FZ_PATH=~/.filezilla
@@ -144,23 +153,9 @@ else
   echo 'Filezilla - Not installed'
 fi
 
+#################################
+
 # Photoshop Settings
-#if [ ! -L ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ]; then
-#  if [[ -d /Applications/"Adobe Photoshop CS6" ]]; then
-#    if [ -d ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ]; then
-#      mv ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings-old
-#    fi
-#    ln -s ~/Dropbox/Office/settings/photoshop/Adobe\ Photoshop\ CS6\ Settings ~/Library/Preferences/Adobe\ Photoshop\ CS6\ Settings
-#  fi
-#  echo 'Syncing Photoshop settings'
-#else
-#  echo 'Already syncing Photoshop'
-#fi
-
-#      mv ${PS_F}/* ${PS_DROP}/
-#      rm -rf $PS_WS
-#      ln -s $PS_DROP_WS $PS_WS
-
 if [[ -e /Applications/"Adobe Photoshop CS6" ]]; then
   PS_V=CS6
 elif [[ -e /Applications/"Adobe Photoshop CS5" ]]; then
@@ -170,27 +165,44 @@ elif [[ -e /Applications/"Adobe Photoshop CS4" ]]; then
 fi
 
 if [[ -n $PS_V ]]; then
-  #PS_FILES=("Actions Palette.psp" Gradients.psp "Keyboard Shortcuts Primary.psp" "Keyboard Shortcuts.psp" "Optimized Output Settings" Patterns.psp Swatches.psp WorkSpaces "WorkSpaces (Modified)"  )
-  PS_FILES=("Actions Palette.psp" Gradients.psp "Keyboard Shortcuts Primary.psp" "Keyboard Shortcuts.psp" Patterns.psp Swatches.psp WorkSpaces "WorkSpaces (Modified)"  )
+  echo "Photoshop - Syncing"
+
+  PS_FILES=("Actions Palette.psp" Brushes.psp Gradients.psp "Keyboard Shortcuts Primary.psp" "Keyboard Shortcuts.psp" "Menu Customization.psp" Patterns.psp Swatches.psp "Workspace Prefs.psp" WorkSpaces "WorkSpaces (Modified)"  )
   PS_PREFS=~/Library/Preferences/Adobe\ Photoshop\ ${PS_V}\ Settings/
   PS_PREFS_LENGTH=${#PS_PREFS[@]}
-  PS_DROP=$DRP_SETTINGS/photoshop/preferences/
+  PS_DROP=$DROP_SETTINGS/photoshop/Adobe\ Photoshop\ ${PS_V}\ Settings/
+
+  mkdir -p $PS_DROP
 
   for PS_F in "${PS_FILES[@]}"; do
-    #echo "$PS_PREFS""$PS_F"
-    if [ -e "$PS_PREFS""$PS_F" ] && [ ! -L "$PS_PREFS""$PS_F" ]; then
-      if [ -e "$PS_DROP""$PS_F" ]; then
-        mv "$PS_PREFS""$PS_F" "$PS_PREFS""$PS_F"-old
-      else
-        mv "$PS_PREFS""$PS_F" "$PS_DROP""$PS_F"
+    f="$PS_PREFS""$PS_F"
+    df="$PS_DROP""$PS_F"
+
+    [[ -L "$f" ]] && rm -rf "$f"
+
+    # If Dropbox File exists
+    if [[ -e "$df" ]]; then
+
+      # If Preference Exists
+      if [[ -e "$f" ]]; then
+        mv "$f" "$f"-old
       fi
+
+    # If Dropbox File does not exist
     else
-      rm -rf "$PS_PREFS""$PS_F"
+      # Move to Dropbox
+      mv "$f" "$df"
     fi
-    ln -s "$PS_DROP""$PS_F" "$PS_PREFS""$PS_F"
+
+    # LINK DROPBOX
+    ln -s "$df" "$f"
+    #echo "--- $df \n--> $f"
+
   done
   echo 'Photoshop - Success!'
 fi
+
+#################################
 
 # Sequel Pro
 SQ_APP=/Applications/"Sequel Pro.app"
@@ -240,6 +252,8 @@ if [[ -e "$SQ_APP" ]]; then
     fi
   fi
 fi
+
+#################################
 
 # Adium
 ADIUM_APP=/Applications/Adium.app
@@ -293,6 +307,8 @@ if [[ -e $ADIUM_APP ]]; then
 
 fi
 
+#################################
+
 # Apache Takeover
 if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
   APACHE_SITES="/Users/"`whoami`"/Dropbox/Office/settings/apache/sites.conf"
@@ -306,6 +322,8 @@ if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
 else
   echo 'Apache - Already syncing'
 fi
+
+#################################
 
 # Safari
 #read -p 'Sync Safari? y/n ' safari
