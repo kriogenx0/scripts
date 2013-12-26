@@ -191,7 +191,7 @@ if [[ -n $PS_V ]]; then
     # If Dropbox File does not exist
     else
       # Move to Dropbox
-      mv "$f" "$df"
+      [[ -e "$f" ]] && mv "$f" "$df"
     fi
 
     # LINK DROPBOX
