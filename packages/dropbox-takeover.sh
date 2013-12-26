@@ -195,7 +195,7 @@ if [[ -n $PS_V ]]; then
     fi
 
     # LINK DROPBOX
-    ln -s "$df" "$f"
+    [[ -e "$df" ]] && ln -s "$df" "$f"
     #echo "--- $df \n--> $f"
 
   done
