@@ -179,6 +179,7 @@ si() {
 }
 
 # Common Binaries
+alias o='open'
 alias c='clear'
 alias lns="ln -s"
 alias bashcommands="bind -p | sed '/self.insert/d;/^#/d;/do-lowercase/d'"
@@ -378,6 +379,7 @@ pgenv() {
 
 # git
 alias ga='git add -Av; git status'
+alias gar='git reset HEAD'
 alias gai='git add -i; git status'
 alias gap='git add -p'
 
