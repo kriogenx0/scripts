@@ -34,9 +34,7 @@ if [[ -f ~/.rvm/scripts/rvm ]]; then
 fi
 
 # SET DEFAULT EDITOR
-if [[ -e /Applications/"Coda 2.app" ]]; then
-  export EDITOR=/Applications/"Coda 2.app"/Contents/MacOS/"Coda 2"
-fi
+[[ -e /usr/bin/vim ]] && export EDITOR=/usr/bin/vim
 
 # Postgres
 if [[ -e /usr/local/var/postgres ]]; then
