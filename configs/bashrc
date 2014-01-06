@@ -376,7 +376,7 @@ pgenv() {
 }
 
 # git
-alias ga='git add -Av; git status'
+alias ga='git add -A .; git status'
 alias gar='git reset HEAD'
 alias gai='git add -i; git status'
 alias gap='git add -p'
