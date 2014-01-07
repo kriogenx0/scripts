@@ -17,44 +17,22 @@ Thumbs.db
 *.tar
 *.zip
 
-# Merge Conflicts
-**.orig
-
-# VIM
-*.un
-*.un~
-*.swp
-
-# Dreamweaver
-_notes
-dwsync.xml
-
-# SVN
-.svn
-
-# Front Page
-_vti_cnf
-_vti_pvt
-_vti_script
-_vti_txt
-
-# TextMate
-*.tmproj
-tmtags
-
-# Ideas
-.idea
-
-# PivotalTracker
-.pivotalrc
-.pivotal_cache
+#############
+# Apps
 
 # Graphics
 *.psd
 *.ai
 *.eps
 
-#######################
+# Merging
+**.orig
+
+# PivotalTracker
+.pivotalrc
+.pivotal_cache
+
+###############
 # Environments
 
 # Compiled source
@@ -81,29 +59,48 @@ tmtags
 # Rails
 /.bundle
 /vendor/bundle
-# Ignore the default SQLite database.
-# /db/*.sqlite3
-# /db/*.sqlite3-journal
-# Common Libraries & Gems
+/db/*.sqlite3
+/db/*.sqlite3-journal
+# Common Libs & Gems
 .sass-cache
 *.rbc
 *.sassc
 capybara-*.html
 .rspec
-#.rvmrc
-# # Ignore all logfiles and tempfiles.
+# Logs & Temps
 /log/*
 /tmp/*
 /spec/tmp/*
-# Randoms
-/public/system/*
-/coverage/
-rerun.txt
-pickle-email-*.html
-#config/initializers/secret_token.rb
 
-#######################
+#################
 # Explicit Ignores
-ignore
-Dropbox
-dropbox
+/ignore
+/dropbox
+
+#################
+# IDEs
+
+# VIM
+*.un
+*.un~
+*.swp
+
+# SVN
+.svn
+
+# Dreamweaver
+_notes
+dwsync.xml
+
+# Front Page
+_vti_cnf
+_vti_pvt
+_vti_script
+_vti_txt
+
+# TextMate
+*.tmproj
+tmtags
+
+# Ideas
+.idea
