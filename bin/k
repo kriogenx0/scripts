@@ -69,7 +69,7 @@ apache(){
       sudo apachectl restart;
       ;;
     c|config)
-      vi /etc/apache2/httpd.conf;
+      sudo vi /etc/apache2/httpd.conf;
       ;;
     d|doctor|check)
       httpd;
