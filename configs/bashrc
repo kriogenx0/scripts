@@ -168,7 +168,7 @@ cl() {
   cd $1; ls -l
 }
 mkd() {
-  mkdir $1
+  mkdir -p $1
   cd $1
 }
 alias ds='du -hd 1'
