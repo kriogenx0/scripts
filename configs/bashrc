@@ -188,6 +188,10 @@ alias svi='sudo vim'
 alias rmf='rm -rfv'
 alias srmf='sudo rm -rf'
 alias tailf='tail -f'
+# Move & Create Directory
+mvd() {
+  mkdir -p $2; mv $1 $2
+}
 grp() {
   grep -irn $1 . --color=auto --exclude="*~"
 }
