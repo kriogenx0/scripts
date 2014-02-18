@@ -231,9 +231,10 @@ alias ports='netstat -tulanp'
 webports() {
   ps auxwww | grep LISTEN
   netstat -a | egrep 'Proto|LISTEN'
-  lsof -i tcp:80
-  lsof -i tcp:8080
-  lsof -i tcp:3000
+  #lsof -i tcp:80
+  #lsof -i tcp:8080
+  #lsof -i tcp:3000
+  lsof -wni tcp
 }
 alias wsports='webports'
 
