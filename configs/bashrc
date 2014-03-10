@@ -188,6 +188,7 @@ alias svi='sudo vim'
 alias rmf='rm -rfv'
 alias srmf='sudo rm -rf'
 alias tailf='tail -f'
+
 # Move & Create Directory
 mvd() {
   mkdir -p $2; mv $1 $2
@@ -204,6 +205,11 @@ fnd() {
 
 # Print Path
 alias ppath='echo $PATH | tr ':' "\n"'
+
+# Kill
+killa() {
+  kill `ps ax | grep $1 | awk '{print $1}'`
+}
 
 # tar compress
 tarc() {
@@ -250,6 +256,7 @@ sshcopy() {
     echo "SSH key could not be found"
   fi
 }
+alias sshconfig="vi ~/.ssh/config"
 
 # Dropbox
 alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
