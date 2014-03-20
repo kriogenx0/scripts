@@ -45,8 +45,8 @@ git config --global color.diff.white 'red reverse'
 git config --global color.diff.whitespace normal red
 git config --global color.diff.commit yellow
 git config --global color.status.header normal
-git config --global color.status.added yellow
-git config --global color.status.changed green
+git config --global color.status.added magenta
+git config --global color.status.changed yellow
 git config --global color.status.updated cyan
 git config --global color.status.untracked magenta
 git config --global color.status.nobranch red
