@@ -156,11 +156,11 @@ fi
 #################################
 
 # Photoshop Settings
-if [[ -e /Applications/"Adobe Photoshop CS6" ]]; then
+if [[ -e /Applications/Adobe\ Photoshop\ CS6 ]]; then
   PS_V=CS6
-elif [[ -e /Applications/"Adobe Photoshop CS5" ]]; then
+elif [[ -e /Applications/Adobe\ Photoshop\ CS5 ]]; then
   PS_V=CS5
-elif [[ -e /Applications/"Adobe Photoshop CS4" ]]; then
+elif [[ -e /Applications/Adobe\ Photoshop\ CS4 ]]; then
   PS_V=CS4
 fi
 
@@ -168,9 +168,9 @@ if [[ -n $PS_V ]]; then
   echo "Photoshop - Syncing"
 
   PS_FILES=("Actions Palette.psp" Brushes.psp Gradients.psp "Keyboard Shortcuts Primary.psp" "Keyboard Shortcuts.psp" "Menu Customization.psp" Patterns.psp Swatches.psp "Workspace Prefs.psp" WorkSpaces "WorkSpaces (Modified)"  )
-  PS_PREFS=~/Library/Preferences/Adobe\ Photoshop\ ${PS_V}\ Settings/
+  PS_PREFS=~/Library/Preferences/Adobe\ Photoshop\ "$PS_V"\ Settings/
   PS_PREFS_LENGTH=${#PS_PREFS[@]}
-  PS_DROP=$DROP_SETTINGS/photoshop/Adobe\ Photoshop\ ${PS_V}\ Settings/
+  PS_DROP=$DROP_SETTINGS/photoshop/Adobe\ Photoshop\ "$PS_V"\ Settings/
 
   mkdir -p $PS_DROP
 
