@@ -10,6 +10,7 @@
 kriogenx_dir=~/Sites/kriogenx
 kriogenx_rc="$kriogenx_dir"/scripts/configs/bashrc
 
+user_rc=~/Dropbox/Office/settings/bashrc
 
 # ====================
 # ENVIRONMENT VARIABLES
@@ -609,9 +610,13 @@ cdl() {
 
 # Kriogenx
 alias krc='vi "$kriogenx_rc"; source "$kriogenx_rc"'
+alias urc='vi "$user_rc"; source "$user_rc"'
 alias kd='cd "$kriogenx_dir"'
 alias kds='cd "$kriogenx_dir"/scripts'
 alias kgig='cp "$kriogenx_dir"/scripts/support/git/gitignore ./.gitignore'
 kup() {
   k up
 }
+
+[[ -e "$user_rc" ]] && source "$user_rc"
+
