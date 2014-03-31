@@ -414,6 +414,12 @@ gob() { # go back a branch
   git checkout @\{-"$1"\}
 }
 alias gb='git branch'
+# Show Branches in order
+gbb() {
+  for k in $(git branch | sed /\*/d); do
+    echo "$(git log -1 --pretty=format:"%ct" $k) $k"
+  done | sort -r | awk '{print $2}'
+}
 alias gbd='git branch -d' # delete
 alias gbdd='git branch -D' # delete!
 # delete remote
