@@ -42,7 +42,7 @@ fi
 
 case $SSH_SYNC in
   Y|y|yes)
-    [[ -e $SSH_PATH ]] && sudo mv $SSH_PATH "$SSH_DROP"-old
+    [[ -e $SSH_PATH ]] && sudo mv $SSH_PATH "$SSH_DROP"-old-`date "+%Y-%m-%d"`
     mkdir -p "$SSH_DROP"
     ln -s "$SSH_DROP" $SSH_PATH
 esac
@@ -81,7 +81,7 @@ if [ ! -L $HOSTS_PATH ]; then
 
   # If dropbox exists
   if [ -e $HOSTS_DROP ]; then
-    sudo mv $HOSTS_PATH ${HOSTS_DROP}-old
+    sudo mv $HOSTS_PATH ${HOSTS_DROP}-old-`date "+%Y-%m-%d"`
   else
     sudo mv $HOSTS_PATH ${HOSTS_DROP}
   fi
@@ -137,7 +137,7 @@ if [ -e $FZ_APP ]; then
     echo 'Filezilla - Success!'
   elif [ ! -L $FZ_PATH ]; then
     if [ -d $FZ_DROP ]; then
-      mv $FZ_PATH $FZ_PATH-old
+      mv $FZ_PATH $FZ_PATH-old-`date "+%Y-%m-%d"`
       ln -s $FZ_DROP $FZ_PATH
       echo 'Filezilla - Success!'
     else
@@ -185,7 +185,7 @@ if [[ -n $PS_V ]]; then
 
       # If Preference Exists
       if [[ -e "$f" ]]; then
-        mv "$f" "$f"-old
+        mv "$f" "$f"-old-`date "+%Y-%m-%d"`
       fi
 
     # If Dropbox File does not exist
@@ -232,7 +232,7 @@ if [[ -e "$SQ_APP" ]]; then
   # Move Current Prefs if Exist
   if [[ -f ${SQ_DROPBOX_PREF} ]]; then
     if [[ -e ${SQ_PREF} ]]; then
-      sudo mv ${SQ_PREF} ${SQ_DROPBOX_PREF}"-old"
+      sudo mv ${SQ_PREF} ${SQ_DROPBOX_PREF}-old-`date "+%Y-%m-%d"`
     #else
       #sudo mv ${SQ_PREF} ${SQ_DROPBOX_PREF}
     fi
