@@ -607,6 +607,15 @@ cdl() {
   [[ -e ~/.lastdir ]] && cd `cat ~/.lastdir`
 }
 
+# Services
+services() {
+  kextstat -kl | awk '!/com\.apple/{printf "%s %s\n", $6, $7}'
+  sudo launchctl list | sed 1d | awk '!/0x|com\.(apple|openssh|vix\.cron)|org\.(amav|apac|cups|isc|ntp|postf|x)/{print $3}'; echo; sudo launchctl getenv DYLD_INSERT_LIBRARIES; echo; sudo defaults read com.apple.loginwindow LoginHook; echo; sudo crontab -l
+  launchctl list | sed 1d | awk '!/0x|com\.apple|org\.(x|openbsd)/{print $3}'; echo; launchctl getenv DYLD_INSERT_LIBRARIES; echo; crontab -l
+  ls -A /e*/{cr,la,mach}* {,/}Lib*/{Ad,Compon,Ex,Fram,In,Keyb,La,Mail/Bu,P*P,Priv,Qu,Scripti,Servi,Spo,Sta}* L*/Fonts .la*
+  osascript -e 'tell application "System Events" to get name of login items'
+}
+
 
 # Kriogenx
 alias krc='vi "$kriogenx_rc"; source "$kriogenx_rc"'
