@@ -2,12 +2,50 @@
 DROP_HOME=~/Dropbox
 DROP_SETTINGS=${DROP_HOME}/Office/settings
 
+# TODO:
+# GET -f param to recreate links
+
 #######
 
 if [ ! -d $DROP_HOME ]; then
   echo 'Dropbox is required for this script'
   exit 0
 fi
+
+create_link() {
+  S="$1"
+  D="$2"
+  DD=
+  # Duplicate Directory
+  [[ -n $3 ]] && DD="$3" || DD="$D"-old-`date "+%Y-%m-%d"`
+
+  # Remove If Link
+  [[ -L "$S" ]] && rm -rf "$S"
+
+  # Make Dir
+  mkdir -p `dirname "$D"`
+
+  # Rename Files if Exist
+  if [[ -e "$S" ]]; then
+    # If drop exists
+    if [[ -e "$D" ]]; then
+      mv "$S" "$DD"
+    # If no drop exists
+    else
+      mv "$S" "$D"
+    fi
+  else
+    if [[ ! -e "$D" ]]; then
+      echo "Neither of locations exist:"
+      echo "Source: $S"
+      echo "Destination: $D"
+      return 0
+    fi
+  fi
+
+  # Create Links
+  ln -s "$D" "$S"
+}
 
 dropbox_takeover_help() {
   cat << EOF
