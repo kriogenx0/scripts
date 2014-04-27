@@ -200,7 +200,7 @@ update() {
   echo -n "$(cd ~/Sites/kriogenx/scripts; git pull --rebase -q)"
   # RVM
   if [[ -n `which rvm` ]]; then
-    rvm_latest=`curl -s https://raw.github.com/wayneeseguin/rvm/stable/VERSION`
+    rvm_latest=`curl -s https://raw.githubusercontent.com/wayneeseguin/rvm/stable/VERSION`
     rvm_current=`rvm --version | tr -d '\n'`
     rvm_current=${rvm_current//rvm\ /}
     rvm_current=${rvm_current//\ */}
