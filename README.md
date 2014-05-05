@@ -8,7 +8,7 @@ curl http://scripts.kriogenx.net | sh
 
 or
 
-curl https://raw.github.com/kriogenx0/scripts/master/init/curl-me.sh | sh
+curl https://raw.githubusercontent.com/kriogenx0/scripts/master/init/curl-me.sh | sh
 
 # Packages #
 Kriogenx Scripts are a series of packaged scripts that include developer installs, Mac OS X tweaks, and Dropbox goodies.
@@ -24,7 +24,7 @@ It's installing a series of essential tools:
 * Fixes for GCC
 
 To Install, Simply run:
-curl https://raw.github.com/kriogenx0/scripts/master/packages/developer-essentials.sh | sh
+curl https://raw.githubusercontent.com/kriogenx0/scripts/master/packages/developer-essentials.sh | sh
 
 ## Pimp My Shell ##
 Some scripts to get BASH or ZSH mighty fine looking.  This requires Kriogenx Scripts installed

@@ -8,7 +8,7 @@ package_install() {
   if [[ -e "$kriogenx_dir" ]]; then
     sh "$kriogenx_dir"/packages/$package
   else
-    $(curl -fLsS https://https://raw.github.com/kriogenx0/scripts/master/packages/$package)
+    $(curl -fLsS https://raw.githubusercontent.com/kriogenx0/scripts/master/packages/$package)
   fi
 }
 
