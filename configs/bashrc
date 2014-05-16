@@ -600,6 +600,7 @@ dirup() {
 # SET LAST DIR
 lastdir()
 {
+  rm ~/.lastdir
   pwd > ~/.lastdir
 }
 # CD LAST DIR
