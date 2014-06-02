@@ -111,6 +111,30 @@ fi
 
 #################################
 
+# Documents
+DOC_PATH=$HOME/Documents
+DOC_DROP="$DROP_SETTINGS"/Documents
+
+# Delete if already syncing but broken
+[[ `file "$DOC_PATH"` =~ 'broken' ]] && sudo rm -rf "$DOC_PATH"
+
+if [[ ! -L "$DOC_PATH" ]]; then
+  if [ -d $DOC_DROP ]; then
+    # Move contents if exist
+    `sudo mv "$DOC_PATH"/* ${DOC_DROP}/` >> /dev/null
+    sudo rm -rf $DOC_PATH
+  else
+    # If doesnt exist, create and link
+    sudo mv $DOC_PATH $DOC_DROP
+  fi
+  ln -s $DOC_DROP "$DOC_PATH"
+  echo 'Documents - Success!'
+else
+  echo 'Documents - Already Syncing'
+fi
+
+#################################
+
 # Hosts File
 HOSTS_PATH=/etc/hosts
 HOSTS_DROP=${DROP_SETTINGS}/hosts
