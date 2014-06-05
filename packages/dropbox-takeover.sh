@@ -218,7 +218,9 @@ fi
 #################################
 
 # Photoshop Settings
-if [[ -e /Applications/Adobe\ Photoshop\ CS6 ]]; then
+if [[ -e /Applications/Adobe\ Photoshop\ CC ]]; then
+  PS_V=CC
+elif [[ -e /Applications/Adobe\ Photoshop\ CS6 ]]; then
   PS_V=CS6
 elif [[ -e /Applications/Adobe\ Photoshop\ CS5 ]]; then
   PS_V=CS5
