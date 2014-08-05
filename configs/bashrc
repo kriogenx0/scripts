@@ -172,7 +172,7 @@ mkd() {
   mkdir -p $1
   cd $1
 }
-alias ds='du -hd 1'
+alias ds='du -d 1 | sort -n'
 si() {
   cd "$HOME/Sites/$1"
 }
