@@ -216,6 +216,30 @@ else
 fi
 
 #################################
+# Cyberduck
+
+CYBERDUCK_DROP=~/Dropbox/Office/settings/Cyberduck
+CYBERDUCK_LIB=~/Library/Application\ Support/Cyberduck
+
+if [[ ! -e $CYBERDUCK_DROP ]]; then
+  if [[ -e "$CYBERDUCK_LIB" ]]; then
+    sudo mv "$CYBERDUCK_LIB" "$CYBERDUCK_DROP"
+  else
+    mkdir -p "$CYBERDUCK_DROP"
+    ln -s "$CYBERDUCK_DROP" "$CYBERDUCK_LIB"
+  fi
+else
+  if [[ -e "$CYBERDUCK_LIB" ]]; then
+    sudo mv "$CYBERDUCK_LIB" "$CYBERDUCK_DROP"-`date "+%Y-%m-%d"`
+  else
+    ln -s "$CYBERDUCK_DROP" "$CYBERDUCK_LIB"
+  fi
+fi
+
+defaults write ch.sudo.cyberduck application.support.path "$CYBERDUCK_DROP"
+
+
+#################################
 
 # Photoshop Settings
 if [[ -e /Applications/Adobe\ Photoshop\ CC ]]; then
