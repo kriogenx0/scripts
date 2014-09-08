@@ -45,9 +45,7 @@ fi
 # =====================
 # PATH CHANGES
 
-#if [[ ! $PATH =~ '~/bin' && -e ~/bin ]]; then
-#  export PATH=$PATH:~/bin
-#fi
+[[ -e ~/bin && ! $PATH =~ '~/bin' ]] && export PATH="$PATH":~/bin
 
 # Homebrew Git
 [[ -d /usr/local/git/bin && ! $PATH =~ '/usr/local/git/bin' ]] && export PATH=/usr/local/git/bin:$PATH
