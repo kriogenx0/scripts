@@ -205,9 +205,16 @@ fnd() {
 # Print Path
 alias ppath='echo $PATH | tr ':' "\n"'
 
-# Kill
-killa() {
-  kill `ps ax | grep $1 | awk '{print $1}'`
+# Processes
+psa() {
+  if [[ -z $1 ]]; then
+    ps aux
+  else
+    ps aux | grep $1 | grep -v grep
+  fi
+}
+killps() {
+  kill -9 `psa $1 | awk '{print $2}'`
 }
 
 # tar compress
