@@ -16,7 +16,7 @@ user_rc=~/Dropbox/Office/settings/bashrc
 # ENVIRONMENT VARIABLES
 
 # Homebrew GCC
-if [[ `type CC` =~ 'not found' ]]; then
+if ! type CC >/dev/null; then
   if [[  -e /usr/local/bin/gcc-4.2 ]]; then
     export CC=/usr/local/bin/gcc-4.2
   elif [[ -e /usr/bin/gcc-4.2 ]]; then
