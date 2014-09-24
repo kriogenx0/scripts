@@ -629,7 +629,7 @@ alias krc='vi "$kriogenx_rc"; source "$kriogenx_rc"'
 alias urc='vi "$user_rc"; source "$user_rc"'
 alias kd='cd "$kriogenx_dir"'
 alias kds='cd "$kriogenx_dir"/scripts'
-alias kgig='cp "$kriogenx_dir"/scripts/support/git/gitignore ./.gitignore'
+alias kgig='cp "$kriogenx_dir"/scripts/configs/git/gitignore ./.gitignore'
 kup() {
   k up
 }
