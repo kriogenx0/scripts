@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # RVM Install
 if [[ ! -d ~/.rvm ]]; then
@@ -15,9 +15,9 @@ if [[ -f ~/.rvmrc ]]; then
 fi
 
 # Uninstall Native Ruby
-if [[ -d /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems ]]; then
-  sudo rm -r /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems
-fi
+#if [[ -d /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems ]]; then
+#  sudo rm -r /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems
+#fi
 
 echo "Removing system gems"
 sudo gem update --system > /dev/null
@@ -35,11 +35,4 @@ brew install automake
 brew install libksba
 brew install imagemagick
 brew install readline
-
-# Nginx
-if [[ ! `type nginx` =~ "not found" ]]; then
-  brew install nginx
-else
-  brew upgrade nginx
-fi
 

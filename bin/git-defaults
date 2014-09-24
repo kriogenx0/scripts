@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 if [[ -z $(cat ~/.gitconfig | grep 'email =') ]]; then
   echo 'Looks like git is not configured for a user'

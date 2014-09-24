@@ -2,30 +2,30 @@
 
 [[ -n $kriogenx_dir ]] || kriogenx_dir=$HOME/Sites/kriogenx/scripts
 
-package_install() {
+k_install() {
   package=$1
 
   if [[ -e "$kriogenx_dir" ]]; then
-    sh "$kriogenx_dir"/packages/$package
+    sh "$kriogenx_dir"/bin/$package
   else
-    $(curl -fLsS https://raw.githubusercontent.com/kriogenx0/scripts/master/packages/$package)
+    $(curl -fLsS https://raw.githubusercontent.com/kriogenx0/scripts/master/bin/$package)
   fi
 }
 
-read -p "Install developer essentials? y/n " yn
+read -p "k_install developer essentials? y/n " yn
 case $yn in
   Y|y|yes )
-    package_install developer-essentials.sh
+    k_install developer-essentials
     break;;
   N|n|no ) break;;
   * ) echo "Please answer [y]es or [n]o.";;
 esac
 
 if [[ ! -e "$kriogenx_dir" ]]; then
-  read -p "Install Kriogenx Scripts? y/n " yn
+  read -p "k_install Kriogenx Scripts? y/n " yn
   case $yn in
     Y|y|yes )
-      package_install kriogenx-install.sh
+      k_install kriogenx-k_install
       break;;
     N|n|no ) break;;
     * ) echo "Please answer [y]es or [n]o.";;
@@ -35,16 +35,16 @@ fi
 read -p "Pimp My Shell? y/n " yn
 case $yn in
   Y|y|yes )
-    package_install pimp-my-shell.sh
+    k_install pimp-my-shell
     break;;
   N|n|no ) break;;
   * ) echo "Please answer [y]es or [n]o.";;
 esac
 
-read -p "Install Ruby tools? y/n " yn
+read -p "k_install Ruby tools? y/n " yn
 case $yn in
   Y|y|yes )
-     package_install ruby-install.sh
+     k_install ruby-setup
      break;;
   N|n|no ) break;;
   * ) echo "Please answer [y]es or [n]o.";;
@@ -53,7 +53,7 @@ esac
 read -p "Pimp My Git? y/n " yn
 case $yn in
   Y|y|yes )
-    package_install git-settings.sh
+    k_install git-defaults
     break;;
   N|n|no ) break;;
   * ) echo "Please answer [y]es or [n]o.";;
@@ -62,7 +62,7 @@ esac
 read -p "Run Mac OS X Hacks? y/n " yn
 case $yn in
   Y|y|yes )
-    package_install macos.sh
+    k_install macos-defaults
     break;;
   N|n|no ) break;;
   * ) echo "Please answer [y]es or [n]o.";;
@@ -72,11 +72,12 @@ if [[ -e /Applications/Dropbox.app ]]; then
   read -p "Sync Applications with Dropbox? y/n " yn
   case $yn in
     Y|y|yes )
-      package_install dropbox-takeover.sh
+      k_install dropbox-takeover
       break;;
     N|n|no ) break;;
     * ) echo "Please answer [y]es or [n]o.";;
   esac
 fi
 
-echo 'Done!'
+echo 'Kriogenx Done!'
+

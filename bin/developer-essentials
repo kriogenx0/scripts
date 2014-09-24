@@ -29,6 +29,8 @@ else
   sudo apt-get install curl -yf
 fi
 
+######################
+
 # Git
 if [[ `which git` =~ "usr/local" ]]; then
   brew upgrade git

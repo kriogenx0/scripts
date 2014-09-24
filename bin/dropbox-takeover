@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 # Settings
 DROP_HOME=~/Dropbox
 DROP_SETTINGS=${DROP_HOME}/Office/settings
