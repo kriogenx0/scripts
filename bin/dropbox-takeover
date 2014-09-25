@@ -2,39 +2,65 @@
 
 # Settings
 DROP_HOME=~/Dropbox
-DROP_SETTINGS=${DROP_HOME}/Office/settings
+DROP_OFFICE="$DROP_HOME"/Office
+DROP_SETTINGS="$DROP_OFFICE"/settings
 
 # TODO:
 # GET -f param to recreate links
 
-#######
+#################################
+# INIT
 
-if [ ! -d $DROP_HOME ]; then
+if [[ ! -e /Applications/Dropbox.app ]] || [ ! -d $DROP_HOME ]; then
   echo 'Dropbox is required for this script'
   exit 0
 fi
 
+# Create Directories if they don't exist
+mkdir -p "$DROP_SETTINGS"
+
+#################################
+# STATICS
+
+remove_if_broken_link()
+{
+  [[ `file "$1"` =~ 'broken' ]] && sudo rm -f "$1"
+}
+
+move_contents()
+{
+  `sudo mv "$1"/* "$2"/` >> /dev/null
+  sudo rm -f "$1"
+}
+
+# create_link
+# source, destination, duplicate-destination(optional)
 create_link() {
   S="$1"
   D="$2"
   DD=
-  # Duplicate Directory
-  [[ -n $3 ]] && DD="$3" || DD="$D"-old-`date "+%Y-%m-%d"`
 
-  # Remove If Link
-  [[ -L "$S" ]] && rm -rf "$S"
+  # Remove if broken link
+  remove_if_broken_link "$S"
+
+  if [[ -L "$S" ]]; then
+    echo 'Cannot create_link - link already exists'
+    return 0
+  fi
 
   # Make Dir
   mkdir -p `dirname "$D"`
 
   # Rename Files if Exist
   if [[ -e "$S" ]]; then
-    # If drop exists
+    # If destination exists
     if [[ -e "$D" ]]; then
-      mv "$S" "$DD"
-    # If no drop exists
+      # Duplicate Directory
+      [[ -n $3 ]] && DD="$3" || DD="$1"-old-`date "+%Y-%m-%d"`
+      sudo mv "$S" "$DD"
+    # If no destination exists
     else
-      mv "$S" "$D"
+      sudo mv "$S" "$D"
     fi
   else
     if [[ ! -e "$D" ]]; then
@@ -46,35 +72,38 @@ create_link() {
   fi
 
   # Create Links
-  ln -s "$D" "$S"
+  sudo ln -s "$D" "$S"
 }
+
+#################################
+# WRAPPER
 
 dropbox_takeover_help() {
   cat << EOF
 a | all           All packages
 d | desktop       Desktop
 h | host Hosts file
-i) iTunes
-
+i | iTunes
 EOF
 }
 
-# Create Directories if they don't exist
-mkdir -p $DROP_SETTINGS
+###########################################################################
+# FUNCTIONS
+###########################################################################
 
 #################################
-
 # SSH
-SSH_PATH=~/.ssh
-SSH_DROP="$DROP_SETTINGS"/ssh
 
-if [[ -L $SSH_PATH ]]; then
+SSH_SRC=~/.ssh
+SSH_DRP="$DROP_SETTINGS"/ssh
+
+if [[ -L $SSH_SRC ]]; then
   read -p "SSH - Already syncing.  Recreate link? y|n " SSH_SYNC
   case $SSH_SYNC in
     Y|y|yes)
-      sudo rm -rf $SSH_PATH
+      sudo rm -rf $SSH_SRC
   esac
-elif [[ ! -d $SSH_DROP ]]; then
+elif [[ ! -d $SSH_DRP ]]; then
   read -p "SSH - Move .ssh to Dropbox? y|n " SSH_SYNC
 else
   SSH_SYNC=y
@@ -82,168 +111,100 @@ fi
 
 case $SSH_SYNC in
   Y|y|yes)
-    [[ -e $SSH_PATH ]] && sudo mv $SSH_PATH "$SSH_DROP"-old-`date "+%Y-%m-%d"`
-    mkdir -p "$SSH_DROP"
-    ln -s "$SSH_DROP" $SSH_PATH
+    create_link "$SSH_SRC" "$SSH_DRP"
 esac
 
 #################################
-
 # Desktop
-DESK_PATH=$HOME/Desktop
-DESK_DROP="$DROP_SETTINGS"/Desktop
 
-# Delete if already syncing but broken
-[[ `file "$DESK_PATH"` =~ 'broken' ]] && sudo rm -rf "$DESK_PATH"
+DESK_SRC=$HOME/Desktop
+DESK_DRP="$DROP_OFFICE"/Desktop
 
-if [[ ! -L "$DESK_PATH" ]]; then
-  if [ -d $DESK_DROP ]; then
-    # Move contents if exist
-    `sudo mv "$DESK_PATH"/* ${DESK_DROP}/` >> /dev/null
-    sudo rm -rf $DESK_PATH
-  else
-    # If doesnt exist, create and link
-    sudo mv $DESK_PATH $DESK_DROP
-  fi
-  ln -s $DESK_DROP "$DESK_PATH"
-  echo 'Desktop - Success!'
-else
-  echo 'Desktop - Already Syncing'
-fi
+create_link "$DESK_SRC" "$DESK_DRP"
+echo 'Desktop - Syncing'
 
 #################################
-
 # Documents
-DOC_PATH=$HOME/Documents
-DOC_DROP="$DROP_SETTINGS"/Documents
+
+DOC_SRC=$HOME/Documents
+DOC_DRP="$DROP_OFFICE"/Documents
+
+echo 'Documents - Syncing...'
 
 # Delete if already syncing but broken
-[[ `file "$DOC_PATH"` =~ 'broken' ]] && sudo rm -rf "$DOC_PATH"
+[[ `file "$DOC_SRC"` =~ 'broken' ]] && sudo rm -rf "$DOC_SRC"
 
-if [[ ! -L "$DOC_PATH" ]]; then
-  if [ -d $DOC_DROP ]; then
+if [[ ! -L "$DOC_SRC" ]]; then
+  if [ -d "$DOC_DRP" ]; then
     # Move contents if exist
-    `sudo mv "$DOC_PATH"/* ${DOC_DROP}/` >> /dev/null
-    sudo rm -rf $DOC_PATH
+    `sudo mv "$DOC_SRC"/* "$DOC_DRP"/` >> /dev/null
+    sudo rm -rf "$DOC_SRC"
   else
     # If doesnt exist, create and link
-    sudo mv $DOC_PATH $DOC_DROP
+    sudo mv "$DOC_SRC" "$DOC_DRP"
   fi
-  ln -s $DOC_DROP "$DOC_PATH"
+  ln -s "$DOC_DRP" "$DOC_SRC"
   echo 'Documents - Success!'
 else
   echo 'Documents - Already Syncing'
 fi
 
 #################################
-
 # Hosts File
-HOSTS_PATH=/etc/hosts
-HOSTS_DROP=${DROP_SETTINGS}/hosts
 
-if [ ! -L $HOSTS_PATH ]; then
+HOSTS_SRC=/etc/hosts
+HOSTS_DRP="$DROP_SETTINGS"/hosts
 
-  # If dropbox exists
-  if [ -e $HOSTS_DROP ]; then
-    sudo mv $HOSTS_PATH ${HOSTS_DROP}-old-`date "+%Y-%m-%d"`
-  else
-    sudo mv $HOSTS_PATH ${HOSTS_DROP}
-  fi
-  sudo ln -s $HOSTS_DROP $HOSTS_PATH
-  echo 'Hosts - Success!'
-else
-  echo 'Hosts - Already Syncing'
-fi
+create_link "$HOSTS_SRC" "$HOSTS_DRP"
+echo 'Hosts - Syncing'
+
 
 #################################
-
 # iTunes
-ITUNES_PATH=~/Music/iTunes
-ITUNES_FILES=('Album Artwork' 'iTunes Library Extras.itdb' 'iTunes Library Genius.itdb' 'iTunes Library.itl' 'iTunes Library.xml' 'iTunes Music Library Backup.xml' 'iTunes Music Library.xml' 'Previous iTunes Libraries');
-ITUNES_LENGTH=${#ITUNES_FILES[@]}
 
-if [ ! -L ~/Music/iTunes ]; then
-  if [ -d ~/Music/iTunes ]; then
-    echo "iTunes - No iTunes folder found at ~/Music/iTunes"
-  elif [ ! -d ~/Dropbox/Music ]; then
-    echo "iTunes - Can't continue, no Dropox iTunes folder exists ~/Dropbox/Music/iTunes"
-  else
-    mkdir -p ~/Music/iTunes
-    for ((i=0;i<$ITUNES_LENGTH;i++)); do
-      if [ -L ~/Dropbox/Music/iTunes\ Library/"${ITUNES_FILES[$i]}" ]; then
-        rm -rf ~/Dropbox/Music/iTunes\ Library/"${ITUNES_FILES[$i]}"
-      fi
-      ln -s ~/Dropbox/Music/iTunes\ Library/"${ITUNES_FILES[$i]}" ~/Music/iTunes
-    done
-    mkdir -p ~/Music/iTunes/iTunes\ Music
-    ln -s ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/Music ~/Music/iTunes/iTunes\ Music
-    ln -s ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/Books ~/Music/iTunes/iTunes\ Music
-    ln -s ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/Voice\ Memos ~/Music/iTunes/iTunes\ Music
-    #if [ -f ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/.iTunes\ Preferences.plist ]; then
-    #  ln -s ~/Dropbox/Music/iTunes\ Library/iTunes\ Music/.iTunes\ Preferences.plist ~/Music/iTunes/iTunes\ Music
-    #fi
-    echo 'iTunes - Success!'
-  fi
-else
-  echo 'iTunes - Already syncing'
+ITUNES_SRC=~/Music/iTunes
+ITUNES_DROP="$DROP_SETTINGS"/iTunes
+
+if [[ -e "$ITUNES_SRC" ]] && [[ ! -L "$ITUNES_SRC" ]]; then
+  read -p "iTunes - sync? y|n " ITUNES_SYNC
+  case $ITUNES_SYNC in
+    Y|y|yes)
+      $ITUNES_SYNC=y
+  esac
+fi
+
+if [[ $ITUNES_SYNC = y ]]; then
+  create_link "$ITUNES_SRC" "$ITUNES_DROP"
+  echo 'iTunes - Syncing'
 fi
 
 #################################
-
 # Filezilla
+
 FZ_APP=/Applications/FileZilla.app
-FZ_PATH=~/.filezilla
-FZ_DROP="$DROP_SETTINGS"/Filezilla
+FZ_SRC=~/.filezilla
+FZ_DRP="$DROP_SETTINGS"/Filezilla
 
 if [ -e $FZ_APP ]; then
-  if [[ ! -e $FZ_PATH ]]; then
-    ln -s $FZ_DROP $FZ_PATH
-    echo 'Filezilla - Success!'
-  elif [ ! -L $FZ_PATH ]; then
-    if [ -d $FZ_DROP ]; then
-      mv $FZ_PATH $FZ_PATH-old-`date "+%Y-%m-%d"`
-      ln -s $FZ_DROP $FZ_PATH
-      echo 'Filezilla - Success!'
-    else
-      mkdir -p $FZ_DROP
-      mv ~/.filezilla/* ~/Dropbox/Office/settings/Filezilla/
-      ln -s ~/Dropbox/Office/settings/Filezilla ~/.filezilla
-      echo 'Filezilla - moved to dropbox'
-    fi
-  else
-    echo 'Filezilla - Already syncing'
-  fi
-else
-  echo 'Filezilla - Not installed'
+  create_link "$FZ_SRC" "$FZ_DRP"
+  echo 'Filezilla - Syncing'
 fi
 
 #################################
 # Cyberduck
 
-CYBERDUCK_DROP=~/Dropbox/Office/settings/Cyberduck
-CYBERDUCK_LIB=~/Library/Application\ Support/Cyberduck
+CYBERDUCK_SRC=~/Library/Application\ Support/Cyberduck
+CYBERDUCK_DRP=~/Dropbox/Office/settings/Cyberduck
 
-if [[ ! -e $CYBERDUCK_DROP ]]; then
-  if [[ -e "$CYBERDUCK_LIB" ]]; then
-    sudo mv "$CYBERDUCK_LIB" "$CYBERDUCK_DROP"
-  else
-    mkdir -p "$CYBERDUCK_DROP"
-    ln -s "$CYBERDUCK_DROP" "$CYBERDUCK_LIB"
-  fi
-else
-  if [[ -e "$CYBERDUCK_LIB" ]]; then
-    sudo mv "$CYBERDUCK_LIB" "$CYBERDUCK_DROP"-`date "+%Y-%m-%d"`
-  else
-    ln -s "$CYBERDUCK_DROP" "$CYBERDUCK_LIB"
-  fi
-fi
+create_link "$CYBERDUCK_SRC" "$CYBERDUCK_DRP"
+echo 'Cyberduck - Syncing'
 
 defaults write ch.sudo.cyberduck application.support.path "$CYBERDUCK_DROP"
 
 
 #################################
+# Photoshop
 
-# Photoshop Settings
 if [[ -e /Applications/Adobe\ Photoshop\ CC ]]; then
   PS_V=CC
 elif [[ -e /Applications/Adobe\ Photoshop\ CS6 ]]; then
@@ -262,7 +223,7 @@ if [[ -n $PS_V ]]; then
   PS_PREFS_LENGTH=${#PS_PREFS[@]}
   PS_DROP=$DROP_SETTINGS/photoshop/Adobe\ Photoshop\ "$PS_V"\ Settings/
 
-  mkdir -p $PS_DROP
+  mkdir -p "$PS_DROP"
 
   for PS_F in "${PS_FILES[@]}"; do
     f="$PS_PREFS""$PS_F"
@@ -293,8 +254,8 @@ if [[ -n $PS_V ]]; then
 fi
 
 #################################
-
 # Sequel Pro
+
 SQ_APP=/Applications/"Sequel Pro.app"
 
 if [[ -e "$SQ_APP" ]]; then
@@ -344,8 +305,8 @@ if [[ -e "$SQ_APP" ]]; then
 fi
 
 #################################
-
 # Adium
+
 ADIUM_APP=/Applications/Adium.app
 
 if [[ -e $ADIUM_APP ]]; then
@@ -398,8 +359,8 @@ if [[ -e $ADIUM_APP ]]; then
 fi
 
 #################################
-
 # Apache Takeover
+
 if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
   APACHE_SITES="/Users/"`whoami`"/Dropbox/Office/settings/apache/sites.conf"
   echo "\n# Load Dropbox Sites" | sudo tee -a /private/etc/apache2/httpd.conf
@@ -412,48 +373,4 @@ if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
 else
   echo 'Apache - Already syncing'
 fi
-
-#################################
-
-# Safari
-#read -p 'Sync Safari? y/n ' safari
-
-#case $safari in
-#  Y|y|yes)
-#
-#    safari_dir=~/Library/Safari/
-#    safari_dropbox=~/Dropbox/Office/settings/safari/
-#    if [[ -d "$safari_dir" && -d "$safari_dropbox" ]]; then
-#
-#      [[ -L "$safari_dir" ]] && sudo rm -f "$safari_dir"
-#
-#      [[ -d "$safari_dir" ]] && sudo mv "$safari_dir" "$safari_dropbox"-old
-#
-#      ln -s "$safari_dropbox" ~/Library/
-#
-#      #  safari_preferences=(Bookmarks.plist Downloads.plist Extensions History.plist)
-#      #  for safari_pref in "${safari_preferences[@]}"; do
-#      #    safari_pref_file="$safari_dir""$safari_pref"
-#      #    safari_dropbox_pref_file="$safari_dropbox""$safari_pref"
-#      #
-#      #    # Delete Link if exists
-#      #    [[ -L "$safari_pref_file" ]] && rm -rf "$safari_pref_file"
-#      #
-#      #    if [ -e "$safari_pref_file" ];  then
-#      #      if [ -e "$safari_dropbox_pref_file" ]; then
-#      #        mv "$safari_pref_file" "$safari_dropbox_pref_file"-old
-#      #      else
-#      #        mv "$safari_pref_file" "$safari_dropbox_pref_file"
-#      #      fi
-#      #      ln -s "$safari_dropbox_pref_file" "$safari_dir"
-#      #    else
-#      #      # If Safari Pref does not exist and dropbox does
-#      #      if [ -e "$safari_dropbox_pref_file" ]; then
-#      #        ln -s "$safari_dropbox_pref_file" "$safari_dir"
-#      #      fi
-#      #    fi
-#      #  done
-#      echo "Safari - Ran"
-#    fi
-#esac
 
