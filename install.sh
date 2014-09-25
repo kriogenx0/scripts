@@ -12,7 +12,7 @@ k_install() {
   fi
 }
 
-read -p "k_install developer essentials? y/n " yn
+read -p "Developer Essentials? y/n " yn
 case $yn in
   Y|y|yes )
     k_install developer-essentials
@@ -22,7 +22,7 @@ case $yn in
 esac
 
 if [[ ! -e "$kriogenx_dir" ]]; then
-  read -p "k_install Kriogenx Scripts? y/n " yn
+  read -p "Kriogenx Scripts? y/n " yn
   case $yn in
     Y|y|yes )
       k_install kriogenx-k_install
@@ -41,7 +41,7 @@ case $yn in
   * ) echo "Please answer [y]es or [n]o.";;
 esac
 
-read -p "k_install Ruby tools? y/n " yn
+read -p "Ruby tools? y/n " yn
 case $yn in
   Y|y|yes )
      k_install ruby-setup
