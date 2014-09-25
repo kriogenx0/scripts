@@ -214,6 +214,11 @@ update() {
       msg "Already latest" g
     fi
   fi
+  # Composer
+  if [[ -n `which composer` ]]; then
+    msg "Composer" w o n; msg " - " n; msg "Updating..." y
+    composer self-update
+  fi
   # Brew
   if [[ ! `type brew` =~ 'not found' ]]; then
     msg "Brew" w o n; msg " - " n; msg "Updating..." y
