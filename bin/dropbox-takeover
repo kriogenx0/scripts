@@ -75,7 +75,7 @@ create_link() {
   sudo ln -s "$D" "$S"
 }
 
-move_and_create_links() {
+move_and_create_link() {
   S="$1"
   D="$2"
 
@@ -132,7 +132,7 @@ esac
 DESK_SRC=$HOME/Desktop
 DESK_DRP="$DROP_OFFICE"/Desktop
 
-move_and_create_links "$DESK_SRC" "$DESK_DRP"
+move_and_create_link "$DESK_SRC" "$DESK_DRP"
 echo 'Desktop - Syncing'
 
 #################################
@@ -141,7 +141,7 @@ echo 'Desktop - Syncing'
 DOC_SRC=$HOME/Documents
 DOC_DRP="$DROP_OFFICE"/Documents
 
-move_and_create_links "$DOC_SRC" "$DOC_DRP"
+move_and_create_link "$DOC_SRC" "$DOC_DRP"
 echo 'Documents - Syncing'
 
 #################################
@@ -369,3 +369,18 @@ else
   echo 'Apache - Already syncing'
 fi
 
+#################################
+# Coda 2
+
+if [[ -e /Applications/Coda\ 2.app ]]; then
+
+  DESK_SRC=$HOME/Desktop
+  DESK_DRP="$DROP_OFFICE"/Desktop
+
+  move_and_create_link ~/Library/Application\ Support/Coda\ 2 "$DROP_SETTINGS"/Coda2/Application\ Support
+  create_link ~/Library/Preferences/com.panic.Coda2.plist "$DROP_SETTINGS"/Coda2/com.panic.Coda2.plist
+  create_link ~/Library/Preferences/com.panic.Coda2.LSSharedFileList.plist "$DROP_SETTINGS"/Coda2/com.panic.Coda2.LSSharedFileList.plist
+
+  echo 'Coda 2 - Syncing'
+
+fi
