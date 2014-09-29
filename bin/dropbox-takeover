@@ -40,7 +40,6 @@ create_link() {
   D="$2"
   DD=
 
-  # Remove if broken link
   remove_if_broken_link "$S"
 
   if [[ -L "$S" ]]; then
@@ -72,7 +71,20 @@ create_link() {
   fi
 
   # Create Links
+  echo "create_link $S $D"
   sudo ln -s "$D" "$S"
+}
+
+move_and_create_links() {
+  S="$1"
+  D="$2"
+
+  if [[ ! -L "$S" ]] && [[ -d "$S" ]] && [[ -d "$D" ]]; then
+    sudo mv "$S"/* "$D"/ # Move contents if exist
+    sudo rm -rf "$S"
+  fi
+
+  create_link "$S" "$D"
 }
 
 #################################
@@ -88,7 +100,7 @@ EOF
 }
 
 ###########################################################################
-# FUNCTIONS
+# COMPONENTS
 ###########################################################################
 
 #################################
@@ -120,7 +132,7 @@ esac
 DESK_SRC=$HOME/Desktop
 DESK_DRP="$DROP_OFFICE"/Desktop
 
-create_link "$DESK_SRC" "$DESK_DRP"
+move_and_create_links "$DESK_SRC" "$DESK_DRP"
 echo 'Desktop - Syncing'
 
 #################################
@@ -129,25 +141,8 @@ echo 'Desktop - Syncing'
 DOC_SRC=$HOME/Documents
 DOC_DRP="$DROP_OFFICE"/Documents
 
-echo 'Documents - Syncing...'
-
-# Delete if already syncing but broken
-[[ `file "$DOC_SRC"` =~ 'broken' ]] && sudo rm -rf "$DOC_SRC"
-
-if [[ ! -L "$DOC_SRC" ]]; then
-  if [ -d "$DOC_DRP" ]; then
-    # Move contents if exist
-    `sudo mv "$DOC_SRC"/* "$DOC_DRP"/` >> /dev/null
-    sudo rm -rf "$DOC_SRC"
-  else
-    # If doesnt exist, create and link
-    sudo mv "$DOC_SRC" "$DOC_DRP"
-  fi
-  ln -s "$DOC_DRP" "$DOC_SRC"
-  echo 'Documents - Success!'
-else
-  echo 'Documents - Already Syncing'
-fi
+move_and_create_links "$DOC_SRC" "$DOC_DRP"
+echo 'Documents - Syncing'
 
 #################################
 # Hosts File
@@ -310,7 +305,7 @@ fi
 ADIUM_APP=/Applications/Adium.app
 
 if [[ -e $ADIUM_APP ]]; then
-  ADIUM_PREF=~/Library/Application\ Support/"Adium 2.0"/Users/Default
+  ADIUM_PREF=~/Library/Application\ Support/Adium\ 2.0/Users/Default
   ADIUM_DROP="$DROP_SETTINGS"/adium/Default
   #ADIUM_FILES=(Accounts.plist Confirmations.plist "Contact Alerts.plist" "Contact List Display.plist" "Detached Groups.plist" "Display Format.plist" "Event Presets.plist" General.plist libpurple/accounts.xml libpurple/certificates libpurple/logs libpurple/prefs.xml libpurple/xmpp-caps.xml Logging.plist Logs "Message Context Display.plist" otr.fingerprints OTR.plist otr.private_key "Saved Status.plist" Sorting.plist "Status Preferences.plist" "URL Handling Group.plist")
   ADIUM_FILES=(Accounts.plist Confirmations.plist "Contact Alerts.plist" "Contact List Display.plist" "Detached Groups.plist" "Display Format.plist" "Event Presets.plist" General.plist libpurple Logging.plist Logs "Message Context Display.plist" otr.fingerprints OTR.plist otr.private_key "Saved Status.plist" Sorting.plist "Status Preferences.plist" "URL Handling Group.plist")
