@@ -25,7 +25,7 @@ if [[ ! -e "$kriogenx_dir" ]]; then
   read -p "Kriogenx Scripts? y/n " yn
   case $yn in
     Y|y|yes )
-      k_install kriogenx-k_install
+      k_install kriogenx-install
       break;;
     N|n|no ) break;;
     * ) echo "Please answer [y]es or [n]o.";;
