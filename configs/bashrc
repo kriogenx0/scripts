@@ -4,13 +4,20 @@
 # FOR ZSH AND BASH
 # scripts.kriogenx.net
 
+# =================
+# KILL DUPLICATE
+
+#if [[ -n $KRIOGENX_DIR ]]; then
+#  echo 'Kriogenx already loaded'
+#  return
+#fi
+
 # =====================
 # SETTINGS
 
-kriogenx_dir=~/Sites/kriogenx
-kriogenx_rc="$kriogenx_dir"/scripts/configs/bashrc
-
-user_rc=~/Dropbox/Office/settings/bashrc
+export KRIOGENX_DIR=~/Sites/kriogenx
+export KRIOGENX_RC="$KRIOGENX_DIR"/scripts/configs/bashrc
+export USER_RC=~/Dropbox/Office/settings/bashrc
 
 # ====================
 # ENVIRONMENT VARIABLES
@@ -45,8 +52,6 @@ fi
 # =====================
 # PATH CHANGES
 
-[[ -e ~/bin && ! $PATH =~ '~/bin' ]] && export PATH="$PATH":~/bin
-
 # Homebrew Git
 [[ -d /usr/local/git/bin && ! $PATH =~ '/usr/local/git/bin' ]] && export PATH=/usr/local/git/bin:$PATH
 
@@ -55,32 +60,38 @@ export PATH=${PATH//:\/usr\/local\/bin/}
 [[ ! $PATH =~ '/usr/local/bin' ]] && export PATH=/usr/local/bin:$PATH
 [[ ! $PATH =~ '/usr/local/sbin' ]] && export PATH=/usr/local/sbin:$PATH
 
+append_path()
+{
+  [[ -e $1 ]] && [[ ! $PATH =~ $1 ]] && export PATH="$PATH":$1
+}
+
+# User Bin
+append_path $HOME/bin
+
 # RVM Bin
-if [[ ! '.rvm/bin' =~ $PATH ]]; then
-  export PATH=$PATH:$HOME/.rvm/bin
-fi
+append_path $HOME/.rvm/bin
 
 # RVM Gem Error
 #export GEM_BASE=${GEM_HOME//@[a-zA-Z0-9]*/}
 #[[ $GEM_BASE != $GEM_HOME && -d $GEM_BASE/bin ]] && export PATH=$GEM_BASE/bin:$PATH
 
 # RVM Load Gem Bin
-[[ -d $GEM_HOME/bin && ! $PATH =~ $GEM_HOME/bin ]] && export PATH=$GEM_HOME/bin:$PATH
+append_path $GEM_HOME/bin
 
 # Apple Command Line
-[[ -d /Developer/usr/bin && ! $PATH =~ /Developer/usr/bin ]] && export PATH=$PATH:/Developer/usr/bin
+append_path /Developer/usr/bin
 
 # MySQL Native Install
-[[ -d /usr/local/mysql/support-files && ! $PATH =~ /usr/local/mysql/support-files ]] && export PATH=$PATH:/usr/local/mysql/support-files
-[[ -d /usr/local/mysql/bin && ! $PATH =~ /usr/local/mysql/bin ]] && export PATH=$PATH:/usr/local/mysql/bin
+append_path /usr/local/mysql/support-files
+append_path /usr/local/mysql/bin
 
 # Kriogenx Bin
-export PATH=$PATH:"$kriogenx_dir"/scripts/bin
+append_path "$KRIOGENX_DIR"/scripts/bin
 
 # Xcode Developer
-#if [[ -e /Applications/Xcode.app/Contents/Developer ]]; then
-  #export PATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:$PATH
-#fi
+append_path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+append_path /Applications/Xcode.app/Contents/Developer/usr/bin
+
 
 # =========================
 # PIMP MY SHELL
@@ -97,7 +108,7 @@ if [ -n "$ZSH_VERSION" ]; then
     [[ -e ~/.rvm/scripts/rvm ]] && source ~/.rvm/scripts/rvm
 
     ZSH=$HOME/.oh-my-zsh # oh-my-zsh config
-    ZSH_CUSTOM="$kriogenx_dir"/scripts/configs
+    ZSH_CUSTOM="$KRIOGENX_DIR"/scripts/configs
     ZSH_THEME="kriogenx" # ~/.oh-my-zsh/themes/
 
     #plugins=(git rvm fasd rake rails) # ~/.oh-my-zsh/custom/plugins/
@@ -625,14 +636,14 @@ services() {
 
 
 # Kriogenx
-alias krc='vi "$kriogenx_rc"; source "$kriogenx_rc"'
-alias urc='vi "$user_rc"; source "$user_rc"'
-alias kd='cd "$kriogenx_dir"'
-alias kds='cd "$kriogenx_dir"/scripts'
-alias kgig='cp "$kriogenx_dir"/scripts/configs/git/gitignore ./.gitignore'
+alias krc='vi "$KRIOGENX_RC"; source "$KRIOGENX_RC"'
+alias urc='vi "$USER_RC"; source "$USER_RC"'
+alias kd='cd "$KRIOGENX_DIR"'
+alias kds='cd "$KRIOGENX_DIR"/scripts'
+alias kgig='cp "$KRIOGENX_DIR"/scripts/configs/git/gitignore ./.gitignore'
 kup() {
   k up
 }
 
-[[ -e "$user_rc" ]] && source "$user_rc"
+[[ -e "$USER_RC" ]] && source "$USER_RC"
 
