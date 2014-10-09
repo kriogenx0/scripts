@@ -1,0 +1,63 @@
+#!/usr/bin/env sh
+
+case "$1" in
+  s|start)
+    sudo apachectl restart;
+    msg "Apache Started" g
+    ;;
+  r|restart)
+    sudo apachectl restart;
+    msg "Apache Restarted" g
+    ;;
+  q|quit|stop)
+    sudo apachectl stop;
+    msg "Apache Stopped" y
+    ;;
+  sites)
+    if [[ -f ~/Dropbox/Office/settings/apache/sites.conf ]]; then
+      sudo vi ~/Dropbox/Office/settings/apache/sites.conf;
+    else
+      sudo vi /etc/apache2/extra/httpd-vhosts.conf;
+    fi
+    sudo vi /etc/hosts;
+    sudo apachectl restart;
+    ;;
+  autosites)
+    A_SITES=`ls ~/Sites`
+    for SITE in "${A_SITES[@]}"; do
+      echo $SITE
+    done
+    ;;
+  c|config)
+    sudo vi /etc/apache2/httpd.conf;
+    ;;
+  d|doctor|check)
+    httpd;
+    ;;
+  l|log)
+    tail -f /private/var/log/apache2/error_log;
+    ;;
+  t|status)
+    APACHE_STATUS=`ps ax | grep /usr/sbin/httpd | grep -v grep | cut -c1-5 | paste -s -`;
+    echo -n "Apache is "
+    if [[ -n $APACHE_STATUS ]]; then
+      msg "running" g
+      echo $APACHE_STATUS
+    else
+      msg "not running" r
+    fi
+    ;;
+  i|installed)
+    [[ -n `which apachectl` ]] && echo "true" || echo "false"
+    ;;
+  *)
+    msg "a - apache" w o
+    echo "  s | start          Start Apache"
+    echo "  q | quit           Stop Apache"
+    echo "  r | restart        Restart Apache sites"
+    echo "  t | status         Apache running status"
+    echo "  sites              Edit Sites file, then hosts file"
+    echo "  c | config         Edit configuration file"
+    echo "  l | log            Apache log"
+    ;;
+esac

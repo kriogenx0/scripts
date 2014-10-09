@@ -354,7 +354,7 @@ if [[ -e $ADIUM_APP ]]; then
 fi
 
 #################################
-# Apache Takeover
+# Apache
 
 if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
   APACHE_SITES="/Users/"`whoami`"/Dropbox/Office/settings/apache/sites.conf"
@@ -364,6 +364,13 @@ if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
   if [[ ! -f "$APACHE_SITES" ]]; then
     echo '################\n# Add sites here\n' | sudo tee -a "$APACHE_SITES"
   fi
+
+  if [[ ! -e /etc/php.ini ]] || [[ -e "$DROP_SETTINGS"/apache/php.ini ]]; then
+    cp /etc/php.ini.default "$DROP_SETTINGS"/apache/php.ini
+  fi
+
+  create_link "$DROP_SETTINGS"/apache/php.ini /etc/php.ini
+
   echo 'Apache - Success!'
 else
   echo 'Apache - Already syncing'
