@@ -59,5 +59,6 @@ case "$1" in
     echo "  sites              Edit Sites file, then hosts file"
     echo "  c | config         Edit configuration file"
     echo "  l | log            Apache log"
+    echo "  d | doctor         Doctor check config files"
     ;;
 esac
