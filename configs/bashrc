@@ -225,7 +225,8 @@ psa() {
   fi
 }
 killps() {
-  kill -9 `psa $1 | awk '{print $2}'`
+  PROCESSES=`psa $1 | awk '{print $2}'`
+  [[ -n $PROCESSES ]] && kill -9 $PROCESSES
 }
 
 # tar compress

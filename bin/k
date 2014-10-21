@@ -3,7 +3,20 @@
 
 A_SITES=(~/Sites/*)
 
-help(){
+psa() {
+  if [[ -z $1 ]]; then
+    ps aux
+  else
+    ps aux | grep $1 | grep -v grep
+  fi
+}
+
+killps() {
+  PROCESSES=`psa $1 | awk '{print $2}'`
+  [[ -n $PROCESSES ]] && kill -9 $PROCESSES
+}
+
+help() {
   msg "Kriogenx" y
   echo 'useage: k [appname] <command>'
   echo ''
@@ -137,28 +150,6 @@ mysql(){
   esac
 }
 
-postgres(){
-  case "$2" in
-    s|start)
-      pg_ctl start;
-      ;;
-    q|quit|stop)
-      pg_ctl stop
-      ;;
-    t|status)
-      echo "PGDATA:    $PGDATA"
-      ;;
-    i|installed)
-      [[ -n `which pg_ctl` ]] && echo "true" || echo "false"
-      ;;
-    *)
-      echo "\e[0;36mp - postgres\e[0m"
-      echo "  s | start          Start"
-      echo "  q | stop | quit    Stop"
-      ;;
-  esac
-}
-
 nginx(){
   case "$2" in
     s|start)
@@ -191,6 +182,44 @@ nginx(){
       echo "  s | start          Start"
       echo "  q | quit           Stop"
       echo "  c | config         Edit Config file"
+      ;;
+  esac
+}
+
+postgres(){
+  case "$2" in
+    s|start)
+      pg_ctl start;
+      ;;
+    q|quit|stop)
+      pg_ctl stop
+      ;;
+    t|status)
+      echo "PGDATA:    $PGDATA"
+      ;;
+    i|installed)
+      [[ -n `which pg_ctl` ]] && echo "true" || echo "false"
+      ;;
+    *)
+      echo "\e[0;36mp - postgres\e[0m"
+      echo "  s | start          Start"
+      echo "  q | stop | quit    Stop"
+      ;;
+  esac
+}
+
+redis() {
+  case "$2" in
+    s|start)
+      redis-server &
+      ;;
+    q|quit|stop)
+      killps redis-server
+      ;;
+    *)
+      echo "\e[0;36mr - redis\e[0m"
+      echo "  s | start          Start"
+      echo "  q | stop | quit    Stop"
       ;;
   esac
 }
@@ -240,6 +269,7 @@ case "$1" in
   m|my|mysql) mysql $@ ;;
   n|ng|nginx) nginx $@ ;;
   p|pg|postgres) postgres $@ ;;
+  r|redis) redis $@ ;;
   # Commands
   h|help) help $@ ;;
   u|up|update|upgrade) update $@ ;;
