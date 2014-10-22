@@ -28,6 +28,8 @@ if ! type CC >/dev/null; then
     export CC=/usr/local/bin/gcc-4.2
   elif [[ -e /usr/bin/gcc-4.2 ]]; then
     export CC=/usr/bin/gcc-4.2
+  elif [[ `which gcc` =~ "not found" ]]; then
+    export CC=`which gcc`
   fi
 fi
 export CPPFLAGS=-I/opt/X11/include

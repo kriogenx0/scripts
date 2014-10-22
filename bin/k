@@ -2,6 +2,8 @@
 #!/usr/bin/env sh
 
 A_SITES=(~/Sites/*)
+COMMAND=$1
+VALUE=$2
 
 psa() {
   if [[ -z $1 ]]; then
@@ -63,7 +65,7 @@ status() {
 # SERVICES
 
 apache(){
-  case "$2" in
+  case "$1" in
     s|start)
       sudo apachectl restart;
       msg "Apache Started" g
@@ -121,7 +123,7 @@ apache(){
 }
 
 mysql(){
-  case "$2" in
+  case "$1" in
     s|start)
       mysql.server start;
       ;;
@@ -155,7 +157,7 @@ mysql(){
 }
 
 nginx(){
-  case "$2" in
+  case "$1" in
     s|start)
       result=`sudo nginx`;
       if [[ -z $result ]]; then
@@ -191,7 +193,7 @@ nginx(){
 }
 
 postgres(){
-  case "$2" in
+  case "$1" in
     s|start)
       pg_ctl start;
       ;;
@@ -213,7 +215,7 @@ postgres(){
 }
 
 redis() {
-  case "$2" in
+  case "$1" in
     s|start)
       redis-server &
       ;;
@@ -233,7 +235,7 @@ redis() {
 # PACKAGES
 
 k_brew() {
-  case "$2" in
+  case "$1" in
     i|install)
       ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
       ;;
@@ -261,7 +263,7 @@ k_brew() {
       fi
       ;;
     *)
-      echo "\e[0;36mhomebrew\e[0m"
+      msg "Homebrew" y
       echo "  i | install          Install Homebrew"
       echo "    | uninstall        Uninstall Homebrew"
       echo "  u | update           Update Homebrew"
@@ -269,7 +271,7 @@ k_brew() {
 }
 
 k_rvm() {
-  case "$2" in
+  case "$1" in
     i|install)
       \curl -sSL https://get.rvm.io | bash
       sudo rvm cleanup all
@@ -296,7 +298,7 @@ k_rvm() {
       fi
       ;;
     *)
-      echo "\e[0;36mrvm\e[0m"
+      msg "RVM" y
       echo "  i | install          Install RVM and Dependencies"
       echo "    | uninstall        Uninstall RVM"
       echo "  u | update           Update RVM"
@@ -304,7 +306,7 @@ k_rvm() {
 }
 
 k_composer() {
-  case "$2" in
+  case "$1" in
     u|update)
       if [[ -n `which composer` ]]; then
         msg "Composer" w o n; msg " - " n; msg "Updating..." y
@@ -328,7 +330,7 @@ update() {
   k_composer u
 
   # Brew
-  k_brew update
+  k_brew u
 
   # OH MY ZSH
   if [[ -d ~/.oh-my-zsh ]]; then
@@ -338,22 +340,23 @@ update() {
 }
 
 # Top Wrapper
-case "$1" in
+case "$COMMAND" in
 
   # Services
-  a|apache) apache $@ ;;
-  m|my|mysql) mysql $@ ;;
-  n|ng|nginx) nginx $@ ;;
-  p|pg|postgres) postgres $@ ;;
-  r|redis) redis $@ ;;
+  a|apache) apache $VALUE ;;
+  m|my|mysql) mysql $VALUE ;;
+  n|ng|nginx) nginx $VALUE ;;
+  p|pg|postgres) postgres $VALUE ;;
+  r|redis) redis $VALUE ;;
 
   # Packages
-  homebrew|brew) k_brew $@ ;;
-  rvm) k_rvm $@ ;;
+  composer) k_composer $VALUE ;;
+  homebrew|brew) k_brew $VALUE ;;
+  rvm) k_rvm $VALUE ;;
 
   # Commands
-  h|help) help $@ ;;
-  u|up|update|upgrade) update $@ ;;
+  h|help) help ;;
+  u|up|update|upgrade) update ;;
   *) status ;;
 
 esac
