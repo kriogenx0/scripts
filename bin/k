@@ -41,7 +41,6 @@ help() {
 
 status() {
   msg Kriogenx y
-  echo "For help, type 'k h'"
   echo ""
   if [[ `k apache i` == "true" ]]; then
    echo "Apache                "`k apache t`
@@ -50,13 +49,18 @@ status() {
    echo "Nginx                 "`k nginx t`
   fi
   if [[ `k mysql i` == "true" ]]; then
-   echo "Mysql                 "`k mysql t`
+   echo "Mysql                "`k mysql t`
   fi
   if [[ `k postgres i` == "true" ]]; then
    echo "Postgres              "`k postgres t`
   fi
+  echo ""
+  echo "For help, type 'k help'"
 }
 
+
+##################################
+# SERVICES
 
 apache(){
   case "$2" in
@@ -224,37 +228,108 @@ redis() {
   esac
 }
 
+
+########################################
+# PACKAGES
+
+k_brew() {
+  case "$2" in
+    i|install)
+      ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+      ;;
+    uninstall)
+      cd `brew --prefix`
+      git checkout master
+      git ls-files -z | pbcopy
+      rm -rf Cellar
+      bin/brew prune
+      pbpaste | xargs -0 rm
+      rm -r Library/Homebrew Library/Aliases Library/Formula Library/Contributions 
+      test -d Library/LinkedKegs && rm -r Library/LinkedKegs
+      rmdir -p bin Library share/man/man1 2> /dev/null
+      rm -rf .git
+      rm -rf ~/Library/Caches/Homebrew
+      rm -rf ~/Library/Logs/Homebrew
+      rm -rf /Library/Caches/Homebrew
+      ;;
+    u|update)
+      if [[ ! `type brew` =~ 'not found' ]]; then
+        msg "Brew" w o n; msg " - " n; msg "Updating..." y
+        brew update
+        brew upgrade
+        brew cleanup
+      fi
+      ;;
+    *)
+      echo "\e[0;36mhomebrew\e[0m"
+      echo "  i | install          Install Homebrew"
+      echo "    | uninstall        Uninstall Homebrew"
+      echo "  u | update           Update Homebrew"
+  esac
+}
+
+k_rvm() {
+  case "$2" in
+    i|install)
+      \curl -sSL https://get.rvm.io | bash
+      sudo rvm cleanup all
+      rvm requirements
+      ;;
+    uninstall)
+      rvm implode
+      ;;
+    u|update)
+      if [[ -n `which rvm` ]]; then
+        rvm_latest=`curl -s https://raw.githubusercontent.com/wayneeseguin/rvm/stable/VERSION`
+        rvm_current=`rvm --version | tr -d '\n'`
+        rvm_current=${rvm_current//rvm\ /}
+        rvm_current=${rvm_current//\ */}
+        msg "RVM" w o n; msg " - Latest: " n; msg "$rvm_latest" y n; msg " - Current: " n; msg "$rvm_current" y n; msg " - " n
+        if [[ -z $rvm_latest ]]; then
+          msg "Could not get version" r
+        elif [[ $rvm_latest != $rvm_current ]]; then
+          msg "Upgrading..." y
+          rvm get latest
+        else
+          msg "Already latest" g
+        fi
+      fi
+      ;;
+    *)
+      echo "\e[0;36mrvm\e[0m"
+      echo "  i | install          Install RVM and Dependencies"
+      echo "    | uninstall        Uninstall RVM"
+      echo "  u | update           Update RVM"
+  esac
+}
+
+k_composer() {
+  case "$2" in
+    u|update)
+      if [[ -n `which composer` ]]; then
+        msg "Composer" w o n; msg " - " n; msg "Updating..." y
+        composer self-update
+      fi
+      ;;
+  esac
+}
+
+###########################
+# COMMANDS
+
 update() {
   msg "Kriogenx" w o n; msg " - " n; msg "Updating..." y
   echo -n "$(cd ~/Sites/kriogenx/scripts; git pull --rebase -q)"
+
   # RVM
-  if [[ -n `which rvm` ]]; then
-    rvm_latest=`curl -s https://raw.githubusercontent.com/wayneeseguin/rvm/stable/VERSION`
-    rvm_current=`rvm --version | tr -d '\n'`
-    rvm_current=${rvm_current//rvm\ /}
-    rvm_current=${rvm_current//\ */}
-    msg "RVM" w o n; msg " - Latest: " n; msg "$rvm_latest" y n; msg " - Current: " n; msg "$rvm_current" y n; msg " - " n
-    if [[ -z $rvm_latest ]]; then
-      msg "Could not get version" r
-    elif [[ $rvm_latest != $rvm_current ]]; then
-      msg "Upgrading..." y
-      rvm get latest
-    else
-      msg "Already latest" g
-    fi
-  fi
+  k_rvm u
+
   # Composer
-  if [[ -n `which composer` ]]; then
-    msg "Composer" w o n; msg " - " n; msg "Updating..." y
-    composer self-update
-  fi
+  k_composer u
+
   # Brew
-  if [[ ! `type brew` =~ 'not found' ]]; then
-    msg "Brew" w o n; msg " - " n; msg "Updating..." y
-    brew update
-    brew upgrade
-    brew cleanup
-  fi
+  k_brew update
+
   # OH MY ZSH
   if [[ -d ~/.oh-my-zsh ]]; then
     msg "OH-MY-ZSH" w o n; msg " - " n; msg "Updating..." y
@@ -264,14 +339,22 @@ update() {
 
 # Top Wrapper
 case "$1" in
-  # Apps
+
+  # Services
   a|apache) apache $@ ;;
   m|my|mysql) mysql $@ ;;
   n|ng|nginx) nginx $@ ;;
   p|pg|postgres) postgres $@ ;;
   r|redis) redis $@ ;;
+
+  # Packages
+  homebrew|brew) k_brew $@ ;;
+  rvm) k_rvm $@ ;;
+
   # Commands
   h|help) help $@ ;;
   u|up|update|upgrade) update $@ ;;
   *) status ;;
+
 esac
+
