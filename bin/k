@@ -67,34 +67,36 @@ status() {
 apache(){
   case "$1" in
     s|start)
-      sudo apachectl restart;
+      sudo apachectl restart
       msg "Apache Started" g
       ;;
     r|restart)
-      sudo apachectl restart;
+      sudo apachectl restart
       msg "Apache Restarted" g
       ;;
     q|quit|stop)
-      sudo apachectl stop;
+      sudo apachectl stop
       msg "Apache Stopped" y
       ;;
     sites)
       if [[ -f ~/Dropbox/Office/settings/apache/sites.conf ]]; then
-        sudo vi ~/Dropbox/Office/settings/apache/sites.conf;
+        sudo vi ~/Dropbox/Office/settings/apache/sites.conf
+        sudo chown root:wheel ~/Dropbox/Office/settings/apache/sites.conf
       else
-        sudo vi /etc/apache2/extra/httpd-vhosts.conf;
+        sudo vi /etc/apache2/extra/httpd-vhosts.conf
+        sudo chown root:wheel /etc/apache2/extra/httpd-vhosts.conf
       fi
-      sudo vi /etc/hosts;
-      sudo apachectl restart;
+      sudo vi /etc/hosts
+      sudo apachectl restart
       ;;
     c|config)
-      sudo vi /etc/apache2/httpd.conf;
+      sudo vi /etc/apache2/httpd.conf
       ;;
     d|doctor|check)
       httpd;
       ;;
     l|log)
-      tail -f /private/var/log/apache2/error_log;
+      tail -f /private/var/log/apache2/error_log
       ;;
     t|status)
       APACHE_STATUS=`ps ax | grep /usr/sbin/httpd | grep -v grep | cut -c1-5 | paste -s -`;
