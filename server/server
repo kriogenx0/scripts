@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+PROJECT_ROOT = File.dirname(__FILE__) unless defined?(PROJECT_ROOT)
+
+require File.join(PROJECT_ROOT, 'app.rb')
+App.start ARGV
+
+require File.join(PROJECT_ROOT, 'environment.rb')
+AppServer.start App
