@@ -1,4 +1,4 @@
-# OS generated files
+# OS
 .DS_Store
 .DS_Store?
 ._*
@@ -6,6 +6,9 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# Merging
+**.orig
 
 # Packages
 *.7z
@@ -17,25 +20,7 @@ Thumbs.db
 *.tar
 *.zip
 
-#############
-# Apps
-
-# Graphics
-*.psd
-*.ai
-*.eps
-
-# Merging
-**.orig
-
-# PivotalTracker
-.pivotalrc
-.pivotal_cache
-
-###############
-# Environments
-
-# Compiled source
+# Compiled
 *.com
 *.class
 *.dll
@@ -43,15 +28,34 @@ Thumbs.db
 *.o
 *.so
 
-# Vagrant
-.vagrant
-
 # Logs
 *.log
+
+# VIM
+*.un
+*.un~
+*.swp
+
+# Graphics
+*.psd
+*.ai
+*.eps
+
+###############
+# Environments
+
+# SVN
+.svn
+
+# Vagrant
+.vagrant
 
 # Database & SQL
 *.sql
 *.sqlite
+
+############
+# Frameworks
 
 # Word Press
 */wp-content/uploads/*
@@ -61,32 +65,26 @@ Thumbs.db
 /vendor/bundle
 /db/*.sqlite3
 /db/*.sqlite3-journal
+# Logs & Temps
+/log/*
+/tmp/*
+/spec/tmp/*
 # Common Libs & Gems
 .sass-cache
 *.rbc
 *.sassc
 capybara-*.html
 .rspec
-# Logs & Temps
-/log/*
-/tmp/*
-/spec/tmp/*
 
-#################
-# Explicit Ignores
-/ignore
-/dropbox
+# NodeJS
+node_modules/*
 
-#################
-# IDEs
+#############
+# Apps
 
-# VIM
-*.un
-*.un~
-*.swp
-
-# SVN
-.svn
+# PivotalTracker
+.pivotalrc
+.pivotal_cache
 
 # Dreamweaver
 _notes
