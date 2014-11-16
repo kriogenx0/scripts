@@ -571,7 +571,8 @@ alias gsm='git submodule add'
 alias gsl='git submodule foreach git pull origin master'
 alias gsu="git submodule update --init; git submodule update"
 
-alias gclr='ga; git checkout -f'
+alias gclr='git clean -fd; git checkout -f'
+alias gclrf='gclr; git clean -fxd'
 alias gconf='vi .git/config'
 alias ggconf='vi ~/.gitconfig'
 alias gfix='git gc; git remote prune origin; git repack; git fsck --full --progress'
