@@ -205,8 +205,12 @@ alias tailf='tail -f'
 mvd() {
   mkdir -p $2; mv $1 $2
 }
+alias grepp='grep -irn --color=auto --exclude="*~"'
+grepr() {
+  grepp -e $1 .
+}
 grp() {
-  grep -irn $1 . --color=auto --exclude="*~"
+  grepp --exclude="*.git" --exclude="*.meteor" $1 .
 }
 egrp() {
   egrep -rn $1 .
