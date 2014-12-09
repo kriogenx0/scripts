@@ -414,6 +414,7 @@ pgenv() {
 }
 
 # git
+GIT_DEV_BRANCH='develop'
 alias ga='git add -A .; git add -v .; git status'
 alias gar='git reset HEAD'
 alias gai='git add -i; git status'
@@ -434,6 +435,7 @@ gos() {
   git checkout `git branch -a | grep $1 | sed 's/remotes\/origin\///g' | head -n1`
 }
 alias gom="git checkout master"
+alias god="git checkout $GIT_DEV_BRANCH"
 alias gol="git checkout @\{-1\}" # checkout last branch
 gob() { # go back a branch
   git checkout @\{-"$1"\}
@@ -508,6 +510,7 @@ alias gad='ga; gds'
 alias gdl="git show" # diff last changes
 alias gdh='git diff HEAD'
 alias gdm='git diff master'
+alias gdd="git diff $GIT_DEV_BRANCH"
 alias gsha='git log | head -1'
 
 # logging - glo
