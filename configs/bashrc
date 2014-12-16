@@ -600,6 +600,7 @@ cleandir() {
   find . -name '.DS_Store' -print0 | xargs -0 -t rm -rf
   find . -name '.BridgeCache' -print0 | xargs -0 -t rm -rf
   find . -name '.BridgeCacheT' -print0 | xargs -0 -t rm -rf
+  find . -name 'Thumbs.db' -print0 | xargs -0 -t rm -rf
 }
 
 # GetSpace
