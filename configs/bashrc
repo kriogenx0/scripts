@@ -467,6 +467,7 @@ alias gbs='git branch -a | grep' # search branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
 
 alias gbm="git branch --merged"
+alias gbmd="git branch --merged $GIT_DEV_BRANCH"
 alias gbnm="git branch --no-merged"
 alias gbdm='git branch --merged master | grep -v "\*" | xargs -n 1 git branch -d' # delete all merged branches
 alias gbrm="git branch -r --merged master | sed 's/^  origin\///g'" # Remote Branches already merged to master
@@ -558,7 +559,7 @@ alias gm='git merge'
 alias gmt='git mergetool'
 alias gmf='git merge --no-commit --no-ff -v'
 alias gmm='git merge master'
-alias gmm="git merge $GET_DEV_BRANCH"
+alias gmd="git merge $GIT_DEV_BRANCH"
 
 # ignore file
 alias gig="vi .gitignore"
