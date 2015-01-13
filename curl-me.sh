@@ -10,7 +10,7 @@ if [[ `sw_vers` =~ 'Mac OS X' ]]; then
 
   # Install Homebrew
   if [[ ! -d /usr/local ]]; then
-    ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   else
     brew update
   fi

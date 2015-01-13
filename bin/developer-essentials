@@ -87,14 +87,14 @@ if [[ -d "/Applications/Xcode.app/Contents" ]]; then
 fi
 
 # SSH
-if [ ! -d ~/.ssh ]; then
+if [[ ! -e ~/.ssh/id_rsa ]]; then
   echo 'Looks like SSH is not set up.'
   echo 'SSH is used for git to connect to repositories.'
   read -p "Enter your email address: " a
   if [[ -n $a ]]; then
     ssh-keygen -t rsa -C "$a"
     ssh-add ~/.ssh/id_rsa
-    pbcopy < ~/.ssh/id_rsa.pub;
+    pbcopy < ~/.ssh/id_rsa.pub
     echo 'Testing SSH...'
     [[ `ssh -T git@github.com` =~ 'success' ]] && echo 'SSH Success!'
     echo 'Created SSH key and copied public key to clipboard'
