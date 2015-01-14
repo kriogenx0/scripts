@@ -370,9 +370,16 @@ alias bex="bundle exec"
 # cake
 alias cake='app/Console/cake'
 
-# vendor apps
+# Third Party Applications
 alias tiga='tig --all'
 alias tigs='tig status'
+
+# Sublime
+if [[ -e /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl ]]; then
+  alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+elif [[ -e /Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl ]]; then
+  alias subl="/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl"
+fi
 
 # apache
 alias asites='sudo vi /etc/apache2/extra/httpd-vhosts.conf; sudo vi /etc/hosts; sudo apachectl restart'
