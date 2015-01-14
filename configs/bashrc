@@ -367,6 +367,9 @@ alias bex="bundle exec"
 
 [[ `which rake` =~ 'aliased to _rake_command' ]] && unalias rake
 
+# Python
+alias py='python'
+
 # cake
 alias cake='app/Console/cake'
 
