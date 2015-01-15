@@ -258,7 +258,7 @@ cpmirror() {
 
 # Web Server
 alias hosts="sudo vi /etc/hosts"
-alias ports='netstat -tulanp'
+alias ports='netstat -tulan'
 webports() {
   ps auxwww | grep LISTEN
   netstat -a | egrep 'Proto|LISTEN'
