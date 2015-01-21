@@ -289,8 +289,11 @@ alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
 # Vagrant
 alias vag='vagrant'
 alias vagu='vagrant up'
+alias vagup='vagrant up --provision'
 alias vagp='vagrant provision'
 alias vagd='vagrant destroy -f'
+alias vagh='vagrant halt'
+alias vags='vagrant ssh'
 
 # ===================
 # RUBY & RAILS
