@@ -451,7 +451,7 @@ gos() {
 }
 alias gom="git checkout master"
 alias god="git checkout $GIT_DEV_BRANCH"
-alias gol="git checkout @\{-1\}" # checkout last branch
+alias gol="git checkout -" # checkout last branch
 gob() { # go back a branch
   git checkout @\{-"$1"\}
 }
