@@ -212,6 +212,10 @@ grepr() {
 grp() {
   grepp --exclude="*.git" --exclude="*.meteor" $1 .
 }
+# With Word boundaries
+grpb() {
+  grepp --exclude="*.git" --exclude="*.meteor" "\b$1\b" .
+}
 egrp() {
   egrep -rn $1 .
 }
