@@ -633,7 +633,7 @@ getspace() {
 }
 
 # Directories
-pwdc='pwd | pbcopy'
+alias pwdc='pwd | pbcopy'
 
 # go up directories looking for $1
 dirup() {
