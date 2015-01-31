@@ -632,6 +632,9 @@ getspace() {
   [[ -e ~/Library/Caches/Google/Chrome ]] && sudo rm -rf ~/Library/Caches/Google/Chrome
 }
 
+# Directories
+pwdc='pwd | pbcopy'
+
 # go up directories looking for $1
 dirup() {
   dir=${1:-$(pwd)}
