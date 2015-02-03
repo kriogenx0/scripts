@@ -291,6 +291,7 @@ alias sshconfig="vi ~/.ssh/config"
 alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
 
 # Vagrant
+alias v='vagrant'
 alias vag='vagrant'
 alias vagu='vagrant up'
 alias vagup='vagrant up --provision'
