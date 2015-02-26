@@ -29,10 +29,11 @@ sudo gem clean > /dev/null
 # Some dependencies
 brew tap homebrew/dupes
 brew install apple-gcc42
-
+brew install gcc48
+brew install pkg-config
 brew install wget proctools ack ctags-exuberant markdown
 brew install automake
 brew install libksba
-brew install imagemagick
+# brew install imagemagick
 brew install readline
 
