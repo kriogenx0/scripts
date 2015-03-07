@@ -1,9 +1,14 @@
 #!/usr/bin/env sh
 
+msg() {
+  echo -e "\033[36m$1\033[0m"
+}
+
 # Mac OS X
 if [[ `sw_vers` =~ 'Mac OS X' ]]; then
 
   # HomeBrew
+  msg "Installing Homebrew..."
   if [[ ! -d /usr/local ]]; then
     sudo mkdir -p /usr/local
   fi
@@ -23,6 +28,7 @@ if [[ `sw_vers` =~ 'Mac OS X' ]]; then
 
 # Linux
 else
+  msg "Installing dependencies..."
   # Git
   sudo apt-get install git -yf
   # Curl
@@ -35,7 +41,7 @@ fi
 if [[ `which git` =~ "usr/local" ]]; then
   brew upgrade git
 else
-  echo 'Installing git...'
+  msg 'Installing git...'
   brew install git
 
   echo 'Your git Name and Email are not set up'
@@ -59,13 +65,14 @@ fi
 # Janus
 if [[ ! `type ruby` =~ "not found" ]]; then
   if [[ -d ~/.vim/janus ]]; then
+    msg "Updating Janus..."
     echo `cd ~/.vim/janus; git pull`
   else
     read -p "Install Janus? y/n " install_janus
 
     case $install_janus in
       Y|y|yes )
-        echo 'Install Janus...'
+        echo 'Installing Janus...'
         curl -Lo- https://bit.ly/janus-bootstrap | bash
         break;;
     esac
@@ -76,6 +83,7 @@ fi
 
 # Tig
 if [[ ! `type tig` =~ "not found" ]]; then
+  msg "Installing tig..."
   brew install tig
 else
   brew upgrade tig
@@ -88,7 +96,7 @@ fi
 
 # SSH
 if [[ ! -e ~/.ssh/id_rsa ]]; then
-  echo 'Looks like SSH is not set up.'
+  msg 'SSH is not configured'
   echo 'SSH is used for git to connect to repositories.'
   read -p "Enter your email address: " a
   if [[ -n $a ]]; then
@@ -99,6 +107,7 @@ if [[ ! -e ~/.ssh/id_rsa ]]; then
     [[ `ssh -T git@github.com` =~ 'success' ]] && echo 'SSH Success!'
     echo 'Created SSH key and copied public key to clipboard'
   fi
+  sudo chmod 0600 ~/.ssh/id_rsa
 fi
 
-echo 'Developer Essentials complete'
+msg 'Developer Essentials complete'
