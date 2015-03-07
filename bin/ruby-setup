@@ -12,7 +12,7 @@ fi
 
 # Get RVM to reload
 if [[ -f ~/.rvmrc ]] && [[ `cat ~/.rvmrc` =~ 'rvm_auto_reload_flag' ]]; then
-  echo 'rvm_auto_reload_flag=1' >> ~/.rvmrc
+  echo 'rvm_auto_reload_flag=2' >> ~/.rvmrc
 fi
 
 # OS X Named Streams Issue
