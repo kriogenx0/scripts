@@ -562,7 +562,7 @@ alias gr='git rebase'
 alias grc='git rebase --continue'
 alias grc='git rebase --skip'
 alias gra='git rebase --abort'
-alias gnc='glr; gp'
+alias gnc='glr; gp; gbpr' # Git Sync - Pull Rebase, Push, Prune Branches
 
 # Git Stashes
 alias gst='git stash show'
