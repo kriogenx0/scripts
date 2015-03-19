@@ -13,7 +13,7 @@ msg() {
 if [[ `sw_vers` =~ 'Mac OS X' ]]; then
 
   # Install Homebrew
-  if [[ ! -d /usr/local ]]; then
+  if [[ `brew info` =~ 'not found' ]]; then
     msg 'Installing Homebrew...'
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   else
