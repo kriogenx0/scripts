@@ -6,7 +6,7 @@
 kriogenx_dir=$HOME/Sites/kriogenx
 
 msg() {
-  echo $1
+  echo -e "\033[36m$1\033[0m"
 }
 
 # Mac OS X
