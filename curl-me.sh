@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # TO USE THIS SCRIPT, RUN THIS IN TERMINAL
-# curl https://raw.githubusercontent.com/kriogenx0/scripts/master/init/curl-me.sh | sh
+# curl https://raw.githubusercontent.com/kriogenx0/scripts/master/curl-me.sh | sh
 
 kriogenx_dir=$HOME/Sites/kriogenx
 
