@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # TO USE THIS SCRIPT, RUN THIS IN TERMINAL
 # curl https://raw.githubusercontent.com/kriogenx0/scripts/master/curl-me.sh | sh

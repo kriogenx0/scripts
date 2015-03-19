@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 [[ -n $kriogenx_dir ]] || kriogenx_dir=$HOME/Sites/kriogenx/scripts
 
