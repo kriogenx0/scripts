@@ -7,46 +7,46 @@ msg() {
 # Mac OS X
 if [[ `sw_vers` =~ 'Mac OS X' ]]; then
 
-  # HomeBrew
-  msg "Installing Homebrew..."
-  if [[ ! -d /usr/local ]]; then
-    sudo mkdir -p /usr/local
-  fi
-  sudo chown -R `whoami` /usr/local
-  if [[ -e /usr/local/bin/brew ]]; then
-    brew update
+  # Install Homebrew
+  if [[ $(brew info) =~ 'not found' ]]; then
+    msg 'Installing Homebrew...'
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   else
-    ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
-    brew doctor
+    msg 'Updating Homebrew...'
+    brew update
   fi
 
   # Apple GCC
+  msg 'Installing Apple GCC...'
   if [[ ! -e /usr/local/bin/gcc-4.2 ]]; then
     brew install apple-gcc42
   fi
   brew tap homebrew/dupes
 
+  # Git
+  if [[ $(which git) =~ "usr/local" ]]; then
+    brew upgrade git
+  else
+    msg 'Installing git...'
+    brew install git
+  fi
+
 # Linux
 else
-  msg "Installing dependencies..."
-  # Git
-  sudo apt-get install git -yf
+
   # Curl
+  msg "Installing curl..."
   sudo apt-get install curl -yf
+
+  # Git
+  msg "Installing git..."
+  sudo apt-get install git -yf
 fi
 
 ######################
 
-# Git
-if [[ `which git` =~ "usr/local" ]]; then
-  brew upgrade git
-else
-  msg 'Installing git...'
-  brew install git
-fi
-
 # Git Setup
-if [[ -z `git config --global user.email` ]]; then
+if [[ -z $(git config --global user.email) ]]; then
   msg 'Your git Name and Email are not set up'
   echo 'It is recommended to configure your git name and email for git commits.'
   read -p "Configure name and email now? " configuregit
@@ -93,24 +93,38 @@ else
 fi
 
 # Xcode Select
-if [[ -d "/Applications/Xcode.app/Contents" ]]; then
-  sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
-fi
+XCODE_DEV=/Applications/Xcode.app/Contents/Developer
+[[ -e "$XCODE_DEV" ]] && sudo xcode-select -switch $XCODE_DEV
 
 # SSH
 if [[ ! -e ~/.ssh/id_rsa ]]; then
   msg 'SSH is not configured'
   echo 'SSH is used for git to connect to repositories.'
-  read -p "Enter your email address: " a
-  if [[ -n $a ]]; then
-    ssh-keygen -t rsa -C "$a"
-    ssh-add ~/.ssh/id_rsa
-    pbcopy < ~/.ssh/id_rsa.pub
-    echo 'Testing SSH...'
-    [[ `ssh -T git@github.com` =~ 'success' ]] && echo 'SSH Success!'
-    echo 'Created SSH key and copied public key to clipboard'
+
+  if [[ -n $gitemail ]]; then
+    sshemail=$gitemail
+  else
+    read -p "Enter your email address: " sshemail
   fi
-  sudo chmod 0600 ~/.ssh/id_rsa
+
+  if [[ -n $sshemail ]]; then
+    ssh-keygen -t rsa -C "$sshemail"
+
+    if [[ -e ~/.ssh/id_rsa ]]; then
+      sudo chmod 0600 ~/.ssh/id_rsa
+      ssh-add ~/.ssh/id_rsa
+
+      if [[ -e ~/.ssh/id_rsa.pub ]]; then
+        pbcopy < ~/.ssh/id_rsa.pub
+        echo 'Created SSH key and copied public key to clipboard'
+      fi
+    else
+      echo 'ERROR: SSH could not complete!'
+    fi
+
+    echo 'Testing SSH...'
+    [[ `ssh -T git@github.com` =~ 'success' ]] && echo 'SSH Success!' || echo 'ERROR: SSH Could not connect!'
+  fi
 fi
 
 msg 'Developer Essentials complete'
