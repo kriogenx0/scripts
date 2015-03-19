@@ -15,7 +15,7 @@ k_install() {
 read -p "Developer Essentials? y/n " yn
 case $yn in
   Y|y|yes )
-    k_install developer-essentials
+    k_install developer-setup
     break;;
   N|n|no ) break;;
   * ) echo "Please answer [y]es or [n]o.";;
@@ -41,7 +41,7 @@ case $yn in
   * ) echo "Please answer [y]es or [n]o.";;
 esac
 
-read -p "Ruby tools? y/n " yn
+read -p "Ruby Setup? y/n " yn
 case $yn in
   Y|y|yes )
      k_install ruby-setup

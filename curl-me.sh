@@ -37,9 +37,9 @@ fi
 
 if [[ ! `type git` =~ 'not found' ]]; then
   # Kriogenx
-  mkdir -p "$kriogenx_dir"
   if [[ ! -d "$kriogenx_dir"/scripts ]]; then
     msg 'Installing Kriogenx Scripts...'
+    mkdir -p "$kriogenx_dir"
     git clone git://github.com/kriogenx0/scripts.git "$kriogenx_dir"/scripts
   else
     cd "$kriogenx_dir"/scripts
