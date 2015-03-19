@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 msg() {
   echo -e "\033[36m$1\033[0m"
@@ -43,8 +43,11 @@ if [[ `which git` =~ "usr/local" ]]; then
 else
   msg 'Installing git...'
   brew install git
+fi
 
-  echo 'Your git Name and Email are not set up'
+# Git Setup
+if [[ -z `git config --global user.email` ]]; then
+  msg 'Your git Name and Email are not set up'
   echo 'It is recommended to configure your git name and email for git commits.'
   read -p "Configure name and email now? " configuregit
   case $configuregit in
