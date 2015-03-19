@@ -5,11 +5,16 @@
 
 kriogenx_dir=$HOME/Sites/kriogenx
 
+msg() {
+  echo $1
+}
+
 # Mac OS X
 if [[ `sw_vers` =~ 'Mac OS X' ]]; then
 
   # Install Homebrew
   if [[ ! -d /usr/local ]]; then
+    msg 'Installing Homebrew...'
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   else
     brew update
@@ -18,6 +23,7 @@ if [[ `sw_vers` =~ 'Mac OS X' ]]; then
 
   # Git
   if [[ ! `which git` =~ 'usr/local' ]]; then
+    msg 'Installing Git...'
     brew install git
   fi
 
@@ -33,6 +39,7 @@ if [[ ! `type git` =~ 'not found' ]]; then
   # Kriogenx
   mkdir -p "$kriogenx_dir"
   if [[ ! -d "$kriogenx_dir"/scripts ]]; then
+    msg 'Installing Kriogenx Scripts...'
     git clone git://github.com/kriogenx0/scripts.git "$kriogenx_dir"/scripts
   else
     cd "$kriogenx_dir"/scripts
