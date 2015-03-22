@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 [[ -n $kriogenx_dir ]] || kriogenx_dir=$HOME/Sites/kriogenx/scripts
 
@@ -6,9 +6,9 @@ k_install() {
   package=$1
 
   if [[ -e "$kriogenx_dir" ]]; then
-    sh "$kriogenx_dir"/bin/$package
+    bash "$kriogenx_dir"/bin/$package
   else
-    $(curl -fLsS https://raw.githubusercontent.com/kriogenx0/scripts/master/bin/$package)
+    curl -fLsS https://raw.githubusercontent.com/kriogenx0/scripts/master/bin/$package | bash
   fi
 }
 

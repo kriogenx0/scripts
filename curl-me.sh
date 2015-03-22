@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # TO USE THIS SCRIPT, RUN THIS IN TERMINAL
 # curl https://raw.githubusercontent.com/kriogenx0/scripts/master/curl-me.sh | sh
@@ -47,7 +47,7 @@ if [[ ! `type git` =~ 'not found' ]]; then
   fi
 
   # Run
-  [[ -e "$kriogenx_dir" ]] && sh "$kriogenx_dir"/scripts/install.sh
+  [[ -e "$kriogenx_dir" ]] && bash "$kriogenx_dir"/scripts/install.sh
 else
   echo 'Git not found'
 fi
