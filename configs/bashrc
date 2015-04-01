@@ -298,6 +298,7 @@ alias vagp='vagrant provision'
 alias vagd='vagrant destroy -f'
 alias vagh='vagrant halt'
 alias vags='vagrant ssh'
+alias vagss='vagrant suspend'
 
 # ===================
 # RUBY & RAILS
