@@ -71,7 +71,7 @@ if [[ -z $(git config --global user.email) ]]; then
 
       read -p "Enter your email: " gitemail
       [[ -n $e ]] && git config --global user.email "$gitemail"
-      break;;
+      ;;
     * )
       echo 'Skipping git user configuration.';;
   esac
@@ -91,7 +91,7 @@ if [[ ! `type ruby` =~ "not found" ]]; then
       Y|y|yes )
         echo 'Installing Janus...'
         curl -Lo- https://bit.ly/janus-bootstrap | bash
-        break;;
+        ;;
     esac
   fi
 else

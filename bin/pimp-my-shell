@@ -36,6 +36,13 @@ if [[ -e ~/.profile ]] && [[ ! `cat ~/.profile` =~ 'kriogenx' ]]; then
 fi
 
 # Link .profile
-[[ -e ~/.zshrc ]] && [[ `cat ~/.zshrc` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.zshrc
-[[ -e ~/.bashrc ]] && [[ `cat ~/.bashrc` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.bashrc
-[[ -e ~/.bash_profile ]] && [[ `cat ~/.bash_profile` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.bash_profile
+[[ ! -e ~/.zshrc ]] || [[ ! `cat ~/.zshrc` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.zshrc
+[[ ! -e ~/.bashrc ]] || [[ ! `cat ~/.bashrc` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.bashrc
+[[ ! -e ~/.bash_profile ]] || [[ `cat ~/.bash_profile` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.bash_profile
+
+# TODO: Make sure zsh install properly
+echo "ZSH has been installed!"
+echo "Feel free to update your terminal command to:"
+# TODO: use which zsh
+echo "/bin/zsh"
+echo "To start ZSH, run zsh"
