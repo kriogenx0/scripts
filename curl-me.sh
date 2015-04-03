@@ -52,7 +52,9 @@ if type git >/dev/null 2>&1; then
 
   # Run
   if [[ -e "$kriogenx_dir" ]]; then
-    msg "Run $krigoenx_dir/scripts/install.sh to get started"
+    msg "Kriogenx is in!"
+    msg "To get started, run kriogenx install:"
+    msg "$kriogenx_dir"
     #bash "$kriogenx_dir"/scripts/install.sh
   fi
 else
