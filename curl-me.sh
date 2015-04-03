@@ -49,5 +49,6 @@ if type git >/dev/null 2>&1; then
   # Run
   [[ -e "$kriogenx_dir" ]] && bash "$kriogenx_dir"/scripts/install.sh
 else
+  msg 'Could not install kriogenx!'
   echo 'Git not found'
 fi
