@@ -16,8 +16,9 @@ read -p "Developer Essentials? y/n " yn
 case $yn in
   Y|y|yes )
     k_install developer-setup
-    break;;
-  N|n|no ) break;;
+    ;;
+  N|n|no )
+    ;;
   * ) echo "Please answer [y]es or [n]o.";;
 esac
 
@@ -26,8 +27,9 @@ if [[ ! -e "$kriogenx_dir" ]]; then
   case $yn in
     Y|y|yes )
       k_install kriogenx-install
-      break;;
-    N|n|no ) break;;
+      ;;
+    N|n|no )
+      ;;
     * ) echo "Please answer [y]es or [n]o.";;
   esac
 fi
@@ -36,17 +38,19 @@ read -p "Pimp My Shell? y/n " yn
 case $yn in
   Y|y|yes )
     k_install pimp-my-shell
-    break;;
-  N|n|no ) break;;
+    ;;
+  N|n|no )
+    ;;
   * ) echo "Please answer [y]es or [n]o.";;
 esac
 
 read -p "Ruby Setup? y/n " yn
 case $yn in
   Y|y|yes )
-     k_install ruby-setup
-     break;;
-  N|n|no ) break;;
+    k_install ruby-setup
+    ;;
+  N|n|no )
+    ;;
   * ) echo "Please answer [y]es or [n]o.";;
 esac
 
