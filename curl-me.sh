@@ -45,13 +45,15 @@ if type git >/dev/null 2>&1; then
     git clone git://github.com/kriogenx0/scripts.git "$kriogenx_dir"/scripts
     msg 'Kriogenx added to ~/Sites/kriogenx/sites'
   else
+    msg 'Updating kriogenx...'
     cd "$kriogenx_dir"/scripts
     git pull --rebase
   fi
 
   # Run
   if [[ -e "$kriogenx_dir" ]]; then
-    bash "$kriogenx_dir"/scripts/install.sh
+    msg "Run $krigoenx_dir/scripts/install.sh to get started"
+    #bash "$kriogenx_dir"/scripts/install.sh
   fi
 else
   msg 'Could not install kriogenx!'
