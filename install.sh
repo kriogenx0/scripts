@@ -58,8 +58,9 @@ read -p "Pimp My Git? y/n " yn
 case $yn in
   Y|y|yes )
     k_install git-defaults
-    break;;
-  N|n|no ) break;;
+    ;;
+  N|n|no )
+    ;;
   * ) echo "Please answer [y]es or [n]o.";;
 esac
 
@@ -67,8 +68,9 @@ read -p "Run Mac OS X Hacks? y/n " yn
 case $yn in
   Y|y|yes )
     k_install macos-defaults
-    break;;
-  N|n|no ) break;;
+    ;;
+  N|n|no )
+    ;;
   * ) echo "Please answer [y]es or [n]o.";;
 esac
 
@@ -77,11 +79,12 @@ if [[ -e /Applications/Dropbox.app ]]; then
   case $yn in
     Y|y|yes )
       k_install dropbox-takeover
-      break;;
-    N|n|no ) break;;
+      ;;
+    N|n|no )
+      ;;
     * ) echo "Please answer [y]es or [n]o.";;
   esac
 fi
 
-echo 'Kriogenx Done!'
+echo 'Kriogenx Packager Done!'
 
