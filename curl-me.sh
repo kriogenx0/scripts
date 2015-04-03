@@ -13,11 +13,11 @@ msg() {
 if [[ `sw_vers` =~ 'Mac OS X' ]]; then
 
   # Install Homebrew
-  if [[ `brew info` =~ 'not found' ]]; then
+  if type brew >/dev/null 2>&1; then
+    brew update
+  else
     msg 'Installing Homebrew...'
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  else
-    brew update
   fi
   brew doctor
 
@@ -35,7 +35,7 @@ else
   sudo apt-get install curl -yf
 fi
 
-if [[ ! `type git` =~ 'not found' ]]; then
+if type git >/dev/null 2>&1; then
   # Kriogenx
   if [[ ! -d "$kriogenx_dir"/scripts ]]; then
     msg 'Installing Kriogenx Scripts...'
