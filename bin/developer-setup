@@ -77,6 +77,13 @@ if [[ -z $(git config --global user.email) ]]; then
   esac
 fi
 
+# Tig
+if [[ ! `type tig` =~ "not found" ]]; then
+  msg "Installing tig..."
+  brew install tig
+else
+  brew upgrade tig
+fi
 
 
 # Janus
@@ -96,14 +103,6 @@ if [[ ! `type ruby` =~ "not found" ]]; then
   fi
 else
   echo 'Janus - Latest Ruby required to install Janus'
-fi
-
-# Tig
-if [[ ! `type tig` =~ "not found" ]]; then
-  msg "Installing tig..."
-  brew install tig
-else
-  brew upgrade tig
 fi
 
 # SSH
@@ -137,4 +136,4 @@ if [[ ! -e ~/.ssh/id_rsa ]]; then
   fi
 fi
 
-msg 'Developer Essentials complete'
+msg 'Developer Setup complete'
