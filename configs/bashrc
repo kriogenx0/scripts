@@ -262,10 +262,11 @@ cpmirror() {
 
 # Web Server
 alias hosts="sudo vi /etc/hosts"
-alias ports='netstat -tulan'
+alias ports='netstat -lan'
+alias portslisten="ports | egrep 'Proto|LISTEN'"
 webports() {
   ps auxwww | grep LISTEN
-  netstat -a | egrep 'Proto|LISTEN'
+  portslisten
   #lsof -i tcp:80
   #lsof -i tcp:8080
   #lsof -i tcp:3000
