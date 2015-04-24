@@ -500,19 +500,19 @@ alias gbm="git branch --merged"
 alias gbmd="git branch --merged $GIT_DEV_BRANCH"
 alias gbnm="git branch --no-merged"
 
-# git branches merged with name
-gbmm() {
-  #grep -v "\*"
-  git branch --merged $1 | grep -v $1
-}
-alias gbdm='gdmm master | xargs -n 1 git branch -d' # delete all merged branches
+# Branches merged merged into master
+alias gbmm="gbm master | grep -v master"
 
-# Remote Branches already merged to master
-alias gbrm="git branch -r --merged master | grep -v master | sed 's/^  origin\///g'"
+# Delete Branches merged into master
+alias gbdm='gbmm | xargs -n 1 git branch -d'
 
-# Remote Not Merged
-alias gbrnm="git branch -r --no-merged master | sed 's/^  origin\///g'"
-# Remote Branches Delete Merged
+# Remote Branches merged into master
+alias gbrm="gbr --merged master | grep -v master | sed 's/^  origin\///g'"
+
+# Remote Branches not merged
+alias gbrnm="gbr --no-merged master | sed 's/^  origin\///g'"
+
+# Remote Branches Delete Merged into master
 gbrdm(){
   for i in `git branch -r --merged master | sed 's/^  origin\///g'`; do
     if [[ $i != 'master' && $i != 'HEAD' && $i != '->' && $i != 'origin/master' ]]; then
