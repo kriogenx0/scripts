@@ -461,19 +461,24 @@ alias gol="git checkout -" # checkout last branch
 gob() { # go back a branch
   git checkout @\{-"$1"\}
 }
+
+# Git Branches
 alias gb='git branch'
+
 # Show Branches in order
 gbb() {
   for k in $(git branch | sed /\*/d); do
     echo "$(git log -1 --pretty=format:"%ct" $k) $k"
   done | sort -r | awk '{print $2}'
 }
-alias gbd='git branch -d' # delete
-alias gbdd='git branch -D' # delete!
+alias gbd='git branch -d'
+alias gbdd='git branch -D' # force delete
+
 # delete remote
 gbdr() {
   git push origin ":$1"
 }
+
 # delete all
 gbda() {
   gbd $1; gbdr $1
@@ -481,8 +486,12 @@ gbda() {
 alias gbp='git prune -v'
 alias gbpr='git remote prune origin'
 
+# All Branches
 alias gba='git branch -a' # all branches
+
+# Remote Branches
 alias gbr='git branch -r' # remote branches
+
 # Search Branches
 alias gbs='git branch -a | grep' # search branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
@@ -490,9 +499,20 @@ alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # bran
 alias gbm="git branch --merged"
 alias gbmd="git branch --merged $GIT_DEV_BRANCH"
 alias gbnm="git branch --no-merged"
-alias gbdm='git branch --merged master | grep -v "\*" | xargs -n 1 git branch -d' # delete all merged branches
-alias gbrm="git branch -r --merged master | sed 's/^  origin\///g'" # Remote Branches already merged to master
-alias gbrnm="git branch -r --no-merged master | sed 's/^  origin\///g'" # show unmerged branches
+
+# git branches merged with name
+gbmm() {
+  #grep -v "\*"
+  git branch --merged $1 | grep -v $1
+}
+alias gbdm='gdmm master | xargs -n 1 git branch -d' # delete all merged branches
+
+# Remote Branches already merged to master
+alias gbrm="git branch -r --merged master | grep -v master | sed 's/^  origin\///g'"
+
+# Remote Not Merged
+alias gbrnm="git branch -r --no-merged master | sed 's/^  origin\///g'"
+# Remote Branches Delete Merged
 gbrdm(){
   for i in `git branch -r --merged master | sed 's/^  origin\///g'`; do
     if [[ $i != 'master' && $i != 'HEAD' && $i != '->' && $i != 'origin/master' ]]; then
