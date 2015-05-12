@@ -434,20 +434,28 @@ pgenv() {
   echo "PGDATA:    $PGDATA"
 }
 
+#####################
 # git
+
 GIT_DEV_BRANCH='develop'
+
+alias gcl="git clone"
+
+# Adding
 alias ga='git add -A .; git add -v .; git status'
 alias gar='git reset HEAD'
 alias gai='git add -i; git status'
 alias gap='git add -p'
 
+# Committing
 alias gc='git commit -v -m'
 alias gca='git commit --amend'
 
-alias gcl="git clone"
+# Checking out
 alias gco="git checkout"
-# Git Checkout (removing remote/origin)
 alias go="git checkout"
+
+# Checkout Remote
 gor() {
   git checkout `echo $1 | sed 's/remotes\/origin\///g'`
 }
@@ -462,7 +470,7 @@ gob() { # go back a branch
   git checkout @\{-"$1"\}
 }
 
-# Git Branches
+# Branches
 alias gb='git branch'
 
 # Show Branches in order
@@ -531,6 +539,7 @@ gbt() {
   git checkout "$1"
 }
 
+# Git Tags
 alias gtg='git tag'
 alias gts='git show'
 alias gtp='git push --tags'
@@ -568,23 +577,28 @@ alias glgn='ls-files -o -i --exclude-standard' # Show files ignored by git:
 alias glc="git cherry -v master" #show changes in branch not merged
 alias gcp="git cherry-pick"
 
-# git push/pull
+# Git Push
 alias gp='git push'
 alias gpa='git push --all'
 alias gpu='git push -u'
 alias gpo='git push -u origin `gbc`'
+
+# Git Pull
 alias gl='git pull'
 alias gla='git pull -v --all'
 glu() {
   git branch --set-upstream $1 "origin/$1"
 }
 alias glr='git pull --rebase'
-alias glm="gom; gl; gol; gl"
+alias gln='glr; gbpr; gbdm' # Git Pull Sync - Pull Rebase, Prune Branches, Deleted Merged
+alias gnc='glr; gp; gbpr' # Git Sync - Pull Rebase, Push, Prune Branches
+alias glm="gom; glr; gol; glr" # Pull master and go back to branch
+
+# Git Rebasing
 alias gr='git rebase'
 alias grc='git rebase --continue'
 alias grc='git rebase --skip'
 alias gra='git rebase --abort'
-alias gnc='glr; gp; gbpr' # Git Sync - Pull Rebase, Push, Prune Branches
 
 # Git Stashes
 alias gst='git stash show'
