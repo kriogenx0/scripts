@@ -464,7 +464,9 @@ gos() {
   git checkout `git branch -a | grep $1 | sed 's/remotes\/origin\///g' | head -n1`
 }
 alias gom="git checkout master"
-alias god="git checkout $GIT_DEV_BRANCH"
+god() {
+  git checkout $GIT_DEV_BRANCH
+}
 alias gol="git checkout -" # checkout last branch
 gob() { # go back a branch
   git checkout @\{-"$1"\}
