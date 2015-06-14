@@ -3,7 +3,7 @@
 # Pimp My Shell
 
 if [[ ! -e ~/.oh-my-zsh ]]; then
-  read -p "Install ZSH? y/n" install_zsh
+  read -p "Install ZSH? y/n " install_zsh
 
   # Install OH MY ZSH
   if [[ $install_zsh = 'y' ]]; then
