@@ -35,8 +35,8 @@ fi
 export CPPFLAGS=-I/opt/X11/include
 
 # RVM SETTINGS before shell so shell knows
-if [[ -f ~/.rvm/scripts/rvm ]]; then
-  [[ `type rvm` =~ "function" ]] || source ~/.rvm/scripts/rvm
+if [[ -f ~/.rvm/scripts/rvm ]] && [[ ! `which rvm` =~ 'not found' ]]; then
+  source ~/.rvm/scripts/rvm
 
   export rvm_trust_rvmrcs_flag=1
   export rvm_project_rvmrc_default=1
