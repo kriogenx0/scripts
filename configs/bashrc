@@ -114,7 +114,7 @@ if [ -n "$ZSH_VERSION" ]; then
     ZSH_THEME="kriogenx" # ~/.oh-my-zsh/themes/
 
     #plugins=(git rvm fasd rake rails) # ~/.oh-my-zsh/custom/plugins/
-    plugins=(git rvm fasd) # ~/.oh-my-zsh/custom/plugins/
+    plugins=(rvm fasd) # ~/.oh-my-zsh/custom/plugins/
     source $ZSH/oh-my-zsh.sh
   fi
 
