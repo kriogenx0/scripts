@@ -63,13 +63,13 @@ fi
 if [[ -z $(git config --global user.email) ]]; then
   msg 'Your git Name and Email are not set up'
   echo 'It is recommended to configure your git name and email for git commits.'
-  read -p "Configure name and email now? " configuregit
+  read -p "Configure name and email now? y|n " configuregit
   case $configuregit in
     Y|y|yes )
-      read -p "Enter your git name: " gitname
+      read -p "Enter your git full name: " gitname
       [[ -n $a ]] && git config --global user.name "$gitname"
 
-      read -p "Enter your email: " gitemail
+      read -p "Enter your git email: " gitemail
       [[ -n $e ]] && git config --global user.email "$gitemail"
       ;;
     * )
