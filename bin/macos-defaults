@@ -82,6 +82,9 @@ fi
 #####################
 # ALL OS'S
 
+# Show File Extensions
+defaults write com.apple.finder AppleShowAllFiles YES
+
 # ScreenShots
 if [[ `defaults read com.apple.screencapture location` =~ 'Desktop' ]]; then
   mkdir -p ~/Downloads/ScreenShots
