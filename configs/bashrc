@@ -518,6 +518,9 @@ alias gbmm="gbm master | grep -v master"
 # Delete Branches merged into master
 alias gbdm='gbmm | xargs -n 1 git branch -d'
 
+# Branch Delete Merged into Develop
+alias gbdmd='gbmm | xargs -n 1 git branch -d'
+
 # Remote Branches merged into master
 alias gbrm="gbr --merged master | grep -v master | sed 's/^  origin\///g'"
 
