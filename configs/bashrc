@@ -509,17 +509,19 @@ alias gbs='git branch -a | grep' # search branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
 
 alias gbm="git branch --merged"
-alias gbmd="git branch --merged $GIT_DEV_BRANCH"
 alias gbnm="git branch --no-merged"
 
-# Branches merged merged into master
+# Branches Merged into Master
 alias gbmm="gbm master | grep -v master"
 
-# Delete Branches merged into master
+# Branches Merged into Dev
+alias gbmd="gbm $GIT_DEV_BRANCH | grep -v $GIT_DEV_BRANCH"
+
+# Branch Delete Merged into master
 alias gbdm='gbmm | xargs -n 1 git branch -d'
 
 # Branch Delete Merged into Develop
-alias gbdmd='gbmm | xargs -n 1 git branch -d'
+alias gbdmd='gbmd | xargs -n 1 git branch -d'
 
 # Remote Branches merged into master
 alias gbrm="gbr --merged master | grep -v master | sed 's/^  origin\///g'"
