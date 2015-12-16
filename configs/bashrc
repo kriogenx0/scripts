@@ -580,7 +580,8 @@ alias glol='git log --graph --decorate --pretty=oneline --abbrev-commit'
 alias glola='git log --graph --decorate --pretty=oneline --abbrev-commit --all'
 alias glodd='git log --pretty=format:"%h%x09%an%x09%ad%x09%s"'
 alias glodr='git log --pretty=format:"%h%x09%an%x09%ad%x09%s" --date=relative'
-alias gbl='glop master..`gbc`' # See a branch's commits
+alias gbl='glop master..`gbc` --no-merges' # See a branch's commits
+alias gbld='glop develop..`gbc` --no-merges' # See a branch's commits
 alias gls='git ls-files'
 alias glgn='ls-files -o -i --exclude-standard' # Show files ignored by git:
 alias glc="git cherry -v master" #show changes in branch not merged
