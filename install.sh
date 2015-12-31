@@ -12,7 +12,7 @@ k_install() {
   fi
 }
 
-read -p "Developer Essentials? y/n " yn
+read -p "Developer Essentials? y|n " yn
 case $yn in
   Y|y|yes )
     k_install developer-setup
@@ -23,7 +23,7 @@ case $yn in
 esac
 
 if [[ ! -e "$kriogenx_dir" ]]; then
-  read -p "Kriogenx Scripts? y/n " yn
+  read -p "Kriogenx Scripts? y|n " yn
   case $yn in
     Y|y|yes )
       k_install kriogenx-install
@@ -34,7 +34,7 @@ if [[ ! -e "$kriogenx_dir" ]]; then
   esac
 fi
 
-read -p "Pimp My Shell? y/n " yn
+read -p "Pimp My Shell? y|n " yn
 case $yn in
   Y|y|yes )
     k_install pimp-my-shell
@@ -44,7 +44,7 @@ case $yn in
   * ) echo "Please answer [y]es or [n]o.";;
 esac
 
-read -p "Ruby Setup? y/n " yn
+read -p "Ruby Setup? y|n " yn
 case $yn in
   Y|y|yes )
     k_install ruby-setup
@@ -54,7 +54,7 @@ case $yn in
   * ) echo "Please answer [y]es or [n]o.";;
 esac
 
-read -p "Pimp My Git? y/n " yn
+read -p "Pimp My Git? y|n " yn
 case $yn in
   Y|y|yes )
     k_install git-defaults
@@ -64,7 +64,7 @@ case $yn in
   * ) echo "Please answer [y]es or [n]o.";;
 esac
 
-read -p "Run Mac OS X Hacks? y/n " yn
+read -p "Run Mac OS X Hacks? y|n " yn
 case $yn in
   Y|y|yes )
     k_install macos-defaults
@@ -75,7 +75,7 @@ case $yn in
 esac
 
 if [[ -e /Applications/Dropbox.app ]]; then
-  read -p "Sync Applications with Dropbox? y/n " yn
+  read -p "Sync Applications with Dropbox? y|n " yn
   case $yn in
     Y|y|yes )
       k_install dropbox-takeover

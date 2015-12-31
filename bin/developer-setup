@@ -22,12 +22,12 @@ if [[ `sw_vers` =~ 'Mac OS X' ]]; then
   fi
 
   # Install Homebrew
-  if [[ $(brew info) =~ 'not found' ]]; then
-    msg 'Installing Homebrew...'
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  else
+  if command -v brew >/dev/null 2>&1; then
     msg 'Updating Homebrew...'
     brew update
+  else
+    msg 'Installing Homebrew...'
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   fi
 
   # Apple GCC
@@ -78,11 +78,9 @@ if [[ -z $(git config --global user.email) ]]; then
 fi
 
 # Tig
-if [[ ! `type tig` =~ "not found" ]]; then
+if ! command -v tig >/dev/null 2>&1; then
   msg "Installing tig..."
   brew install tig
-else
-  brew upgrade tig
 fi
 
 
@@ -92,7 +90,7 @@ if [[ ! `type ruby` =~ "not found" ]]; then
     msg "Updating Janus..."
     echo `cd ~/.vim/janus; git pull`
   else
-    read -p "Install Janus? y/n " install_janus
+    read -p "Install Janus? y|n " install_janus
 
     case $install_janus in
       Y|y|yes )

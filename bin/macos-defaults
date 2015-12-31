@@ -82,8 +82,8 @@ fi
 #####################
 # ALL OS'S
 
-# Show File Extensions
-defaults write com.apple.finder AppleShowAllFiles YES
+# Show All Files Including Hidden Ones
+#defaults write com.apple.finder AppleShowAllFiles TRUE
 
 # ScreenShots
 if [[ `defaults read com.apple.screencapture location` =~ 'Desktop' ]]; then
