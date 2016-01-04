@@ -246,10 +246,10 @@ tarc() {
 }
 
 # rsync
-alias rnc='rsync -avu --stats --progress --exclude ".dropbox.cache" --exclude ".dropbox" --exclude ".DS_Store"'
+alias rnc='rsync -avuz --stats --progress --exclude ".dropbox.cache" --exclude ".dropbox" --exclude ".DS_Store"'
 # copy sync
 cps() {
-  rnc -z --exclude ".svn" --exclude ".git" "${1%.*}"/ "$2"
+  rnc --exclude ".svn" --exclude ".git" "${1%.*}"/ "$2"
 }
 # move sync
 mvs() {
@@ -257,7 +257,7 @@ mvs() {
 }
 # copy mirror
 cpmirror() {
-  rnc -z --delete "${1%.*}"/ "$2"
+  rnc --delete "${1%.*}"/ "$2"
 }
 
 # Web Server
