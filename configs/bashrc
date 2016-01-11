@@ -607,7 +607,7 @@ alias glm="gom; glr; gol; glr" # Pull master and go back to branch
 # Git Rebasing
 alias gr='git rebase'
 alias grc='git rebase --continue'
-alias grc='git rebase --skip'
+alias grs='git rebase --skip'
 alias gra='git rebase --abort'
 
 # Git Stashes
