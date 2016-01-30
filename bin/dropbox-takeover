@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # Settings
-DROP_HOME=~/Dropbox
+[[ -e $DROP_HOME ]] || DROP_HOME=~/Dropbox
 DROP_OFFICE="$DROP_HOME"/Office
 DROP_SETTINGS="$DROP_OFFICE"/settings
 
