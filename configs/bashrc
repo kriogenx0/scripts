@@ -246,7 +246,7 @@ tarc() {
 }
 
 # rsync
-alias rnc='rsync -avuz --stats --progress --exclude ".dropbox.cache" --exclude ".dropbox" --exclude ".DS_Store" --exclude ".Spotlight-V100"'
+alias rnc='rsync -aEuvz --progress --stats --exclude ".dropbox.cache" --exclude ".dropbox" --exclude ".DS_Store" --exclude ".Spotlight-V100"'
 # copy sync
 cps() {
   rnc --exclude ".svn" --exclude ".git" "${1%.*}"/ "$2"
