@@ -609,6 +609,7 @@ alias gr='git rebase'
 alias grc='git rebase --continue'
 alias grs='git rebase --skip'
 alias gra='git rebase --abort'
+alias grd="git rebase $GIT_DEV_BRANCH"
 
 # Git Stashes
 alias gst='git stash show'
@@ -631,7 +632,7 @@ alias gig="vi .gitignore"
 alias gigi="git update-index --assume-unchanged" # then filename, used for ignoring changes to a file locally
 alias gigu="git update-index --no-assume-unchanged" # then filename, used for ignoring changes to a file locally
 
-alias gr='git revert'
+alias grev='git revert'
 alias gcundo='git reset --hard HEAD~1' # undo last commit
 alias gsundo=' git reset --soft HEAD^'
 alias grundo='git revert HEAD~1 -n' #undo commit changes, leaving commit alone
