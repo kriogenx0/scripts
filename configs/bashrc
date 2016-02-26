@@ -646,11 +646,15 @@ alias gsm='git submodule add'
 alias gsl='git submodule foreach git pull origin master'
 alias gsu="git submodule update --init; git submodule update"
 
+# Cleaning & Clearing
 alias gclr='git clean -fd; git checkout -f'
 alias gclrf='gclr; git clean -fxd'
+alias gfix='git gc; git remote prune origin; git repack; git fsck --full --progress'
+alias gclean="gbdmd; gbp; gbpr"
+
+# Config
 alias gconf='vi .git/config'
 alias ggconf='vi ~/.gitconfig'
-alias gfix='git gc; git remote prune origin; git repack; git fsck --full --progress'
 
 gsearch() {
   git grep $1 $(git rev-list --all)
