@@ -277,6 +277,14 @@ alias wsports='webports'
 # TextEdit
 alias edi='open -e "$1"'
 
+# Browser
+browser() {
+  URL=$1
+  python -mwebbrowser "$URL"
+  [[ -x $BROWSER ]] && exec "$BROWSER" "$URL"
+  path=$(which xdg-open || which gnome-open) && exec "$path" "$URL"
+}
+
 # SSH
 sshcopy() {
   if [[ -e ~/.ssh/id_rsa.pub ]]; then
