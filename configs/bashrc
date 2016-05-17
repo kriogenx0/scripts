@@ -729,6 +729,9 @@ services() {
   osascript -e 'tell application "System Events" to get name of login items'
 }
 
+# Bash Aliases
+alias brc="vi ~/.profile"
+alias bashrc="brc"
 
 # Kriogenx
 alias krc='vi "$KRIOGENX_RC"; source "$KRIOGENX_RC"'
