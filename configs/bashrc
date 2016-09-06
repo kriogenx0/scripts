@@ -620,6 +620,12 @@ alias grs='git rebase --skip'
 alias gra='git rebase --abort'
 alias grd="git rebase $GIT_DEV_BRANCH"
 
+# Undos a commit from given hash
+gundocommit() {
+  # TODO: message for excluding hash
+  git rebase --onto "$1"^ $1
+}
+
 # Git Stashes
 alias gst='git stash show'
 alias gstl='git stash list'
