@@ -750,5 +750,43 @@ kup() {
   k up
 }
 
+# Create Link
+# usage
+# createlink [source] [destination]
+createlink() {
+
+  S="$1"
+  D="$2"
+
+  # Duplicate Directory
+  [[ -n $3 ]] && DD="$3" || DD="$D"-old-`date "+%Y-%m-%d"`
+
+  # Remove If Link
+  [[ -L "$S" ]] && rm -rf "$S"
+  [[ -L "$D" ]] && rm -rf "$D"
+
+  # Make Dir
+  mkdir -p "`dirname "$D"`"
+
+  # Rename Files if Exist
+  if [[ -e "$S" ]]; then # If source exists
+    if [[ -e "$D" ]]; then # If destination exists
+      mv "$S" "$DD" # Move to duplicate
+    else
+      mv "$S" "$D"
+    fi
+  else # source does nto exist
+    if [[ ! -e "$D" ]]; then
+      echo "Neither of locations exist"
+      echo "Source: $S"
+      echo "Destination: $D"
+      return 0
+    fi
+  fi
+
+  # Create Links
+  ln -s "$D" "$S"
+}
+
 [[ -e "$USER_RC" ]] && source "$USER_RC"
 
