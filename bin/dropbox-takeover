@@ -22,6 +22,10 @@ mkdir -p "$DROP_SETTINGS"
 #################################
 # STATICS
 
+msg() {
+  printf "\033[36m$1\033[0m\n"
+}
+
 remove_if_broken_link()
 {
   [[ `file "$1"` =~ 'broken' ]] && sudo rm -f "$1"
@@ -71,7 +75,7 @@ create_link() {
   fi
 
   # Create Links
-  echo "create_link $S $D"
+  echo -e "Created Link\n  From: $S\n  To: $D"
   sudo ln -s "$D" "$S"
 }
 
@@ -109,6 +113,7 @@ EOF
 SSH_SRC=~/.ssh
 SSH_DRP="$DROP_SETTINGS"/ssh
 
+msg "SSH"
 if [[ -L $SSH_SRC ]]; then
   read -p "SSH - Already syncing.  Recreate link? y|n " SSH_SYNC
   case $SSH_SYNC in
@@ -132,6 +137,7 @@ esac
 DESK_SRC=$HOME/Desktop
 DESK_DRP="$DROP_OFFICE"/Desktop
 
+msg "Desktop"
 move_and_create_link "$DESK_SRC" "$DESK_DRP"
 echo 'Desktop - Syncing'
 
@@ -141,6 +147,7 @@ echo 'Desktop - Syncing'
 DOC_SRC=$HOME/Documents
 DOC_DRP="$DROP_OFFICE"/Documents
 
+msg "Documents"
 move_and_create_link "$DOC_SRC" "$DOC_DRP"
 echo 'Documents - Syncing'
 
@@ -150,6 +157,7 @@ echo 'Documents - Syncing'
 HOSTS_SRC=/etc/hosts
 HOSTS_DRP="$DROP_SETTINGS"/hosts
 
+msg "Hosts"
 create_link "$HOSTS_SRC" "$HOSTS_DRP"
 echo 'Hosts - Syncing'
 
@@ -160,6 +168,7 @@ echo 'Hosts - Syncing'
 ITUNES_SRC=~/Music/iTunes
 ITUNES_DROP="$DROP_SETTINGS"/iTunes
 
+msg "iTunes"
 if [[ -e "$ITUNES_SRC" ]] && [[ ! -L "$ITUNES_SRC" ]]; then
   read -p "iTunes - sync? y|n " ITUNES_SYNC
   case $ITUNES_SYNC in
@@ -180,6 +189,7 @@ FZ_APP=/Applications/FileZilla.app
 FZ_SRC=~/.filezilla
 FZ_DRP="$DROP_SETTINGS"/Filezilla
 
+msg "Filezilla"
 if [ -e $FZ_APP ]; then
   create_link "$FZ_SRC" "$FZ_DRP"
   echo 'Filezilla - Syncing'
@@ -191,6 +201,7 @@ fi
 CYBERDUCK_SRC=~/Library/Application\ Support/Cyberduck
 CYBERDUCK_DRP=~/Dropbox/Office/settings/Cyberduck
 
+msg "Cyberduck"
 create_link "$CYBERDUCK_SRC" "$CYBERDUCK_DRP"
 echo 'Cyberduck - Syncing'
 
@@ -210,6 +221,7 @@ elif [[ -e /Applications/Adobe\ Photoshop\ CS4 ]]; then
   PS_V=CS4
 fi
 
+msg "Photoshop"
 if [[ -n $PS_V ]]; then
   echo "Photoshop - Syncing"
 
@@ -253,6 +265,7 @@ fi
 
 SQ_APP=/Applications/"Sequel Pro.app"
 
+msg "Sequel Pro"
 if [[ -e "$SQ_APP" ]]; then
   SQ_DROPBOX=~/Dropbox/Office/settings/sequelpro
 
@@ -304,6 +317,7 @@ fi
 
 ADIUM_APP=/Applications/Adium.app
 
+msg "Adium"
 if [[ -e $ADIUM_APP ]]; then
   ADIUM_PREF=~/Library/Application\ Support/Adium\ 2.0/Users/Default
   ADIUM_DROP="$DROP_SETTINGS"/adium/Default
@@ -356,6 +370,7 @@ fi
 #################################
 # Apache
 
+msg "Apache"
 if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
   APACHE_SITES="/Users/"`whoami`"/Dropbox/Office/settings/apache/sites.conf"
   echo "\n# Load Dropbox Sites" | sudo tee -a /private/etc/apache2/httpd.conf
