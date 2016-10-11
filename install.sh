@@ -27,11 +27,11 @@ k_install() {
   esac
 }
 
-k_install developer-setup "Developer Essentials"
+k_install developer-essentials "Developer Essentials"
 k_install pimp-my-shell "Pimp My Shell"
-k_install git-defaults "Pimp My Git"
-k_install ruby-setup "Install Ruby & RVM"
-k_install macos-defaults "macOS Hacks"
+k_install pimp-my-git "Pimp My Git"
+k_install ruby-install "Install Ruby & RVM"
+k_install macos-hacks "macOS Hacks"
 
 if [[ -e /Applications/Dropbox.app ]]; then
   k_install dropbox-takeover "Dropbox Syncing Applications"
