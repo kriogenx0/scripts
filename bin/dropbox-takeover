@@ -129,6 +129,7 @@ fi
 case $SSH_SYNC in
   Y|y|yes)
     create_link "$SSH_SRC" "$SSH_DRP"
+    sudo chmod 0600 ~/.ssh/id_rsa
 esac
 
 #################################
