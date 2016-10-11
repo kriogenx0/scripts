@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+KRIO_DIR=~/.kriogenx
+
+# Build .profile
+if [[ ! -e ~/.profile ]]; then
+  echo '#!/usr/bin/env sh' > ~/.profile
+fi
+if [[ -e ~/.profile ]] && [[ ! `cat ~/.profile` =~ 'kriogenx' ]]; then
+  echo "source $KRIO_DIR/configs/bashrc" >> ~/.profile
+  echo 'si' >> ~/.profile
+  echo '# Customize Here' >> ~/.profile
+fi

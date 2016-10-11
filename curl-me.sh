@@ -27,6 +27,12 @@ if type git >/dev/null 2>&1; then
     cd "$kriogenx_dir"
     git pull --rebase
   fi
+
+  if [[ -e "$kriogenx_dir" ]]; then
+    msg "Installing ~/.profile"
+    export PATH=$PATH:"$kriogenx_dir"/bin
+    source "$kriogenx_dir"/bin/profile-scripts
+  fi
 else
   msg 'Could not install kriogenx!'
   echo 'Git is required'

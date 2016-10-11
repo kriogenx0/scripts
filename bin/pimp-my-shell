@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+KRIO_DIR=~/.kriogenx
+
 # Pimp My Shell
 
 if [[ ! -e ~/.oh-my-zsh ]]; then
@@ -18,7 +20,7 @@ fi
 if [[ -e ~/.oh-my-zsh ]]; then
   # Install Theme
   rm -rf ~/.oh-my-zsh/themes/kriogenx.zsh-theme
-  ln -s ~/Sites/kriogenx/scripts/configs/kriogenx.zsh-theme ~/.oh-my-zsh/themes/kriogenx.zsh-theme
+  ln -s "$KRIO_DIR"/configs/kriogenx.zsh-theme ~/.oh-my-zsh/themes/kriogenx.zsh-theme
 fi
 
 if [[ -f ~/.zshrc && ! -f ~/.zshrc-old ]]; then
@@ -30,7 +32,7 @@ if [[ ! -e ~/.profile ]]; then
   echo '#!/usr/bin/env sh' > ~/.profile
 fi
 if [[ -e ~/.profile ]] && [[ ! `cat ~/.profile` =~ 'kriogenx' ]]; then
-  echo 'source ~/Sites/kriogenx/scripts/configs/bashrc' >> ~/.profile
+  echo "source $KRIO_DIR/configs/bashrc" >> ~/.profile
   echo 'si' >> ~/.profile
   echo '# Customize Here' >> ~/.profile
 fi

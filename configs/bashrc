@@ -15,8 +15,8 @@
 # =====================
 # SETTINGS
 
-export KRIOGENX_DIR=~/Sites/kriogenx
-export KRIOGENX_RC="$KRIOGENX_DIR"/scripts/configs/bashrc
+export KRIOGENX_DIR=~/.kriogenx
+export KRIOGENX_RC="$KRIOGENX_DIR"/configs/bashrc
 export USER_RC=~/Dropbox/Office/settings/bashrc
 
 # ====================
@@ -79,7 +79,7 @@ append_path /usr/local/mysql/support-files
 append_path /usr/local/mysql/bin
 
 # Kriogenx Bin
-append_path "$KRIOGENX_DIR"/scripts/bin
+append_path "$KRIOGENX_DIR"/bin
 
 # Xcode Developer
 append_path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
@@ -744,8 +744,8 @@ alias bashrc="brc"
 alias krc='vi "$KRIOGENX_RC"; source "$KRIOGENX_RC"'
 alias urc='vi "$USER_RC"; source "$USER_RC"'
 alias kd='cd "$KRIOGENX_DIR"'
-alias kds='cd "$KRIOGENX_DIR"/scripts'
-alias kgig='cp "$KRIOGENX_DIR"/scripts/configs/git/gitignore ./.gitignore'
+alias kds='cd "$KRIOGENX_DIR"'
+alias kgig='cp "$KRIOGENX_DIR"/configs/git/gitignore ./.gitignore'
 kup() {
   k up
 }

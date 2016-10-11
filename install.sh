@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-[[ -n $kriogenx_dir ]] || kriogenx_dir=$HOME/Sites/kriogenx/scripts
+[[ -n $kriogenx_dir ]] || kriogenx_dir=$HOME/.kriogenx
 
-k_install() {
+k_install_package() {
   package=$1
 
   if [[ -e "$kriogenx_dir" ]]; then
@@ -12,78 +12,29 @@ k_install() {
   fi
 }
 
-read -p "Developer Essentials? y|n " yn
-case $yn in
-  Y|y|yes )
-    k_install developer-setup
-    ;;
-  N|n|no )
-    ;;
-  * ) echo "Please answer [y]es or [n]o.";;
-esac
+k_install() {
+  package=$1
+  message=$2
 
-if [[ ! -e "$kriogenx_dir" ]]; then
-  read -p "Kriogenx Scripts? y|n " yn
+  read -p "$message [y|n] " yn
   case $yn in
     Y|y|yes )
-      k_install kriogenx-install
+      k_install $package
       ;;
     N|n|no )
       ;;
     * ) echo "Please answer [y]es or [n]o.";;
   esac
-fi
+}
 
-read -p "Pimp My Shell? y|n " yn
-case $yn in
-  Y|y|yes )
-    k_install pimp-my-shell
-    ;;
-  N|n|no )
-    ;;
-  * ) echo "Please answer [y]es or [n]o.";;
-esac
-
-read -p "Ruby Setup? y|n " yn
-case $yn in
-  Y|y|yes )
-    k_install ruby-setup
-    ;;
-  N|n|no )
-    ;;
-  * ) echo "Please answer [y]es or [n]o.";;
-esac
-
-read -p "Pimp My Git? y|n " yn
-case $yn in
-  Y|y|yes )
-    k_install git-defaults
-    ;;
-  N|n|no )
-    ;;
-  * ) echo "Please answer [y]es or [n]o.";;
-esac
-
-read -p "Run Mac OS X Hacks? y|n " yn
-case $yn in
-  Y|y|yes )
-    k_install macos-defaults
-    ;;
-  N|n|no )
-    ;;
-  * ) echo "Please answer [y]es or [n]o.";;
-esac
+k_install developer-setup "Developer Essentials"
+k_install pimp-my-shell "Pimp My Shell"
+k_install git-defaults "Pimp My Git"
+k_install ruby-setup "Install Ruby & RVM"
+k_install macos-defaults "macOS Hacks"
 
 if [[ -e /Applications/Dropbox.app ]]; then
-  read -p "Sync Applications with Dropbox? y|n " yn
-  case $yn in
-    Y|y|yes )
-      k_install dropbox-takeover
-      ;;
-    N|n|no )
-      ;;
-    * ) echo "Please answer [y]es or [n]o.";;
-  esac
+  k_install dropbox-takeover "Dropbox Syncing Applications"
 fi
 
 echo 'Kriogenx Packager Done!'
