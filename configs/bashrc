@@ -111,7 +111,7 @@ if [ -n "$ZSH_VERSION" ]; then
     [[ -e ~/.rvm/scripts/rvm ]] && source ~/.rvm/scripts/rvm
 
     ZSH=$HOME/.oh-my-zsh # oh-my-zsh config
-    ZSH_CUSTOM="$KRIOGENX_DIR"/scripts/configs
+    ZSH_CUSTOM="$KRIOGENX_DIR"/configs
     ZSH_THEME="kriogenx" # ~/.oh-my-zsh/themes/
 
     #plugins=(git rvm fasd rake rails) # ~/.oh-my-zsh/custom/plugins/
@@ -500,10 +500,6 @@ gbdr() {
   git push origin ":$1"
 }
 
-# delete all
-gbda() {
-  gbd $1; gbdr $1
-}
 alias gbp='git prune -v'
 alias gbpr='git remote prune origin'
 
