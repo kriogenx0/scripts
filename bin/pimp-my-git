@@ -119,3 +119,4 @@ git config --global mergetool.bbedit.cmd 'bbdiff --wait "$LOCAL" "$REMOTE"'
 # textwrangler - install command line tools
 git config --global mergetool.twdiff.cmd 'twdiff --wait "$LOCAL" "$REMOTE"'
 
+echo "pimp-my-git - Your git has been pimped"
