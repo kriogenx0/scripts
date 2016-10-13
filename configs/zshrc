@@ -38,4 +38,4 @@ plugins=(git rvm fasd rake rails)
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-source ~/Sites/kriogenx/scripts/config/bashrc
+source ~/.kriogenx/config/bashrc

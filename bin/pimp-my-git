@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+KRIO_DIR=~/.kriogenx
+
 if [[ -z $(cat ~/.gitconfig | grep 'email =') ]]; then
   echo 'Looks like git is not configured for a user'
   read -p "Enter your git name: " a
@@ -68,7 +70,7 @@ git config --global mergetool.keepTemporaries 'false'
 ### Difftools
 
 # FileMerge / opendiff
-git config --global difftool.opendiff.external ~/Sites/kriogenx/scripts/configs/git/opendiff-mergetool
+git config --global difftool.opendiff.external "$KRIO_DIR"/configs/git/opendiff-mergetool
 
 # diffmerge
 git config --global difftool.diffmerge.cmd "diffmerge \$LOCAL \$REMOTE"
@@ -86,14 +88,14 @@ git config --global difftool.bbedit.cmd 'bbdiff --wait "$LOCAL" "$REMOTE"'
 # textwrangler - install command line tools
 git config --global difftool.twdiff.cmd 'twdiff --wait "$LOCAL" "$REMOTE"'
 #git config --global diff.external ~/git-twdiff.sh
-#git config --global diff.external ~/Sites/kriogenx/scripts/configs/git/textwrangler-mergetool
+#git config --global diff.external "$KRIO_DIR"/configs/git/textwrangler-mergetool
 
 ##############
 ### Mergetools
 
 # FileMerge / opendiff
 git config --global mergetool.opendiff.cmd '"$LOCAL" "$REMOTE" -merge "$MERGED"'
-#git config --global mergetool.opendiff.external ~/Sites/kriogenx/scripts/configs/git/opendiff-mergetool
+#git config --global mergetool.opendiff.external "$KRIO_DIR"/configs/git/opendiff-mergetool
 
 # araxis
 git config --global mergetool.araxis.cmd 'araxis-mergetool "$LOCAL" "$REMOTE" "$MERGED" "$BASE"'
@@ -109,7 +111,7 @@ if [[ -d "/Applications/kdiff.app/Contents" ]]; then
 fi
 
 # p4merge
-git config --global mergetool.p4.cmd '~/Sites/kriogenx/scripts/configs/git/p4-mergetool "$BASE" "$LOCAL" "$REMOTE" "$MERGED"'
+git config --global mergetool.p4.cmd "$KRIO_DIR"'/configs/git/p4-mergetool "$BASE" "$LOCAL" "$REMOTE" "$MERGED"'
 git config --global mergetool.p4.keepTemporaries 'false'
 git config --global mergetool.p4.trustExistCode 'false'
 

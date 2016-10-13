@@ -1,6 +1,7 @@
 #!/bin/bash
 #!/usr/bin/env sh
 
+KRIO_DIR=~/.kriogenx
 A_SITES=(~/Sites/*)
 COMMAND=$1
 VALUE=$2
@@ -323,7 +324,7 @@ k_composer() {
 
 update() {
   msg "Kriogenx" w o n; msg " - " n; msg "Updating..." y
-  echo -n "$(cd ~/Sites/kriogenx/scripts; git pull --rebase -q)"
+  echo -n "$(cd "$KRIO_DIR"; git pull --rebase -q)"
 
   # RVM
   k_rvm u
