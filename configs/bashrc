@@ -451,6 +451,14 @@ pgenv() {
 GIT_DEV_BRANCH='develop'
 
 alias gcl="git clone"
+#gcl() {
+#  git clone "$@"
+#  if [ -n $2 ]; then
+#    cd $2
+#  else
+#    cd `echo $_ | sed -n -e 's/^.*\/\([^.]*\)\(.git\)*/\1/p'`
+#  fi
+#}
 
 # Adding
 alias ga='git add -A .; git add -v .; git status'
@@ -785,4 +793,3 @@ createlink() {
 }
 
 [[ -e "$USER_RC" ]] && source "$USER_RC"
-

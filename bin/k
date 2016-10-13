@@ -260,7 +260,7 @@ k_brew() {
       if [[ ! `type brew` =~ 'not found' ]]; then
         msg "Brew" w o n; msg " - " n; msg "Updating..." y
         brew update
-        brew upgrade --all
+        brew upgrade
         brew cleanup
       fi
       ;;
