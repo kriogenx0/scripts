@@ -36,14 +36,15 @@ sudo gem clean > /dev/null
 # curl get.pow.cx | sh
 
 # Dependencies
-echo "Brewing Dependencies..."
-brew tap homebrew/dupes
-brew install apple-gcc42
-brew install gcc48
-brew install pkg-config
-brew install wget proctools ack ctags-exuberant markdown
-brew install automake
-brew install libksba
-# brew install imagemagick
-brew install readline
+#echo "Brewing Dependencies..."
+#brew tap homebrew/dupes
+#brew install apple-gcc42
+#brew install gcc48
+#brew install pkg-config
+#brew install wget proctools ack ctags-exuberant markdown
+#brew install automake
+#brew install libksba
+## brew install imagemagick
+#brew install readline
 
+echo "Reload shell to use RVM"
