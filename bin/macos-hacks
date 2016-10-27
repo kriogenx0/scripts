@@ -82,6 +82,9 @@ fi
 #####################
 # ALL OS'S
 
+# Disable Spell Check
+defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
+
 # Show All Files Including Hidden Ones
 #defaults write com.apple.finder AppleShowAllFiles TRUE
 
