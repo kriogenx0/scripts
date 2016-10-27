@@ -72,9 +72,9 @@ if [[ -n $2 ]]; then
   if [[ -n $ret ]]; then
     $str
   elif [[ -n $noline ]]; then
-    echo -en "$str"
+    printf "$str"
   else
-    echo -e "$str"
+    printf "$str\n"
   fi
 else
   echo $1

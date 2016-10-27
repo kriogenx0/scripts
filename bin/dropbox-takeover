@@ -75,7 +75,7 @@ create_link() {
   fi
 
   # Create Links
-  printf "Created Link\n  From: $S\n  To: $D"
+  printf "Created Link\n  From: $S\n  To: $D\n"
   sudo ln -s "$D" "$S"
 }
 

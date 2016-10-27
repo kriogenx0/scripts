@@ -101,7 +101,7 @@ apache(){
       ;;
     t|status)
       APACHE_STATUS=`ps ax | grep /usr/sbin/httpd | grep -v grep | cut -c1-5 | paste -s -`;
-      echo -n "Apache is "
+      printf "Apache is "
       if [[ -n $APACHE_STATUS ]]; then
         msg "running" g
         echo $APACHE_STATUS
@@ -324,7 +324,7 @@ k_composer() {
 
 update() {
   msg "Kriogenx" w o n; msg " - " n; msg "Updating..." y
-  echo -n "$(cd "$KRIO_DIR"; git pull --rebase -q)"
+  printf "$(cd "$KRIO_DIR"; git pull --rebase -q)"
 
   # RVM
   k_rvm u
@@ -338,7 +338,7 @@ update() {
   # OH MY ZSH
   if [[ -d ~/.oh-my-zsh ]]; then
     msg "OH-MY-ZSH" w o n; msg " - " n; msg "Updating..." y
-    echo -n $(cd ~/.oh-my-zsh; git pull --rebase -q; git submodule foreach git pull origin master)
+    printf $(cd ~/.oh-my-zsh; git pull --rebase -q; git submodule foreach git pull origin master)
   fi
 }
 
