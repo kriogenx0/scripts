@@ -338,7 +338,7 @@ update() {
   # OH MY ZSH
   if [[ -d ~/.oh-my-zsh ]]; then
     msg "OH-MY-ZSH" w o n; msg " - " n; msg "Updating..." y
-    printf $(cd ~/.oh-my-zsh; git pull --rebase -q; git submodule foreach git pull origin master)
+    echo $(cd ~/.oh-my-zsh; git pull --rebase -q; git submodule foreach git pull origin master)
   fi
 }
 
