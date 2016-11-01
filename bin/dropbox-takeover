@@ -193,6 +193,8 @@ FZ_DRP="$DROP_SETTINGS"/Filezilla
 msg "Filezilla"
 if [ -e $FZ_APP ]; then
   create_link "$FZ_SRC" "$FZ_DRP"
+  mkdir -p ~/.config
+  create_link ~/.config/filezilla "$FZ_DRP"
   echo 'Filezilla - Syncing'
 fi
 
