@@ -1,8 +1,9 @@
 #!/usr/bin/env sh
 
 # Create Link
+# Create a link at the source to the destination
 
-if [ -z $1 ]; then
+if [[ -z $1 ]]; then
   cat << EOF
 Create Link
   Move source to destination and create sym link from source to destination

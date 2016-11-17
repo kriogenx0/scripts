@@ -387,7 +387,8 @@ if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
     cp /etc/php.ini.default "$DROP_SETTINGS"/apache/php.ini
   fi
 
-  create_link "$DROP_SETTINGS"/apache/php.ini /etc/php.ini
+  #create_link "$DROP_SETTINGS"/apache/php.ini /etc/php.ini
+  create_link /etc/php.ini "$DROP_SETTINGS"/apache/php.ini
 
   echo 'Apache - Success!'
 else
