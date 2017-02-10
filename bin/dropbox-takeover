@@ -47,7 +47,7 @@ create_link() {
   remove_if_broken_link "$S"
 
   if [[ -L "$S" ]]; then
-    echo 'Cannot create_link - link already exists'
+    echo ' - Cannot create_link - link already exists'
     return 0
   fi
 
@@ -115,13 +115,13 @@ SSH_DRP="$DROP_SETTINGS"/ssh
 
 msg "SSH"
 if [[ -L $SSH_SRC ]]; then
-  read -p "SSH - Already syncing.  Recreate link? y|n " SSH_SYNC
+  read -p " - Already syncing.  Recreate link? y|n " SSH_SYNC
   case $SSH_SYNC in
     Y|y|yes)
       sudo rm -rf $SSH_SRC
   esac
 elif [[ ! -d $SSH_DRP ]]; then
-  read -p "SSH - Move .ssh to Dropbox? y|n " SSH_SYNC
+  read -p " - Move .ssh to Dropbox? y|n " SSH_SYNC
 else
   SSH_SYNC=y
 fi
@@ -140,7 +140,7 @@ DESK_DRP="$DROP_OFFICE"/Desktop
 
 msg "Desktop"
 move_and_create_link "$DESK_SRC" "$DESK_DRP"
-echo 'Desktop - Syncing'
+echo ' - Syncing'
 
 #################################
 # Documents
@@ -150,7 +150,7 @@ DOC_DRP="$DROP_OFFICE"/Documents
 
 msg "Documents"
 move_and_create_link "$DOC_SRC" "$DOC_DRP"
-echo 'Documents - Syncing'
+echo ' - Syncing'
 
 #################################
 # Hosts File
@@ -160,7 +160,7 @@ HOSTS_DRP="$DROP_SETTINGS"/hosts
 
 msg "Hosts"
 create_link "$HOSTS_SRC" "$HOSTS_DRP"
-echo 'Hosts - Syncing'
+echo ' - Syncing'
 
 
 #################################
@@ -176,11 +176,13 @@ if [[ -e "$ITUNES_SRC" ]] && [[ ! -L "$ITUNES_SRC" ]]; then
     Y|y|yes)
       $ITUNES_SYNC=y
   esac
+else
+  echo ' - Not installed'
 fi
 
 if [[ $ITUNES_SYNC = y ]]; then
   create_link "$ITUNES_SRC" "$ITUNES_DROP"
-  echo 'iTunes - Syncing'
+  echo ' - Syncing'
 fi
 
 #################################
@@ -195,7 +197,9 @@ if [ -e $FZ_APP ]; then
   create_link "$FZ_SRC" "$FZ_DRP"
   mkdir -p ~/.config
   create_link ~/.config/filezilla "$FZ_DRP"
-  echo 'Filezilla - Syncing'
+  echo ' - Syncing'
+else
+  echo ' - Not installed'
 fi
 
 #################################
@@ -206,9 +210,8 @@ CYBERDUCK_DRP=~/Dropbox/Office/settings/Cyberduck
 
 msg "Cyberduck"
 create_link "$CYBERDUCK_SRC" "$CYBERDUCK_DRP"
-echo 'Cyberduck - Syncing'
-
-defaults write ch.sudo.cyberduck application.support.path "$CYBERDUCK_DROP"
+defaults write ch.sudo.cyberduck application.support.path "$CYBERDUCK_DRP"
+echo ' - Syncing'
 
 
 #################################
@@ -226,7 +229,7 @@ fi
 
 msg "Photoshop"
 if [[ -n $PS_V ]]; then
-  echo "Photoshop - Syncing"
+  echo " - Syncing"
 
   PS_FILES=("Actions Palette.psp" Brushes.psp Gradients.psp "Keyboard Shortcuts Primary.psp" "Keyboard Shortcuts.psp" "Menu Customization.psp" Patterns.psp Swatches.psp "Workspace Prefs.psp" WorkSpaces "WorkSpaces (Modified)"  )
   PS_PREFS=~/Library/Preferences/Adobe\ Photoshop\ "$PS_V"\ Settings/
@@ -260,7 +263,7 @@ if [[ -n $PS_V ]]; then
     #echo "--- $df \n--> $f"
 
   done
-  echo 'Photoshop - Success!'
+  echo ' - Success!'
 fi
 
 #################################
@@ -308,9 +311,9 @@ if [[ -e "$SQ_APP" ]]; then
   if [[ -e "${SQ_DROPBOX_PREF}" ]] && [[ ! -L "${SQ_PREF}" ]]; then
     ln -s "${SQ_DROPBOX_PREF}" "${SQ_PREF}"
     if [[ -n $SQ_RECREATED ]]; then
-      echo "Sequel Pro - Link recreated"
+      echo " - Link recreated"
     else
-      echo 'Sequel Pro - Success!'
+      echo ' - Success!'
     fi
   fi
 fi
@@ -330,7 +333,7 @@ if [[ -e $ADIUM_APP ]]; then
   mkdir -p "$ADIUM_PREF"
 
   if [[ -L "$ADIUM_PREF"/Accounts.plist ]]; then
-    read -p "Adium - Already syncing.  Recreate link? y|n " ADIUM_SYNC
+    read -p " - Already syncing.  Recreate link? y|n " ADIUM_SYNC
     #case $SSH_SYNC in
     #  Y|y|yes)
         #sudo rm -rf $ADIUM_PREF
@@ -361,13 +364,15 @@ if [[ -e $ADIUM_APP ]]; then
         [[ -e "$ADIUM_DROP" ]] && ln -s "$ADIUM_DROP"/"$pref" "$ADIUM_PREF"/"$pref"
 
       done
-      echo 'Adium - Success!'
+      echo ' - Success!'
       ;;
     *)
-      echo 'Adium - Cancelled'
+      echo ' - Cancelled'
       ;;
   esac
 
+else
+  echo ' - Not installed'
 fi
 
 #################################
@@ -390,14 +395,14 @@ if ! grep -q `whoami`'/Dropbox' /private/etc/apache2/httpd.conf; then
   #create_link "$DROP_SETTINGS"/apache/php.ini /etc/php.ini
   create_link /etc/php.ini "$DROP_SETTINGS"/apache/php.ini
 
-  echo 'Apache - Success!'
+  echo ' - Success!'
 else
-  echo 'Apache - Already syncing'
+  echo ' - Already syncing'
 fi
 
 #################################
 # Coda 2
-
+msg 'Coda 2'
 if [[ -e /Applications/Coda\ 2.app ]]; then
 
   DESK_SRC=$HOME/Desktop
@@ -407,6 +412,7 @@ if [[ -e /Applications/Coda\ 2.app ]]; then
   create_link ~/Library/Preferences/com.panic.Coda2.plist "$DROP_SETTINGS"/Coda2/com.panic.Coda2.plist
   create_link ~/Library/Preferences/com.panic.Coda2.LSSharedFileList.plist "$DROP_SETTINGS"/Coda2/com.panic.Coda2.LSSharedFileList.plist
 
-  echo 'Coda 2 - Syncing'
-
+  echo ' - Syncing'
+else
+  echo ' - Not installed'
 fi
