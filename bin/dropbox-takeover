@@ -162,6 +162,18 @@ msg "Hosts"
 create_link "$HOSTS_SRC" "$HOSTS_DRP"
 echo ' - Syncing'
 
+#################################
+# Fonts
+msg "Fonts"
+
+# Font Computer Library
+FONT_SRC=/Library/Fonts
+move_and_create_link "$FONT_SRC" "$DROP_OFFICE/Fonts"
+
+# User Directory
+move_and_create_link "$HOME/Library/Fonts" "$DROP_OFFICE/Fonts"
+sudo chown root:wheel "$FONT_SRC"
+
 
 #################################
 # iTunes
