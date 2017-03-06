@@ -165,13 +165,16 @@ echo ' - Syncing'
 #################################
 # Fonts
 msg "Fonts"
+FONT_DST="$DROP_OFFICE/Fonts"
 
 # Font Computer Library
 FONT_SRC=/Library/Fonts
-move_and_create_link "$FONT_SRC" "$DROP_OFFICE/Fonts"
+move_and_create_link "$FONT_SRC" "$FONT_DST/Computer"
+sudo chown root:wheel "$FONT_SRC"
 
 # User Directory
-move_and_create_link "$HOME/Library/Fonts" "$DROP_OFFICE/Fonts"
+FONT_SRC="$HOME/Library/Fonts"
+move_and_create_link "$FONT_SRC" "$FONT_DST/User"
 sudo chown root:wheel "$FONT_SRC"
 
 
