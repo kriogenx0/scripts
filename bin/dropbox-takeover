@@ -165,17 +165,23 @@ echo ' - Syncing'
 #################################
 # Fonts
 msg "Fonts"
-FONT_DST="$DROP_OFFICE/Fonts"
+FONT_DST="$DROP_OFFICE"/Fonts
+COMP_FONT_SRC=/Library/Fonts
+USER_FONT_SRC="$HOME"/Library/Fonts
 
 # Font Computer Library
-FONT_SRC=/Library/Fonts
-move_and_create_link "$FONT_SRC" "$FONT_DST/Computer"
-sudo chown root:wheel "$FONT_SRC"
+move_and_create_link "$COMP_FONT_SRC" "$FONT_DST"/Computer
+sudo chown root:wheel "$COMP_FONT_SRC"
 
 # User Directory
-FONT_SRC="$HOME/Library/Fonts"
-move_and_create_link "$FONT_SRC" "$FONT_DST/User"
-sudo chown root:wheel "$FONT_SRC"
+move_and_create_link "$USER_FONT_SRC" "$FONT_DST"/User
+sudo chown root:wheel "$USER_FONT_SRC"
+
+# Delete Computer Fonts from User Fonts
+find "$COMP_FONT_SRC"/ -type f -print0 | while IFS= read -r -d $'\0' line; do
+  echo 'Deleting duplicate: '`basename $line`;
+  sudo rm -f "$USER_FONT_SRC"/`basename $line`
+done
 
 
 #################################
