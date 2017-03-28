@@ -179,8 +179,11 @@ sudo chown root:wheel "$USER_FONT_SRC"
 
 # Delete Computer Fonts from User Fonts
 find "$COMP_FONT_SRC"/ -type f -print0 | while IFS= read -r -d $'\0' line; do
-  echo 'Deleting duplicate: '`basename $line`;
-  sudo rm -f "$USER_FONT_SRC"/`basename $line`
+  FONT="$USER_FONT_SRC"/`basename "$line"`
+  if [[ -f "$FONT" ]]; then
+    echo 'Deleting duplicate: '"$FONT"
+    sudo rm -f "$FONT"
+  fi
 done
 
 
