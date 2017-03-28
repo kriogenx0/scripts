@@ -167,19 +167,24 @@ echo ' - Syncing'
 msg "Fonts"
 FONT_DST="$DROP_OFFICE"/Fonts
 COMP_FONT_SRC=/Library/Fonts
+COMP_FONT_DST="$FONT_DST"/Computer
 USER_FONT_SRC="$HOME"/Library/Fonts
+USER_FONT_DST="$FONT_DST"/User
 
 # Font Computer Library
-move_and_create_link "$COMP_FONT_SRC" "$FONT_DST"/Computer
+move_and_create_link "$COMP_FONT_SRC" "$COMP_FONT_DST"
 sudo chown root:wheel "$COMP_FONT_SRC"
 
 # User Directory
-move_and_create_link "$USER_FONT_SRC" "$FONT_DST"/User
-sudo chown root:wheel "$USER_FONT_SRC"
+# User Fonts directory must not be symlink
+#move_and_create_link "$USER_FONT_SRC" "$USER_FONT_DST"
+#sudo chown `whoami`:staff "$USER_FONT_SRC"
+rsync -azru "$USER_FONT_SRC"/ "$USER_FONT_DST"
+rsync -azru "$USER_FONT_DST"/ "$USER_FONT_SRC"
 
 # Delete Computer Fonts from User Fonts
-find "$COMP_FONT_SRC"/ -type f -print0 | while IFS= read -r -d $'\0' line; do
-  FONT="$USER_FONT_SRC"/`basename "$line"`
+find "$COMP_FONT_DST"/ -type f -print0 | while IFS= read -r -d $'\0' line; do
+  FONT="$USER_FONT_DST"/`basename "$line"`
   if [[ -f "$FONT" ]]; then
     echo 'Deleting duplicate: '"$FONT"
     sudo rm -f "$FONT"
