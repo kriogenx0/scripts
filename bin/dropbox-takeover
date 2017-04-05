@@ -199,6 +199,9 @@ find "$COMP_FONT_DST"/ -type f -print0 | while IFS= read -r -d $'\0' line; do
 done
 
 sudo chown root:wheel "$COMP_FONT_SRC"
+sudo chown `whoami`:staff "$COMP_FONT_DST"/*
+sudo chown `whoami`:staff "$USER_FONT_SRC"/*
+sudo chown `whoami`:staff "$USER_FONT_DST"/*
 
 #################################
 # iTunes
