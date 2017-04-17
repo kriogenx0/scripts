@@ -625,6 +625,7 @@ alias grc='git rebase --continue'
 alias grs='git rebase --skip'
 alias gra='git rebase --abort'
 alias grd="git rebase $GIT_DEV_BRANCH"
+alias grm="git rebase master"
 
 # Undos a commit from given hash
 gundocommit() {
