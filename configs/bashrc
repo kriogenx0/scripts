@@ -447,6 +447,12 @@ pgenv() {
   echo "PGDATA:    $PGDATA"
 }
 
+# node
+# show versions
+nov() {
+  npm show $1@* version
+}
+
 #####################
 # git
 
