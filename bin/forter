@@ -1,0 +1,85 @@
+#!/usr/bin/env ruby
+
+# require 'optparse'
+require 'pathname'
+require 'fileutils'
+
+# options = {
+#   :abs => true,
+# }
+# parser = OptionParser.new do |opts|
+#   opts.banner = "Usage: fix_oralib.rb [options] files..."
+#
+#   opts.on("-d", "--ic_dir=DIRECTORY",
+#           "Sepcify Oracle instant client directory",
+#           "(default: current directory or script directory)") do |dir|
+#     options[:ic_dir] = File.expand_path('.', dir)
+#   end
+#   opts.on("-a", "--[no-]absolute-path",
+#           "Use the absolute path of instant client directory instead of @rpath (default)") do |v|
+#     options[:abs] = v
+#   end
+#   opts.on("-r", "--recursive",
+#           "Apply all files under each directory, recursively") do |v|
+#     options[:recursive] = v
+#   end
+#   opts.on("-n", "--[no-]dry-run",
+#           "Perform a trial run with no changes made") do |v|
+#     options[:dry_run] = v
+#   end
+# end
+# parser.parse!
+
+
+
+# files = ARGV
+arg = ARGV[0]
+file_path = if arg && File.exists?(arg)
+  arg
+else
+  `pwd`.chomp
+end
+
+puts "Error: Not a directory: #{file_path.inspect}" and exit unless File.directory?(file_path.to_s)
+
+#dir_name  = File.basename(file_path).downcase
+
+files = Pathname.new(file_path).children
+# files = Dir.entries file_path
+
+puts files
+exit
+
+dir = File.dirname file_path
+
+previous_file = nil
+files.each do |f|
+  next if File.directory? f
+  file_name = File.basename f
+  next if file_name[0] == '.'
+  puts file_name
+
+  # MOVE TO PREVIOUS FILES FOLDER
+  file_to_move_to = if f.to_s =~ /\.xmp$/i && previous_file
+    previous_file
+  else
+    f
+  end
+
+  # Create Folder
+  d = File.ctime file_to_move_to
+  folder = File.join dir, d.to_s[5..9]
+  FileUtils.mkdir folder unless File.exists? folder
+
+  # Create Device Folder
+  # FileUtils.mkdir folder unless File.exists? folder
+
+  # Move File
+  begin
+    FileUtils.mv f, File.join(folder, file_name)
+  rescue
+    puts "ERROR: Could no move file: #{file_name}"
+  end
+  # puts "File: #{File.basename f}"
+  previous_file = f
+end
