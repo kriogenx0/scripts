@@ -47,17 +47,15 @@ puts "Error: Not a directory: #{file_path.inspect}" and exit unless File.directo
 files = Pathname.new(file_path).children
 # files = Dir.entries file_path
 
-puts files
-exit
-
 dir = File.dirname file_path
 
+folders_created = []
 previous_file = nil
 files.each do |f|
   next if File.directory? f
   file_name = File.basename f
   next if file_name[0] == '.'
-  puts file_name
+  # puts file_name
 
   # MOVE TO PREVIOUS FILES FOLDER
   file_to_move_to = if f.to_s =~ /\.xmp$/i && previous_file
@@ -66,10 +64,14 @@ files.each do |f|
     f
   end
 
-  # Create Folder
+  # Create Date Folder
   d = File.ctime file_to_move_to
   folder = File.join dir, d.to_s[5..9]
-  FileUtils.mkdir folder unless File.exists? folder
+  unless File.exists? folder
+    FileUtils.mkdir folder
+    puts "Folder created: #{folder}"
+    folders_created << folder
+  end
 
   # Create Device Folder
   # FileUtils.mkdir folder unless File.exists? folder
@@ -82,4 +84,26 @@ files.each do |f|
   end
   # puts "File: #{File.basename f}"
   previous_file = f
+end
+
+# loop through folders_created and organize by filetype
+folders_created.each do |folder|
+  files = Pathname.new(folder).children
+  files.each do |file|
+
+    file_ext = File.extname(file).slice 1, 10
+    ext_folder = File.join File.dirname(file), file_ext
+    unless File.exists? ext_folder
+      FileUtils.mkdir ext_folder
+      # puts "Folder created: #{ext_folder}"
+    end
+
+    # Move File
+    begin
+      FileUtils.mv file, File.join(ext_folder, File.basename(file))
+    rescue
+      puts "ERROR: Could no move file: #{file}"
+    end
+
+  end
 end
