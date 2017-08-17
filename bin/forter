@@ -54,11 +54,11 @@ previous_file = nil
 files.each do |f|
   next if File.directory? f
   file_name = File.basename f
-  next if file_name[0] == '.'
+  next if file_name[0] == '.' || file_name[0] == '_'
   # puts file_name
 
   # MOVE TO PREVIOUS FILES FOLDER
-  file_to_move_to = if f.to_s =~ /\.xmp$/i && previous_file
+  file_to_move_to = if f.to_s =~ /\.xmp$/i && previous_file && File.exists?(previous_file)
     previous_file
   else
     f
