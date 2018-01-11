@@ -65,7 +65,8 @@ files.each do |f|
   end
 
   # Create Date Folder
-  d = File.ctime file_to_move_to
+  #d = File.ctime file_to_move_to
+  d = File.mtime file_to_move_to
   folder = File.join dir, d.to_s[5..9]
   unless File.exists? folder
     FileUtils.mkdir folder
