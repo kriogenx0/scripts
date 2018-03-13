@@ -319,7 +319,7 @@ alias vagss='vagrant suspend'
 
 alias rb='ruby'
 alias rrvm='vi .rvmrc'
-alias rcuc='cd `rr`; cucumber features'
+alias rcuc='cd `rr`; bundle exec cucumber'
 alias rversions="gem list -ra rails | grep 'rails ('"
 alias rgems='rvm list gemsets; cat .rvmrc'
 alias rgemsdir='cd `rvm gemdir`/gems'
