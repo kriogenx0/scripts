@@ -128,13 +128,16 @@ apache(){
 mysql(){
   case "$1" in
     s|start)
-      mysql.server start;
+      mysql.server start
       ;;
     r|restart)
-      mysql.server restart;
+      mysql.server restart
       ;;
     q|quit|stop)
-      mysql.server stop;
+      mysql.server stop
+      ;;
+    e|errors)
+      tail -f /usr/local/var/mysql/*.err
       ;;
     i|installed)
       [[ -n `which mysql.server` ]] && echo "true" || echo "false"
@@ -155,6 +158,7 @@ mysql(){
       echo "  s | start          Start MySQL"
       echo "  r | restart        Restart MySQL"
       echo "  q | quit           Stop MySQL"
+      echo "  e | errors         Log errors"
       ;;
   esac
 }
