@@ -635,6 +635,9 @@ alias gra='git rebase --abort'
 alias grd="git rebase $GIT_DEV_BRANCH"
 alias grm="git rebase master"
 
+# Git Misc
+alias gups='git branch --set-upstream-to=origin/`gbc` `gbc`'
+
 # Undos a commit from given hash
 gundocommit() {
   # TODO: message for excluding hash
