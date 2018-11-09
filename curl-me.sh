@@ -6,7 +6,7 @@
 kriogenx_dir=$HOME/.kriogenx
 
 msg() {
-  printf "\033[36m$1\033[0m"
+  printf "\033[36m$1\033[0m\n"
 }
 
 if type git >/dev/null 2>&1; then

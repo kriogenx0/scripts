@@ -16,10 +16,11 @@ k_install() {
   package=$1
   message=$2
 
+  # TODO while loop
   read -p "$message [y|n] " yn
   case $yn in
     Y|y|yes )
-      k_install $package
+      k_install_package $package
       ;;
     N|n|no )
       ;;
