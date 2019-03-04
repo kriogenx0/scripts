@@ -389,6 +389,8 @@ alias rss3='rss 3003'
 
 alias bex="bundle exec"
 
+alias rup='rvm install "`cat .ruby-version`"; cd .; gem install bundler; bundle'
+
 alias railsg="rails generate --no-helper --no-assets --no-controller-specs --no-view-specs"
 
 [[ `which rake` =~ 'aliased to _rake_command' ]] && unalias rake
