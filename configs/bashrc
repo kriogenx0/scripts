@@ -480,7 +480,7 @@ alias gap='git add -p'
 
 # Committing
 alias gc='git commit -v -m'
-alias gca='git commit --amend'
+alias gca='git commit --amend --no-edit'
 
 # Checking out
 alias gco="git checkout"
