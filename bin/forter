@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+# Forter
+# Photo Organizer
+# Version 2.0
+
 # require 'optparse'
 require 'pathname'
 require 'fileutils'
@@ -44,67 +48,50 @@ puts "Error: Not a directory: #{file_path.inspect}" and exit unless File.directo
 
 #dir_name  = File.basename(file_path).downcase
 
-files = Pathname.new(file_path).children
+files = Pathname.new(file_path).children.sort_by { |f| File.basename f }
 # files = Dir.entries file_path
+root_dir = File.dirname file_path
 
-dir = File.dirname file_path
-
-folders_created = []
-previous_file = nil
-files.each do |f|
-  next if File.directory? f
-  file_name = File.basename f
+previous_dir = nil
+files.each do |file|
+  next if File.directory? file
+  file_name = File.basename file
   next if file_name[0] == '.' || file_name[0] == '_'
   # puts file_name
 
+  file_ext = File.extname(file).slice 1, 10
+
   # MOVE TO PREVIOUS FILES FOLDER
-  file_to_move_to = if f.to_s =~ /\.xmp$/i && previous_file && File.exists?(previous_file)
-    previous_file
+  if file_ext == 'xmp' && previous_dir && File.exist?(previous_dir)
+    destination_dir = previous_dir
   else
-    f
-  end
+    # Create Date Folder
+    date = File.ctime file
+    # date = File.mtime file
+    date_folder = File.join root_dir, date.to_s[5..9]
+    unless File.exists? date_folder
+      FileUtils.mkdir date_folder
+      puts "Folder created: #{date_folder}"
+    end
 
-  # Create Date Folder
-  #d = File.ctime file_to_move_to
-  d = File.mtime file_to_move_to
-  folder = File.join dir, d.to_s[5..9]
-  unless File.exists? folder
-    FileUtils.mkdir folder
-    puts "Folder created: #{folder}"
-    folders_created << folder
-  end
-
-  # Create Device Folder
-  # FileUtils.mkdir folder unless File.exists? folder
-
-  # Move File
-  begin
-    FileUtils.mv f, File.join(folder, file_name)
-  rescue
-    puts "ERROR: Could no move file: #{file_name}"
-  end
-  # puts "File: #{File.basename f}"
-  previous_file = f
-end
-
-# loop through folders_created and organize by filetype
-folders_created.each do |folder|
-  files = Pathname.new(folder).children
-  files.each do |file|
-
-    file_ext = File.extname(file).slice 1, 10
-    ext_folder = File.join File.dirname(file), file_ext
+    # Create File Type Folder
+    ext_folder = File.join date_folder, file_ext
     unless File.exists? ext_folder
       FileUtils.mkdir ext_folder
       # puts "Folder created: #{ext_folder}"
     end
 
-    # Move File
-    begin
-      FileUtils.mv file, File.join(ext_folder, File.basename(file))
-    rescue
-      puts "ERROR: Could no move file: #{file}"
-    end
-
+    destination_dir = ext_folder
   end
+
+  # TODO Create Device Folder
+
+  # Move File
+  begin
+    FileUtils.mv file, File.join(destination_dir, file_name)
+  rescue
+    puts "ERROR: Could no move file: #{file_name}"
+  end
+
+  previous_dir = destination_dir
 end
