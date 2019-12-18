@@ -698,6 +698,10 @@ gitpermanentfiledelete() {
   git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch $1' --prune-empty --tag-name-filter cat -- --all
 }
 
+# Docker
+alias dr='docker'
+alias dri='docker images'
+
 # Remove Garbage Files
 cleandir() {
   #find . -name '.svn' -type d -print0 | xargs -0 -t rm -rf
