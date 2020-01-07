@@ -701,6 +701,10 @@ gitpermanentfiledelete() {
 # Docker
 alias dr='docker'
 alias dri='docker images'
+# Docker Shell
+drsh() {
+  docker exec -it $1 /bin/bash
+}
 
 # Remove Garbage Files
 cleandir() {
