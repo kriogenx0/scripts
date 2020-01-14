@@ -165,7 +165,7 @@ fi
 # ALIASES
 
 # Traversing
-alias l='ls -l'
+alias l='ls -lAh'
 alias ll='ls -l'
 alias la='ls -lAh'   #Show all, sort by extension
 alias lll='ls -lAh'

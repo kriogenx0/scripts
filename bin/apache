@@ -51,7 +51,7 @@ case "$1" in
     [[ -n `which apachectl` ]] && echo "true" || echo "false"
     ;;
   *)
-    msg "a - apache" w o
+    msg "apache" w o
     echo "  s | start          Start Apache"
     echo "  q | quit           Stop Apache"
     echo "  r | restart        Restart Apache sites"
