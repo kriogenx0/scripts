@@ -66,9 +66,17 @@ files.each do |file|
     destination_dir = previous_dir
   else
     # Create Date Folder
-    date = File.ctime file
-    # date = File.mtime file
-    date_folder = File.join root_dir, date.to_s[5..9]
+    #date = File.ctime file
+    date = File.mtime file # Sometimes the created date is not recognized on files
+
+    year_folder = File.join root_dir, date.year.to_s
+    unless File.exists? year_folder
+      FileUtils.mkdir year_folder
+      puts "Folder created: #{year_folder}"
+    end
+
+    # Create Date Folder
+    date_folder = File.join year_folder, date.to_s[5..9]
     unless File.exists? date_folder
       FileUtils.mkdir date_folder
       puts "Folder created: #{date_folder}"
