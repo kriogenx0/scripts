@@ -59,10 +59,10 @@ git config --global color.interactive.help green
 git config --global color.interactive.error red
 
 # Merge & Diff
-git config --global merge.tool p4
-git config --global merge.prompt false
+git config --global merge.tool atom
+git config --global mergetool.prompt false
 git config --global mergetool.keepBackup false
-git config --global mergetool.keepTemporaries 'false'
+git config --global mergetool.keepTemporaries false
 #git config --global diff.tool twdiff #options: opendiff diffmerge kdiff3 bbedit textwrangler
 #git config --global diff.external p4diff
 
@@ -78,7 +78,7 @@ git config --global difftool.diffmerge.cmd "diffmerge \$LOCAL \$REMOTE"
 # kdiff3
 if [[ -d "/Applications/kdiff.app/Contents" ]]; then
   git config --global difftool.kdiff3.path '/Applications/kdiff3.app/Contents/MacOS/kdiff3'
-  git config --global difftool.kdiff3.trustExistCode 'false'
+  git config --global difftool.kdiff3.trustExitCode 'false'
 fi
 
 # bbedit - install command line tools
@@ -102,23 +102,25 @@ git config --global mergetool.araxis.cmd 'araxis-mergetool "$LOCAL" "$REMOTE" "$
 
 # diffmerge
 git config --global mergetool.diffmerge.cmd 'diffmerge --merge\n--result="$MERGED $LOCAL $BASE $REMOTE"'
-git config --global mergetool.diffmerge.trustExistCode 'true'
+git config --global mergetool.diffmerge.trustExitCode 'true'
 
 # kdiff3
 if [[ -d "/Applications/kdiff.app/Contents" ]]; then
   git config --global mergetool.kdiff3.path '/Applications/kdiff3.app/Contents/MacOS/kdiff3'
-  git config --global mergetool.kdiff3.trustExistCode 'false'
+  git config --global mergetool.kdiff3.trustExitCode 'false'
 fi
 
 # p4merge
 git config --global mergetool.p4.cmd "$KRIO_DIR"'/configs/git/p4-mergetool "$BASE" "$LOCAL" "$REMOTE" "$MERGED"'
-git config --global mergetool.p4.keepTemporaries 'false'
-git config --global mergetool.p4.trustExistCode 'false'
+git config --global mergetool.p4.trustExitCode 'false'
 
 # bbedit - install command line tools
 git config --global mergetool.bbedit.cmd 'bbdiff --wait "$LOCAL" "$REMOTE"'
 
 # textwrangler - install command line tools
 git config --global mergetool.twdiff.cmd 'twdiff --wait "$LOCAL" "$REMOTE"'
+
+# Atom
+git config --global mergetool.atom.cmd 'atom $MERGED'
 
 echo "pimp-my-git - Your git has been pimped"
