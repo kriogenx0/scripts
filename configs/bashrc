@@ -187,6 +187,7 @@ mkd() {
 alias ds='du -d 1 | sort -n'
 si() {
   cd "$HOME/Sites/$1"
+  [[ -z $1 ]] && ls -la
 }
 
 # Common Binaries
@@ -481,6 +482,7 @@ alias gap='git add -p'
 # Committing
 alias gc='git commit -v -m'
 alias gca='git commit --amend --no-edit'
+alias gcaa='git commit --amend'
 
 # Checking out
 alias gco="git checkout"
@@ -534,6 +536,7 @@ alias gbs='git branch -a | grep' # search branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
 
 alias gbm="git branch --merged"
+alias gbmc="git branch --merged `gbc`"
 alias gbnm="git branch --no-merged"
 
 # Branches Merged into Master
@@ -547,6 +550,9 @@ alias gbdm='gbmm | xargs -n 1 git branch -d'
 
 # Branch Delete Merged into Develop
 alias gbdmd='gbmd | xargs -n 1 git branch -d'
+
+# Branch Delete Merged into Current
+alias gbdmc='gbmc | xargs -n 1 git branch -d'
 
 # Remote Branches merged into master
 alias gbrm="gbr --merged master | grep -v master | sed 's/^  origin\///g'"
@@ -573,9 +579,11 @@ gbt() {
   git checkout "$1"
 }
 
-# Git Tags
-alias gtg='git tag'
 alias gts='git show'
+
+# Git Tags
+alias gt='git tag'
+alias gtg='git tag'
 alias gtp='git push --tags'
 alias gtd='git tag -d'
 gtdr() { # DELETE REMOTE TAG
@@ -617,6 +625,7 @@ alias gp='git push'
 alias gpa='git push --all'
 alias gpu='git push -u'
 alias gpo='git push -u origin `gbc`'
+alias gpcr='git push origin `gbc`:'
 
 # Git Pull
 alias gl='git pull'
@@ -822,6 +831,11 @@ createlink() {
 
   # Create Links
   ln -s "$D" "$S"
+}
+
+
+whatsmyip() {
+  curl ipinfo.io/ip
 }
 
 [[ -e "$USER_RC" ]] && source "$USER_RC"
