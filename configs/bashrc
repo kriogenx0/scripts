@@ -593,6 +593,11 @@ gtda() {
   gtd $1
   gtdr $1
 }
+gtdc() {
+  gtda $1
+  gtg $1
+  gtp
+}
 
 # status / diffs
 alias gs='git status'
