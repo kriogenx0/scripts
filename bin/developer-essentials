@@ -4,8 +4,10 @@ msg() {
   printf "\033[36m$1\033[0m\n"
 }
 
+SW_VERS=`sw_vers`
+
 # Mac OS X
-if [[ `sw_vers` =~ 'Mac OS X' ]]; then
+if [[ $SW_VERS =~ 'Mac OS X' || $SW_VERS =~ 'macOS' ]]; then
 
   # Xcode
   XCODE_DEV=/Applications/Xcode.app/Contents/Developer
@@ -27,7 +29,7 @@ if [[ `sw_vers` =~ 'Mac OS X' ]]; then
     brew update
   else
     msg 'Installing Homebrew...'
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 
   # Apple GCC
