@@ -4,11 +4,6 @@ Scripts
 Kriogenx Scripts v1.3
 
 # Get Started #
-```
-curl http://scripts.kriogenx.net | bash
-```
-
-or
 
 ```
 curl https://raw.githubusercontent.com/kriogenx0/scripts/master/curl-me.sh | bash
