@@ -536,7 +536,9 @@ alias gbs='git branch -a | grep' # search branches
 alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
 
 alias gbm="git branch --merged"
-alias gbmc="git branch --merged $(gbc)"
+gbmc() {
+  git branch --merged `gbc`
+}
 alias gbnm="git branch --no-merged"
 
 # Branches Merged into Master
