@@ -13,6 +13,7 @@ if type git >/dev/null 2>&1; then
   # Kriogenx
   if [[ ! -d "$kriogenx_dir" ]]; then
     msg 'Installing Kriogenx Scripts...'
+    # Xcode issues may happen here when using git
     git clone https://github.com/kriogenx0/scripts.git "$kriogenx_dir"
 
     # Run
