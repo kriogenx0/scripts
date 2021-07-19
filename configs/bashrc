@@ -267,7 +267,7 @@ cpmirror() {
 }
 
 # Web Server
-alias hosts="sudo vi /etc/hosts"
+alias hosts="sudo vi /etc/hosts; dscacheutil -flushcache"
 alias ports='netstat -lan'
 alias portslisten="ports | egrep 'Proto|LISTEN'"
 webports() {
