@@ -638,7 +638,7 @@ alias gpcr='git push origin `gbc`:'
 alias gl='git pull'
 alias gla='git pull -v --all'
 glu() {
-  git branch --set-upstream $1 "origin/$1"
+  git branch --set-upstream-to `gbc` "origin/"`gbc`
 }
 alias glr='git pull --rebase'
 alias gln='glr; gbpr; gbdm' # Git Pull Sync - Pull Rebase, Prune Branches, Deleted Merged
