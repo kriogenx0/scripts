@@ -35,6 +35,10 @@ require 'fileutils'
 # parser.parse!
 
 
+# Settings
+IGNORED_FILE_EXT = ['xmp', 'THM', 'LRV']
+
+
 
 # files = ARGV
 arg = ARGV[0]
@@ -62,7 +66,7 @@ files.each do |file|
   file_ext = File.extname(file).slice 1, 10
 
   # MOVE TO PREVIOUS FILES FOLDER
-  if file_ext == 'xmp' && previous_dir && File.exist?(previous_dir)
+  if IGNORED_FILE_EXT.include?(file_ext) && previous_dir && File.exist?(previous_dir)
     destination_dir = previous_dir
   else
     # Create Date Folder
