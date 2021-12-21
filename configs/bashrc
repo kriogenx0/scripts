@@ -547,6 +547,13 @@ gbb() {
 alias gbd='git branch -d'
 alias gbdd='git branch -D' # force delete
 
+# Recreate branch
+gbddd() {
+  BRANCH=`gbc`
+  god
+  gbdd $BRANCH
+}
+
 # delete remote
 gbdr() {
   git push origin ":$1"
