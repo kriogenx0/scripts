@@ -491,7 +491,8 @@ nov() {
 #####################
 # git
 
-GIT_DEV_BRANCH='develop'
+: "${GIT_DEV_BRANCH:=develop}"
+: "${GIT_MAIN_BRANCH:=master}"
 
 alias gcl="git clone"
 #gcl() {
@@ -526,7 +527,7 @@ gor() {
 gos() {
   git checkout `git branch -a | grep $1 | sed 's/remotes\/origin\///g' | head -n1`
 }
-alias gom="git checkout master"
+alias gom="git checkout $GIT_MAIN_BRANCH"
 god() {
   git checkout $GIT_DEV_BRANCH
 }
@@ -558,6 +559,11 @@ gbddd() {
 gbdr() {
   git push origin ":$1"
 }
+# delete all branches
+gbda() {
+  gbdd "$1"
+  gbdr "$1"
+}
 
 alias gbp='git prune -v'
 alias gbpr='git remote prune origin'
@@ -578,13 +584,13 @@ gbmc() {
 }
 alias gbnm="git branch --no-merged"
 
-# Branches Merged into Master
-alias gbmm="gbm master | grep -v master"
+# Branches Merged into main
+alias gbmm="gbm $GIT_MAIN_BRANCH | grep -v $GIT_MAIN_BRANCH"
 
 # Branches Merged into Dev
 alias gbmd="gbm $GIT_DEV_BRANCH | grep -v $GIT_DEV_BRANCH"
 
-# Branch Delete Merged into master
+# Branch Delete Merged into main
 alias gbdm='gbmm | xargs -n 1 git branch -d'
 
 # Branch Delete Merged into Develop
@@ -593,16 +599,16 @@ alias gbdmd='gbmd | xargs -n 1 git branch -d'
 # Branch Delete Merged into Current
 alias gbdmc='gbmc | xargs -n 1 git branch -d'
 
-# Remote Branches merged into master
-alias gbrm="gbr --merged master | grep -v master | sed 's/^  origin\///g'"
+# Remote Branches merged into main
+alias gbrm="gbr --merged $GIT_MAIN_BRANCH | grep -v $GIT_MAIN_BRANCH | sed 's/^  origin\///g'"
 
 # Remote Branches not merged
-alias gbrnm="gbr --no-merged master | sed 's/^  origin\///g'"
+alias gbrnm="gbr --no-merged $GIT_MAIN_BRANCH | sed 's/^  origin\///g'"
 
-# Remote Branches Delete Merged into master
+# Remote Branches Delete Merged into main
 gbrdm(){
-  for i in `git branch -r --merged master | sed 's/^  origin\///g'`; do
-    if [[ $i != 'master' && $i != 'HEAD' && $i != '->' && $i != 'origin/master' ]]; then
+  for i in `git branch -r --merged $GIT_MAIN_BRANCH | sed 's/^  origin\///g'`; do
+    if [[ $i != $GIT_MAIN_BRANCH && $i != 'HEAD' && $i != '->' && $i != "origin/$GIT_MAIN_BRANCH" ]]; then
       gbdr $i;
     fi
   done
@@ -646,7 +652,7 @@ alias gdc='git diff --cached'
 alias gad='ga; gds'
 alias gdl="git show" # diff last changes
 alias gdh='git diff HEAD'
-alias gdm='git diff master'
+alias gdm="git diff $GIT_MAIN_BRANCH"
 alias gdd="git diff $GIT_DEV_BRANCH"
 alias gsha='git log | head -1'
 
@@ -657,11 +663,11 @@ alias glol='git log --graph --decorate --pretty=oneline --abbrev-commit'
 alias glola='git log --graph --decorate --pretty=oneline --abbrev-commit --all'
 alias glodd='git log --pretty=format:"%h%x09%an%x09%ad%x09%s"'
 alias glodr='git log --pretty=format:"%h%x09%an%x09%ad%x09%s" --date=relative'
-alias gbl='glop master..`gbc` --no-merges' # See a branch's commits
+alias gbl="glop $GIT_MAIN_BRANCH..`gbc` --no-merges" # See a branch's commits
 alias gbld='glop develop..`gbc` --no-merges' # See a branch's commits
 alias gls='git ls-files'
 alias glgn='ls-files -o -i --exclude-standard' # Show files ignored by git:
-alias glc="git cherry -v master" #show changes in branch not merged
+alias glc="git cherry -v $GIT_MAIN_BRANCH" #show changes in branch not merged
 alias gcp="git cherry-pick"
 
 # Git Push
@@ -680,7 +686,7 @@ glu() {
 alias glr='git pull --rebase'
 alias gln='glr; gbpr; gbdm' # Git Pull Sync - Pull Rebase, Prune Branches, Deleted Merged
 alias gnc='glr; gp; gbpr' # Git Sync - Pull Rebase, Push, Prune Branches
-alias glm="gom; glr; gol; glr" # Pull master and go back to branch
+alias glm="gom; glr; gol; glr" # Pull main and go back to branch
 
 # Git Rebasing
 alias gr='git rebase'
@@ -688,7 +694,7 @@ alias grc='git rebase --continue'
 alias grs='git rebase --skip'
 alias gra='git rebase --abort'
 alias grd="git rebase $GIT_DEV_BRANCH"
-alias grm="git rebase master"
+alias grm="git rebase $GIT_MAIN_BRANCH"
 
 # Git Misc
 alias gups='git branch --set-upstream-to=origin/`gbc` `gbc`'
@@ -712,7 +718,7 @@ alias gsn='ga; gss; glr; gsa'
 alias gm='git merge'
 alias gmt='git mergetool'
 alias gmf='git merge --no-commit --no-ff -v'
-alias gmm='git merge master'
+alias gmm='git merge main'
 alias gmd="git merge $GIT_DEV_BRANCH"
 
 # ignore file
@@ -731,7 +737,7 @@ gundo() {
 
 # Git Submodules
 alias gsm='git submodule add'
-alias gsl='git submodule foreach git pull origin master'
+alias gsl='git submodule foreach git pull origin $GIT_MAIN_BRANCH'
 alias gsu="git submodule update --init; git submodule update"
 
 # Cleaning & Clearing
