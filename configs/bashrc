@@ -249,10 +249,17 @@ tarc() {
   /usr/bin/tar cvf $a $1 ;
 }
 
+# ----------
+
 # rsync
 # --exclude='$RECYCLE.BIN' --exclude='$Recycle.Bin' --exclude='.AppleDB' --exclude='.AppleDesktop' --exclude='.AppleDouble' --exclude='.com.apple.timemachine.supported' --exclude='.dbfseventsd' --exclude='.DocumentRevisions-V100*' --exclude='.DS_Store' --exclude='.fseventsd' --exclude='.PKInstallSandboxManager' --exclude='.Spotlight*' --exclude='.SymAV*' --exclude='.symSchedScanLockxz' --exclude='.TemporaryItems' --exclude='.Trash*' --exclude='.vol' --exclude='.VolumeIcon.icns' --exclude='Desktop DB' --exclude='Desktop DF' --exclude='hiberfil.sys' --exclude='lost+found' --exclude='Network Trash Folder' --exclude='pagefile.sys' --exclude='Recycled' --exclude='RECYCLER' --exclude='System Volume Information' --exclude='Temporary Items' --exclude='Thumbs.db'
-#RSYNC_EXCLUDE=
-alias rnc='rsync -aEuvzh --progress --stats --exclude="tmp/*" --exclude=".[!._]*" --exclude="._*" --exclude=".dropbox*" --exclude ".DS_Store" --exclude=".Spotlight*" --exclude="_no_sync"'
+RSYNC_EXCLUDE='--exclude="..*" --exclude="._*" --exclude=".!*"'\
+'--exclude=".dropbox*" --exclude ".DS_Store" --exclude=".Spotlight*"'\
+'--exclude="Thumbs.db" --exclude ".BridgeCache*"'\
+'--exclude="_no_sync" --exclude="_no_redundancy" --exclude="-no_redundancy"'\
+"--exclude='.AppleDB' --exclude='.com.apple.timemachine.supported' --exclude='.dbfseventsd' --exclude='.DocumentRevisions*' --exclude='.fseventsd' --exclude='.TemporaryItems' --exclude='.Trash*' --exclude='.vol' --exclude='.VolumeIcon.icns'"
+
+alias rnc="rsync -aEhuvz --progress --stats $RSYNC_EXCLUDE"
 # copy sync
 cps() {
   rnc "${1%.*}"/ "$2"
@@ -265,6 +272,29 @@ mvs() {
 cpmirror() {
   rnc --delete "${1%.*}"/ "$2"
 }
+drive_sync() {
+  if [[ ! -e "$1" ]]; then
+    echo "$1 not found"
+    exit
+  fi
+  if [[ ! -e "$2" ]]; then
+    echo "$2 not found"
+    exit
+  fi
+  echo "Syncing from $1 to $2"
+  rsync -aEhuv --progress --stats --partial-dir="._rsync-partial" --delete $RSYNC_EXCLUDE "${1%.*}"/ "$2"
+}
+two_way_sync() {
+  rnc "${1%.*}"/ "$2"
+  rnc "${2%.*}"/ "$1"
+}
+
+# Warning: Deletes directories with invisible files
+delete_empty_dirs() {
+  find "$1"/ -type d -empty -delete
+}
+
+# ----------
 
 # Web Server
 alias hosts="sudo vi /etc/hosts; dscacheutil -flushcache"
