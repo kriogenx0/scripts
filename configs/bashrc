@@ -428,6 +428,9 @@ alias railsg="rails generate --no-helper --no-assets --no-controller-specs --no-
 
 # Python
 alias py='python'
+pyaddpackage() {
+  pip install $1 && pip freeze | grep $1 >> requirements.txt
+}
 
 # cake
 alias cake='app/Console/cake'
