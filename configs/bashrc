@@ -193,6 +193,7 @@ si() {
 # Common Binaries
 alias o='open'
 alias oo='open .'
+alias ox='open *.xcodeproj'
 alias c='clear'
 alias lns="ln -s"
 alias bashcommands="bind -p | sed '/self.insert/d;/^#/d;/do-lowercase/d'"
