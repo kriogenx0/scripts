@@ -197,6 +197,12 @@ alias ox='open *.xcodeproj'
 alias c='clear'
 alias lns="ln -s"
 alias bashcommands="bind -p | sed '/self.insert/d;/^#/d;/do-lowercase/d'"
+
+# Editor
+#export IDE="subl"
+export IDE="code"
+alias e=$IDE
+alias ee='e .'
 alias a='atom'
 alias aa='a .'
 alias v='vim'
@@ -346,7 +352,14 @@ alias vagh='vagrant halt'
 alias vags='vagrant ssh'
 alias vagss='vagrant suspend'
 
-# ===================
+# ==========
+# Python
+
+alias penv="source venv/bin/activate"
+alias pinstall="pip install -r requirements.txt"
+alias psetup="penv; pinstall"
+
+# ==========
 # RUBY & RAILS
 
 alias rb='ruby'
