@@ -277,7 +277,7 @@ mvs() {
 }
 # copy mirror
 cpmirror() {
-  rnc --delete "${1%.*}"/ "$2"
+  rnc -aEhvz --delete "${1%.*}"/ "$2"
 }
 drive_sync() {
   if [[ ! -e "$1" ]]; then
