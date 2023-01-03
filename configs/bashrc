@@ -564,6 +564,7 @@ gbb() {
 }
 alias gbd='git branch -d'
 alias gbdd='git branch -D' # force delete
+alias gbup='git branch --set-upstream-to=origin/`gbc`'
 
 # Recreate branch
 gbddd() {
