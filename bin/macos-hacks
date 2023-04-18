@@ -123,6 +123,15 @@ defaults write NSGlobalDomain NSWindowResizeTime .001
 defaults write com.apple.CrashReporter DialogType none
 
 #----------
+# Sound
+
+# Mute alert volume
+defaults write .GlobalPreferences com.apple.sound.beep.volume -float 0
+
+# Disable user interface sound effects
+defaults write .GlobalPreferences com.apple.sound.uiaudio.enabled -int 0
+
+#----------
 # Finder
 
 # Show all file extensions
