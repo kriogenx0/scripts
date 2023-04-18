@@ -41,10 +41,6 @@ if [[ $OS_VERS =~ "10.10*" ]] || [[ $OS_VERS =~ "10.9*" ]] || [[ $OS_VERS =~ "10
   # Disable Rubberbanding
   #defaults write -g NSScrollViewRubberbanding -int 0
 
-  # Show Library Folder
-  sudo chflags nohidden ~/Library
-  chflags nohidden ~/Library
-
   # Dock Speed
   defaults write com.apple.dock autohide-time-modifier -int 0
   # defaults delete com.apple.dock autohide-time-modifier
@@ -79,8 +75,22 @@ elif [[ $OS_VERS =~ "10.7*" ]]; then
 
 fi
 
+# Disable Handoff (Continuitity)
+defaults -currentHost write com.apple.coreservices.useractivityd ActivityAdvertisingAllowed -bool no
+defaults -currentHost write com.apple.coreservices.useractivityd ActivityReceivingAllowed -bool no
+
 #####################
 # ALL OS'S
+
+#----------
+# Global
+
+# Show Library Folder
+#sudo chflags nohidden ~/Library
+chflags nohidden ~/Library
+
+#echo "Disable full screen animation"
+#defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool NO
 
 # Disable Spell Check
 defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
@@ -90,8 +100,9 @@ defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
 
 # ScreenShots
 if [[ `defaults read com.apple.screencapture location` =~ 'Desktop' ]]; then
-  mkdir -p ~/Downloads/ScreenShots
-  defaults write com.apple.screencapture location ~/Downloads/ScreenShots
+  SCREEN_DIR=~/Documents/ScreenShots
+  mkdir -p $SCREEN_DIR
+  defaults write com.apple.screencapture location $SCREEN_DIR
 fi
 
 # Mail Downloads
@@ -99,17 +110,11 @@ mail_path=~/Library/Containers/com.apple.mail/Data/Library/"Mail Downloads"
 [[ -e "$mail_path" && ! -e ~/Downloads/"Mail Downloads" ]] && ln -s "$mail_path" ~/Downloads/
 
 # Kill Dashboard
-defaults write com.apple.dashboard mcx-disabled -boolean YES
+#defaults write com.apple.dashboard mcx-disabled -boolean YES
 
 # Keyboard Repeat
 defaults write NSGlobalDomain InitialKeyRepeat -int 30
 defaults write NSGlobalDomain KeyRepeat -int 1
-
-# Disable All Animations
-defaults write com.apple.finder DisableAllAnimations -bool true
-
-# Swoosh Animation
-defaults write com.apple.dock workspaces-swoosh-animation-off -bool YES
 
 # Sheet Animations
 defaults write NSGlobalDomain NSWindowResizeTime .001
@@ -117,23 +122,46 @@ defaults write NSGlobalDomain NSWindowResizeTime .001
 # Disable Crash Reporting
 defaults write com.apple.CrashReporter DialogType none
 
-# Dock
-defaults write com.apple.dock orientation right
+#----------
+# Finder
+
+# Show all file extensions
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+# Disable All Animations
+defaults write com.apple.finder DisableAllAnimations -bool true
 
 # Extension Warning
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
-# DOCK MOUSE OVER DELAY
+#----------
+# Dock
+
+# Swoosh Animation
+defaults write com.apple.dock workspaces-swoosh-animation-off -bool YES
+
+# Orientation
+defaults write com.apple.dock orientation right
+
+# Tile size
+defaults write com.apple.dock tilesize -integer 24
+
+# Hide delay
 defaults write com.apple.Dock autohide-delay -float 0
+
+# Hide Recents
+defaults write com.apple.dock show-recents -int 0
+
+#----------
 
 # Disable Quarantine "Are you sure you want to open this"
 defaults write com.apple.LaunchServices LSQuarantine -bool NO
 
 # Ignore accidental trackpad input
-defaults write -g com.apple.mouse.ignoreTypingFilter -bool false
+#defaults write -g com.apple.mouse.ignoreTypingFilter -bool false
 
 # Safari Bookmarks
-defaults write com.apple.Safari ProxiesInBookmarksBar '("Reading List")'
+#defaults write com.apple.Safari ProxiesInBookmarksBar '("Reading List")'
 #defaults write com.apple.Safari ProxiesInBookmarksBar '()'
 #defaults write com.apple.Safari ProxiesInBookmarksBar '("Top Sites","Reading List)'
 

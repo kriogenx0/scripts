@@ -15,7 +15,7 @@ if [[ $SW_VERS =~ 'Mac OS X' || $SW_VERS =~ 'macOS' ]]; then
   if [[ $XCODE_RESULT =~ 'not found' ]]; then
     #msg 'Xcode or Xcode Command Line Tools are required'
     msg 'Installing Xcode Command Line Tools...'
-    sudo xcode-select --install
+    xcode-select --install
   elif [[ -z $XCODE_RESULT ]]; then
     msg 'Xcode selecting proper install...'
     [[ -e "$XCODE_DEV" ]] && sudo xcode-select -switch $XCODE_DEV
