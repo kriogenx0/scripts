@@ -25,19 +25,19 @@ if [[ $SW_VERS =~ 'Mac OS X' || $SW_VERS =~ 'macOS' ]]; then
 
   # Install Homebrew
   if command -v brew >/dev/null 2>&1; then
-    msg 'Updating Homebrew...'
-    brew update
+    msg 'Brew already installed'
   else
     msg 'Installing Homebrew...'
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 
-  # Apple GCC
-  msg 'Installing Apple GCC...'
-  if [[ ! -e /usr/local/bin/gcc-4.2 ]]; then
-    brew install apple-gcc42
-  fi
   brew tap homebrew/dupes
+
+  # Apple GCC
+  #msg 'Installing Apple GCC...'
+  #if [[ ! -e /usr/local/bin/gcc-4.2 ]]; then
+  #  brew install apple-gcc42
+  #fi
 
   # Git
   if [[ $(which git) =~ "usr/local" ]]; then
