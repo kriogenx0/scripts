@@ -113,8 +113,8 @@ mail_path=~/Library/Containers/com.apple.mail/Data/Library/"Mail Downloads"
 #defaults write com.apple.dashboard mcx-disabled -boolean YES
 
 # Keyboard Repeat
-defaults write NSGlobalDomain InitialKeyRepeat -int 30
-defaults write NSGlobalDomain KeyRepeat -int 1
+defaults write NSGlobalDomain InitialKeyRepeat -int 15
+defaults write NSGlobalDomain KeyRepeat -int 2
 
 # Sheet Animations
 defaults write NSGlobalDomain NSWindowResizeTime .001
