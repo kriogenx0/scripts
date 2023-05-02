@@ -338,6 +338,7 @@ sshcopy() {
   fi
 }
 alias sshconfig="vi ~/.ssh/config"
+alias sshadd="ssh-add --apple-load-keychain"
 
 # Dropbox
 alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
