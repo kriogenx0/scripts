@@ -116,6 +116,9 @@ mail_path=~/Library/Containers/com.apple.mail/Data/Library/"Mail Downloads"
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
 defaults write NSGlobalDomain KeyRepeat -int 2
 
+# Disable mouse shake
+defaults write NSGlobalDomain CGDisableCursorLocationMagnification -bool YES
+
 # Sheet Animations
 defaults write NSGlobalDomain NSWindowResizeTime .001
 
