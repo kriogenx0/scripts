@@ -29,6 +29,8 @@ if [[ $SW_VERS =~ 'Mac OS X' || $SW_VERS =~ 'macOS' ]]; then
   else
     msg 'Installing Homebrew...'
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/alexv/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
   fi
 
   brew tap homebrew/dupes
@@ -65,7 +67,7 @@ fi
 if [[ -z $(git config --global user.email) ]]; then
   msg 'Your git Name and Email are not set up'
   echo 'It is recommended to configure your git name and email for git commits.'
-  read -p "Configure name and email now? y|n " configuregit
+  read -p "Configure git name and email now? y|n " configuregit
   case $configuregit in
     Y|y|yes )
       read -p "Enter your git full name: " gitname
