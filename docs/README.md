@@ -25,9 +25,9 @@ installer script will ask which packages you'd like to install.
 curl https://raw.githubusercontent.com/kriogenx0/scripts/master/install.sh | bash
 ```
 
-## Developer Setup ##
+## Developer Essentials ##
 
-Developer Setup installs the following:
+Developer Essentials installs the following:
 * Homebrew
 * Git & Configures Git
 * Tig (Tool for Git Logs)
@@ -36,8 +36,10 @@ Developer Setup installs the following:
 * Fixes for GCC
 
 ```
-developer-setup
+developer-essentials
 ```
+Note if binaries are not found, try running with prepending
+`~/.kriogenx/bin/`
 
 ## Pimp My Shell ##
 Some scripts to get BASH or ZSH mighty fine looking.  This requires Kriogenx Scripts installed
