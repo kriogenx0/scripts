@@ -510,7 +510,7 @@ nov() {
 # git
 
 : "${GIT_DEV_BRANCH:=develop}"
-: "${GIT_MAIN_BRANCH:=master}"
+: "${GIT_MAIN_BRANCH:=main}"
 
 alias gcl="git clone"
 #gcl() {
