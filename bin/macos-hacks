@@ -85,6 +85,11 @@ defaults -currentHost write com.apple.coreservices.useractivityd ActivityReceivi
 #----------
 # Global
 
+# ".GlobalPreferences" and NSGlobalDomain and "-g" are the same
+
+# Dark Mode
+defaults write NSGlobalDomain AppleInterfaceStyle -string Dark
+
 # Show Library Folder
 #sudo chflags nohidden ~/Library
 chflags nohidden ~/Library
@@ -105,7 +110,7 @@ if [[ `defaults read com.apple.screencapture location` =~ 'Desktop' ]]; then
   defaults write com.apple.screencapture location $SCREEN_DIR
 fi
 
-# Mail Downloads
+# Alias Mail Downloads to ~/Downloads
 mail_path=~/Library/Containers/com.apple.mail/Data/Library/"Mail Downloads"
 [[ -e "$mail_path" && ! -e ~/Downloads/"Mail Downloads" ]] && ln -s "$mail_path" ~/Downloads/
 
@@ -135,6 +140,10 @@ defaults write .GlobalPreferences com.apple.sound.beep.volume -float 0
 defaults write .GlobalPreferences com.apple.sound.uiaudio.enabled -int 0
 
 #----------
+# Global
+defaults write .GlobalPreferences com.apple.mouse.scaling -int 3
+
+#----------
 # Finder
 
 # Show all file extensions
@@ -145,6 +154,17 @@ defaults write com.apple.finder DisableAllAnimations -bool true
 
 # Extension Warning
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+
+# Status Bar
+defaults write com.apple.finder ShowStatusBar -bool true
+
+# Show Drives
+defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
+defaults write com.apple.finder ShowHardDrivesOnDesktop -bool false
+defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
+defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+
+defaults write com.apple.finder SidebarWidth -int 200
 
 #----------
 # Dock
