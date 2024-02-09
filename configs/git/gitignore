@@ -41,6 +41,30 @@ Thumbs.db
 *.ai
 *.eps
 
+#############
+# IDEs
+
+# PivotalTracker
+.pivotalrc
+.pivotal_cache
+
+# Dreamweaver
+_notes
+dwsync.xml
+
+# Front Page
+_vti_cnf
+_vti_pvt
+_vti_script
+_vti_txt
+
+# TextMate
+*.tmproj
+tmtags
+
+# Ideas
+.idea
+
 ###############
 # Environments
 
@@ -79,26 +103,3 @@ capybara-*.html
 # NodeJS
 node_modules/*
 
-#############
-# Apps
-
-# PivotalTracker
-.pivotalrc
-.pivotal_cache
-
-# Dreamweaver
-_notes
-dwsync.xml
-
-# Front Page
-_vti_cnf
-_vti_pvt
-_vti_script
-_vti_txt
-
-# TextMate
-*.tmproj
-tmtags
-
-# Ideas
-.idea
