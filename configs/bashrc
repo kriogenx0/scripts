@@ -208,8 +208,7 @@ alias aa='a .'
 alias v='vim'
 alias vi='vim'
 alias svi='sudo vim'
-alias rmf='rm -rfv'
-alias srmf='sudo rm -rf'
+alias rmf='rm -rf'
 alias tailf='tail -f'
 
 # Move & Create Directory
