@@ -2,6 +2,11 @@
 
 KRIO_DIR=~/.kriogenx
 
+# Settings
+MERGETOOL=code
+
+##########
+
 if [[ -z $(cat ~/.gitconfig | grep 'email =') ]]; then
   echo 'Looks like git is not configured for a user'
   read -p "Enter your git name: " a
@@ -59,15 +64,16 @@ git config --global color.interactive.help green
 git config --global color.interactive.error red
 
 # Merge & Diff
-git config --global merge.tool atom
+git config --global merge.tool $MERGETOOL
 git config --global mergetool.prompt false
 git config --global mergetool.keepBackup false
 git config --global mergetool.keepTemporaries false
-#git config --global diff.tool twdiff #options: opendiff diffmerge kdiff3 bbedit textwrangler
-#git config --global diff.external p4diff
 
 ##############
 ### Difftools
+
+#git config --global diff.tool twdiff #options: opendiff diffmerge kdiff3 bbedit textwrangler
+#git config --global diff.external p4diff
 
 # FileMerge / opendiff
 git config --global difftool.opendiff.external "$KRIO_DIR"/configs/git/opendiff-mergetool
@@ -122,5 +128,8 @@ git config --global mergetool.twdiff.cmd 'twdiff --wait "$LOCAL" "$REMOTE"'
 
 # Atom
 git config --global mergetool.atom.cmd 'atom $MERGED'
+
+# VS Code
+git config --global mergetool.code.cmd 'code $MERGED'
 
 echo "pimp-my-git - Your git has been pimped"
