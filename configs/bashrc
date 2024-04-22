@@ -355,9 +355,17 @@ alias vagss='vagrant suspend'
 # ==========
 # Python
 
-alias penv="source venv/bin/activate"
-alias pinstall="pip install -r requirements.txt"
-alias psetup="penv; pinstall"
+alias py='python'
+alias pyv='which python; python --version'
+alias pyvenv='python -m venv venv'
+alias pys="source venv/bin/activate; pyv"
+alias pyi="pip install -r requirements.txt"
+alias pysetup="pyvenv; pys; pyi"
+
+pyaddpackage() {
+  pip install $1 && pip freeze | grep $1 >> requirements.txt
+}
+
 
 # ==========
 # RUBY & RAILS
@@ -439,12 +447,6 @@ alias rup='rvm install "`cat .ruby-version`"; cd .; gem install bundler; bundle'
 alias railsg="rails generate --no-helper --no-assets --no-controller-specs --no-view-specs"
 
 [[ `which rake` =~ 'aliased to _rake_command' ]] && unalias rake
-
-# Python
-alias py='python'
-pyaddpackage() {
-  pip install $1 && pip freeze | grep $1 >> requirements.txt
-}
 
 # cake
 alias cake='app/Console/cake'
