@@ -104,11 +104,9 @@ defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
 #defaults write com.apple.finder AppleShowAllFiles TRUE
 
 # ScreenShots
-if [[ `defaults read com.apple.screencapture location` =~ 'Desktop' ]]; then
-  SCREEN_DIR=~/Documents/ScreenShots
-  mkdir -p $SCREEN_DIR
-  defaults write com.apple.screencapture location $SCREEN_DIR
-fi
+SCREEN_DIR=~/Documents/ScreenShots
+mkdir -p $SCREEN_DIR
+defaults write com.apple.screencapture location $SCREEN_DIR
 
 # Alias Mail Downloads to ~/Downloads
 mail_path=~/Library/Containers/com.apple.mail/Data/Library/"Mail Downloads"
@@ -193,6 +191,9 @@ defaults write com.apple.Dock autohide-delay -float 0
 defaults write com.apple.dock show-recents -int 0
 
 #----------
+
+# Stage Manager
+defaults write com.apple.WindowManager EnableStandardClickToShowDesktop 0
 
 # Disable Quarantine "Are you sure you want to open this"
 defaults write com.apple.LaunchServices LSQuarantine -bool NO

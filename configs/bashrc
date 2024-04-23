@@ -368,6 +368,9 @@ gob() { # go back a branch
 # Branches
 alias gb='git branch'
 
+# Current branch
+alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
+
 # Show Branches in order
 gbb() {
   for k in $(git branch | sed /\*/d); do
@@ -406,7 +409,6 @@ alias gbr='git branch -r' # remote branches
 
 # Search Branches
 alias gbs='git branch -a | grep' # search branches
-alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
 
 alias gbm="git branch --merged"
 gbmc() {
