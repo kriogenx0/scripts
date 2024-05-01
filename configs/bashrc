@@ -4,7 +4,7 @@
 # FOR ZSH AND BASH
 # scripts.kriogenx.net
 
-# =================
+####################
 # KILL DUPLICATE
 
 #if [[ -n $KRIOGENX_DIR ]]; then
@@ -12,17 +12,18 @@
 #  return
 #fi
 
-# =====================
+####################
 # SETTINGS
 
 export KRIOGENX_DIR=~/.kriogenx
 export KRIOGENX_RC="$KRIOGENX_DIR"/configs/bashrc
 export USER_RC=~/Dropbox/Office/settings/bashrc
 
-# ====================
+####################
 # ENVIRONMENT VARIABLES
 
 # Homebrew GCC
+: '
 if ! type CC >/dev/null; then
   if [[  -e /usr/local/bin/gcc-4.2 ]]; then
     export CC=/usr/local/bin/gcc-4.2
@@ -32,17 +33,15 @@ if ! type CC >/dev/null; then
     export CC=`which gcc`
   fi
 fi
-export CPPFLAGS=-I/opt/X11/include
-
-# SET DEFAULT EDITOR
-[[ -e /usr/bin/vim ]] && export EDITOR=/usr/bin/vim
+'
+# export CPPFLAGS=-I/opt/X11/include
 
 # Postgres
-if [[ -e /usr/local/var/postgres ]]; then
-  export PGDATA=/usr/local/var/postgres
-fi
+# if [[ -e /usr/local/var/postgres ]]; then
+#   export PGDATA=/usr/local/var/postgres
+# fi
 
-# =====================
+####################
 # PATH CHANGES
 
 # Homebrew Git
@@ -96,7 +95,7 @@ if [[ -f $RVM_SCRIPT ]] && type rvm >/dev/null 2>&1; then
 fi
 
 
-# =========================
+####################
 # PIMP MY SHELL
 
 # ZSH SETTINGS
@@ -161,7 +160,7 @@ elif [ -n "$BASH_VERSION" ]; then
   [ -z "$PS1" ] || export PS1="╭─ \[\033[01;36m\]\w\[\033[00m\]\$(git_prompt_info '(%s)')\$(rvm_prompt_info)\033[0m\n╰─ "
 fi
 
-# ====================
+####################
 # ALIASES
 
 # Traversing
@@ -199,8 +198,9 @@ alias lns="ln -s"
 alias bashcommands="bind -p | sed '/self.insert/d;/^#/d;/do-lowercase/d'"
 
 # Editor
-#export IDE="subl"
 export IDE="code"
+# export EDITOR=/usr/bin/vim
+export EDITOR=$IDE
 alias e=$IDE
 alias ee='e .'
 alias a='atom'
@@ -316,196 +316,6 @@ webports() {
 }
 alias wsports='webports'
 
-# TextEdit
-alias edi='open -e "$1"'
-
-# Browser
-browser() {
-  URL=$1
-  python -mwebbrowser "$URL"
-  [[ -x $BROWSER ]] && exec "$BROWSER" "$URL"
-  path=$(which xdg-open || which gnome-open) && exec "$path" "$URL"
-}
-
-# SSH
-sshcopy() {
-  if [[ -e ~/.ssh/id_rsa.pub ]]; then
-    pbcopy < ~/.ssh/id_rsa.pub
-    echo "Copied ssh key into clipboard"
-  else
-    echo "SSH key could not be found"
-  fi
-}
-alias sshconfig="vi ~/.ssh/config"
-alias sshadd="ssh-add --apple-load-keychain"
-
-# Dropbox
-alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
-
-# Vagrant
-alias vag='vagrant'
-alias vagu='vagrant up'
-alias vagup='vagrant up --provision'
-alias vagp='vagrant provision'
-alias vagd='vagrant destroy -f'
-alias vagh='vagrant halt'
-alias vags='vagrant ssh'
-alias vagss='vagrant suspend'
-
-# ==========
-# Python
-
-alias py='python'
-alias pyv='which python; python --version'
-alias pyvenv='python -m venv venv'
-alias pys="source venv/bin/activate; pyv"
-alias pyi="pip install -r requirements.txt"
-alias pysetup="pyvenv; pys; pyi"
-
-pyaddpackage() {
-  pip install $1 && pip freeze | grep $1 >> requirements.txt
-}
-
-
-# ==========
-# RUBY & RAILS
-
-alias rb='ruby'
-alias rrvm='vi .rvmrc'
-alias rcuc='cd `rr`; bundle exec cucumber'
-alias rversions="gem list -ra rails | grep 'rails ('"
-alias rgems='rvm list gemsets; cat .rvmrc'
-alias rgemsdir='cd `rvm gemdir`/gems'
-alias rvdgems='rvm gemset empty'
-alias rgem='vi `rr`/Gemfile'
-rinstall() {
-  if [[ -n $1 ]]; then
-    rvm install $1
-    cd -; cd -
-    gem install bundler
-    bundle install
-  else
-    echo 'Must supply ruby version'
-  fi
-}
-rgemsuninstall(){
-  #gem list | cut -d" " -f1 | xargs gem uninstall -aIx
-  for i in `gem list --no-versions`; do
-    gem uninstall -aIx $i;
-  done
-}
-alias rgembuild='gem pristine --all --no-extensions'
-alias rlog='tail -f `rr`/log/development.log'
-alias rtlog='tail -f `rr`/log/test.log'
-# Rails Root
-rr() {
-  (
-    dir=${1:-$(pwd)}
-    i=0
-    while [ "/" != "$dir" -a "$i" -ne 16 ]; do
-      if [ -f "$dir/config/environment.rb" ]; then
-        echo "$dir"
-        return 0
-      fi
-      dir="$(dirname "$dir")"
-      i=$(expr $i + 1)
-    done
-    return 1
-  )
-}
-rsc() {
-  if [[ -f "`rr`/script/rails" ]]; then
-    `rr`/script/rails console
-  elif [[ -f "`rr`/script/console" ]]; then
-    `rr`/script/console
-  else
-    rails c
-  fi
-}
-rss() {
-  if [[ -f "`rr`/script/rails" ]]; then
-    S="rails server"
-  elif [[ -f "`rr`/script/server" ]]; then
-    S="`rr`/script/server"
-  else
-    S="rails s"
-  fi
-  if [[ -n $1 ]]; then
-    eval "$S -p '$1'"
-  else
-    eval "$S"
-  fi
-}
-alias rss1='rss 3001'
-alias rss2='rss 3002'
-alias rss3='rss 3003'
-
-alias bex="bundle exec"
-
-alias rup='rvm install "`cat .ruby-version`"; cd .; gem install bundler; bundle'
-
-alias railsg="rails generate --no-helper --no-assets --no-controller-specs --no-view-specs"
-
-[[ `which rake` =~ 'aliased to _rake_command' ]] && unalias rake
-
-# cake
-alias cake='app/Console/cake'
-
-# Third Party Applications
-alias tiga='tig --all'
-alias tigs='tig status'
-
-# Sublime
-if [[ -e /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl ]]; then
-  alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
-elif [[ -e /Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl ]]; then
-  alias subl="/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl"
-fi
-
-# apache
-alias asites='sudo vi /etc/apache2/extra/httpd-vhosts.conf; sudo vi /etc/hosts; sudo apachectl restart'
-alias adsites='sudo vi ~/Dropbox/Office/settings/apache/sites.conf; sudo vi /etc/hosts; sudo apachectl restart'
-alias astart='sudo apachectl restart'
-alias astop='sudo apachectl stop'
-alias alog="tail -f /private/var/log/apache2/error_log"
-
-# Nginx
-alias ngsites='vi /usr/local/etc/nginx/nginx.conf'
-alias ngstart='sudo nginx'
-alias ngstop='sudo nginx -s quit'
-
-# mysql
-[[ `which mysql` =~ 'aliased to nocorrect' ]] && unalias mysql
-alias mys='mysql.server start'
-alias myr='mysql.server restart'
-alias myq='mysql.server stop'
-
-# cucumber
-alias cuc='cucumber --format pretty -v'
-alias cucb='bex cucumber --format pretty -v'
-alias cucs='RAILS_ENV=cucumber rss1'
-cucf() {
-  if [[ -n "$1" ]]; then
-    cucb "features/""${1/\.feature/}"".feature"
-  else
-    ls features | grep ".feature"
-  fi
-}
-
-# postgres
-#alias pg-start='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
-#alias pg-stop='pg_ctl -D /usr/local/var/postgres stop -s -m fast'
-alias pgstart='pg_ctl start'
-alias pgstop='pg_ctl stop'
-pgenv() {
-  echo "PGDATA:    $PGDATA"
-}
-
-# node
-# show versions
-nov() {
-  npm show $1@* version
-}
 
 #####################
 # git
@@ -777,6 +587,192 @@ gitpermanentfiledelete() {
   git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch $1' --prune-empty --tag-name-filter cat -- --all
 }
 
+####################
+# Apps
+
+# TextEdit
+alias edi='open -e "$1"'
+
+# Browser
+browser() {
+  URL=$1
+  python -mwebbrowser "$URL"
+  [[ -x $BROWSER ]] && exec "$BROWSER" "$URL"
+  path=$(which xdg-open || which gnome-open) && exec "$path" "$URL"
+}
+
+####################
+# SSH
+sshcopy() {
+  if [[ -e ~/.ssh/id_rsa.pub ]]; then
+    pbcopy < ~/.ssh/id_rsa.pub
+    echo "Copied ssh key into clipboard"
+  else
+    echo "SSH key could not be found"
+  fi
+}
+alias sshconfig="vi ~/.ssh/config"
+alias sshadd="ssh-add --apple-load-keychain"
+
+# Dropbox
+alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
+
+# Vagrant
+alias vag='vagrant'
+alias vagu='vagrant up'
+alias vagup='vagrant up --provision'
+alias vagp='vagrant provision'
+alias vagd='vagrant destroy -f'
+alias vagh='vagrant halt'
+alias vags='vagrant ssh'
+alias vagss='vagrant suspend'
+
+####################
+# Python
+
+alias py='python'
+alias pyv='which python; python --version'
+alias pyvenv='python -m venv venv'
+alias pys="source venv/bin/activate; pyv"
+alias pyi="pip install -r requirements.txt"
+alias pysetup="pyvenv; pys; pyi"
+
+pyaddpackage() {
+  pip install $1 && pip freeze | grep $1 >> requirements.txt
+}
+
+
+####################
+# RUBY & RAILS
+
+alias rb='ruby'
+alias rrvm='vi .rvmrc'
+alias rcuc='cd `rr`; bundle exec cucumber'
+alias rversions="gem list -ra rails | grep 'rails ('"
+alias rgems='rvm list gemsets; cat .rvmrc'
+alias rgemsdir='cd `rvm gemdir`/gems'
+alias rvdgems='rvm gemset empty'
+alias rgem='vi `rr`/Gemfile'
+rinstall() {
+  if [[ -n $1 ]]; then
+    rvm install $1
+    cd -; cd -
+    gem install bundler
+    bundle install
+  else
+    echo 'Must supply ruby version'
+  fi
+}
+rgemsuninstall(){
+  #gem list | cut -d" " -f1 | xargs gem uninstall -aIx
+  for i in `gem list --no-versions`; do
+    gem uninstall -aIx $i;
+  done
+}
+alias rgembuild='gem pristine --all --no-extensions'
+alias rlog='tail -f `rr`/log/development.log'
+alias rtlog='tail -f `rr`/log/test.log'
+# Rails Root
+rr() {
+  (
+    dir=${1:-$(pwd)}
+    i=0
+    while [ "/" != "$dir" -a "$i" -ne 16 ]; do
+      if [ -f "$dir/config/environment.rb" ]; then
+        echo "$dir"
+        return 0
+      fi
+      dir="$(dirname "$dir")"
+      i=$(expr $i + 1)
+    done
+    return 1
+  )
+}
+rsc() {
+  if [[ -f "`rr`/script/rails" ]]; then
+    `rr`/script/rails console
+  elif [[ -f "`rr`/script/console" ]]; then
+    `rr`/script/console
+  else
+    rails c
+  fi
+}
+rss() {
+  if [[ -f "`rr`/script/rails" ]]; then
+    S="rails server"
+  elif [[ -f "`rr`/script/server" ]]; then
+    S="`rr`/script/server"
+  else
+    S="rails s"
+  fi
+  if [[ -n $1 ]]; then
+    eval "$S -p '$1'"
+  else
+    eval "$S"
+  fi
+}
+alias rss1='rss 3001'
+alias rss2='rss 3002'
+alias rss3='rss 3003'
+
+alias bex="bundle exec"
+
+alias rup='rvm install "`cat .ruby-version`"; cd .; gem install bundler; bundle'
+
+alias railsg="rails generate --no-helper --no-assets --no-controller-specs --no-view-specs"
+
+[[ `which rake` =~ 'aliased to _rake_command' ]] && unalias rake
+
+# Third Party Applications
+alias tiga='tig --all'
+alias tigs='tig status'
+
+# apache
+alias asites='sudo vi /etc/apache2/extra/httpd-vhosts.conf; sudo vi /etc/hosts; sudo apachectl restart'
+alias adsites='sudo vi ~/Dropbox/Office/settings/apache/sites.conf; sudo vi /etc/hosts; sudo apachectl restart'
+alias astart='sudo apachectl restart'
+alias astop='sudo apachectl stop'
+alias alog="tail -f /private/var/log/apache2/error_log"
+
+# Nginx
+alias ngsites='vi /usr/local/etc/nginx/nginx.conf'
+alias ngstart='sudo nginx'
+alias ngstop='sudo nginx -s quit'
+
+# mysql
+# [[ `which mysql` =~ 'aliased to nocorrect' ]] && unalias mysql
+alias mys='mysql.server start'
+alias myr='mysql.server restart'
+alias myq='mysql.server stop'
+
+# cucumber
+alias cuc='cucumber --format pretty -v'
+alias cucb='bex cucumber --format pretty -v'
+cucf() {
+  if [[ -n "$1" ]]; then
+    cucb "features/""${1/\.feature/}"".feature"
+  else
+    ls features | grep ".feature"
+  fi
+}
+
+# postgres
+#alias pg-start='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
+#alias pg-stop='pg_ctl -D /usr/local/var/postgres stop -s -m fast'
+alias pgstart='pg_ctl start'
+alias pgstop='pg_ctl stop'
+pgenv() {
+  echo "PGDATA:    $PGDATA"
+}
+
+# node
+# show versions
+nov() {
+  npm show $1@* version
+}
+
+
+
 # Docker
 alias dr='docker'
 alias dri='docker images'
@@ -855,6 +851,7 @@ services() {
 alias brc="vi ~/.profile"
 alias bashrc="brc"
 
+###########
 # Kriogenx
 alias krc='vi "$KRIOGENX_RC"; source "$KRIOGENX_RC"'
 alias urc='vi "$USER_RC"; source "$USER_RC"'
