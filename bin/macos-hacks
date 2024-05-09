@@ -192,6 +192,15 @@ defaults write com.apple.LaunchServices LSQuarantine -bool NO
 # Ignore accidental trackpad input
 #defaults write -g com.apple.mouse.ignoreTypingFilter -bool false
 
+# Safari
+SAFARI_DOWNLOADS=~/Downloads/Safari\ Downloads
+mkdir -p $SAFARI_DOWNLOADS
+defaults write com.apple.Safari.SandboxBroker DownloadLocation "$SAFARI_DOWNLOADS"
+defaults write com.apple.Safari DownloadLocation "$SAFARI_DOWNLOADS"
+
+defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu 1
+killall Safari
+
 # Safari Bookmarks
 #defaults write com.apple.Safari ProxiesInBookmarksBar '("Reading List")'
 #defaults write com.apple.Safari ProxiesInBookmarksBar '()'
