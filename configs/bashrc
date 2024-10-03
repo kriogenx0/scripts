@@ -639,7 +639,8 @@ alias py='python'
 alias pyv='which python; python --version'
 alias pyvenv='python -m venv venv'
 alias pys="source venv/bin/activate; pyv"
-alias pyi="pip install -r requirements.txt"
+alias pyi="python -m pip install"
+alias pyir="python -m pip install -r requirements.txt"
 alias pysetup="pyvenv; pys; pyi"
 
 pyaddpackage() {
