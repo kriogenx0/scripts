@@ -114,16 +114,6 @@ fi
 mail_path=~/Library/Containers/com.apple.mail/Data/Library/"Mail Downloads"
 [[ -e "$mail_path" && ! -e ~/Downloads/"Mail Downloads" ]] && ln -s "$mail_path" ~/Downloads/
 
-# Kill Dashboard
-#defaults write com.apple.dashboard mcx-disabled -boolean YES
-
-# Keyboard Repeat
-defaults write NSGlobalDomain InitialKeyRepeat -int 15
-defaults write NSGlobalDomain KeyRepeat -int 2
-
-# Disable mouse shake
-defaults write NSGlobalDomain CGDisableCursorLocationMagnification -bool YES
-
 # Sheet Animations
 defaults write NSGlobalDomain NSWindowResizeTime .001
 
@@ -134,14 +124,32 @@ defaults write com.apple.CrashReporter DialogType none
 # Sound
 
 # Mute alert volume
-defaults write .GlobalPreferences com.apple.sound.beep.volume -float 0
+defaults write -g com.apple.sound.beep.volume -float 0
 
 # Disable user interface sound effects
-defaults write .GlobalPreferences com.apple.sound.uiaudio.enabled -int 0
+defaults write -g com.apple.sound.uiaudio.enabled -int 0
+
+# Flash
+defaults write -g com.apple.sound.beep.flash -int 0
 
 #----------
-# Global
-defaults write .GlobalPreferences com.apple.mouse.scaling -int 3
+# Mouse / Track / Keyboard
+
+# Keyboard Repeat
+defaults write NSGlobalDomain InitialKeyRepeat -int 15
+defaults write NSGlobalDomain KeyRepeat -int 2
+
+# Disable mouse shake
+defaults write NSGlobalDomain CGDisableCursorLocationMagnification -bool YES
+
+# Mouse speed
+defaults write -g com.apple.mouse.scaling -int 3
+
+# Trackpad Speed
+defaults write -g com.apple.trackpad.scaling -float 2.5
+
+# Trackpad Force Click
+defaults write -g com.apple.trackpad.forceClick -int 0
 
 #----------
 # Finder
@@ -206,9 +214,15 @@ killall Safari
 #defaults write com.apple.Safari ProxiesInBookmarksBar '()'
 #defaults write com.apple.Safari ProxiesInBookmarksBar '("Top Sites","Reading List)'
 
+# Menu Bar
+defaults write com.apple.menuextra.clock Show24Hour 1
+
 # Kill All Services
 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -all local,system,user
 
 killall SystemUIServer
 killall Dock
 killall Finder
+
+# Kill Dashboard
+#defaults write com.apple.dashboard mcx-disabled -boolean YES
