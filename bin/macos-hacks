@@ -206,7 +206,7 @@ mkdir -p $SAFARI_DOWNLOADS
 defaults write com.apple.Safari.SandboxBroker DownloadLocation "$SAFARI_DOWNLOADS"
 defaults write com.apple.Safari DownloadLocation "$SAFARI_DOWNLOADS"
 
-defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu 1
+defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu -int 1
 killall Safari
 
 # Safari Bookmarks
@@ -215,7 +215,10 @@ killall Safari
 #defaults write com.apple.Safari ProxiesInBookmarksBar '("Top Sites","Reading List)'
 
 # Menu Bar
-defaults write com.apple.menuextra.clock Show24Hour 1
+defaults write com.apple.menuextra.clock Show24Hour -int 1
+
+# Disable Quick Note
+defaults write com.apple.dock wvous-corner-rclick -int 0
 
 # Kill All Services
 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -all local,system,user
