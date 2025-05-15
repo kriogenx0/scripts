@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Library Fonts",
+    "source": "/Library/Fonts",
+    "destination": "Fonts_Library"
+  },
+  {
+    "name": "User Fonts",
+    "source": "~/Library/Fonts",
+    "destination": "Fonts_User"
+  },
+  {
+    "name": "Library Audio Plug-Ins",
+    "source": "/Library/Audio/Plug-Ins",
+    "destination": "AudioPlugins_Library"
+  },
+  {
+    "name": "User Audio Plug-Ins",
+    "source": "~/Library/Audio/Plug-Ins",
+    "destination": "AudioPlugins_User"
+  }
+]
