@@ -787,10 +787,14 @@ alias drr='docker run -t -p 4000:80'
 alias drcl='docker container ls'
 alias drcp='docker container prune'
 alias drps='docker ps'
+alias drv='dr volume ls'
+alias dra='dr attach'
+alias drl='dr logs'
+alias drsp="docker build prune; docker system prune -af"
 
 # Docker Shell
 drsh() {
-  docker exec -it $1 /bin/bash
+  docker exec -it $1 bash
 }
 drb() {
   docker build -t $1 .
