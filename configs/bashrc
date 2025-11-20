@@ -316,6 +316,12 @@ webports() {
   lsof -wni tcp
 }
 alias wsports='webports'
+alias tcpports='lsof -wi tcp'
+
+# portinfo 6377
+portinfo() {
+  lsof -wi :$1
+}
 
 
 #####################
@@ -790,7 +796,7 @@ alias drps='docker ps'
 alias drv='dr volume ls'
 alias dra='dr attach'
 alias drl='dr logs'
-alias drsp="docker build prune; docker system prune -af"
+alias drsp="docker system prune -af"
 
 # Docker Shell
 drsh() {
