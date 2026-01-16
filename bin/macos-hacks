@@ -224,6 +224,9 @@ defaults write com.apple.dock wvous-corner-rclick -int 0
 # Kill All Services
 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -all local,system,user
 
+# Disable Emojis with Fn
+defaults write /Library/Preferences/FeatureFlags/Domain/UIKit.plist emoji_enhancements -dict-add Enabled -bool NO
+
 killall SystemUIServer
 killall Dock
 killall Finder
