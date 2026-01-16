@@ -806,6 +806,14 @@ drb() {
   docker build -t $1 .
 }
 
+
+# Kubernetes
+alias k8='kubectl'
+k8sh() {
+  k8 exec -it $1 -- /bin/bash
+}
+
+
 # Remove Garbage Files
 cleandir() {
   #find . -name '.svn' -type d -print0 | xargs -0 -t rm -rf
