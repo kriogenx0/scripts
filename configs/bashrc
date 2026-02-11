@@ -807,6 +807,12 @@ drb() {
   docker build -t $1 .
 }
 
+# Docker Compose
+alias dc='docker compose'
+alias dcb='dc build'
+alias dcu='dc up'
+alias dcd='dc down'
+
 
 # Kubernetes
 alias k8='kubectl'
