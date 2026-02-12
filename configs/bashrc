@@ -811,7 +811,10 @@ drb() {
 alias dc='docker compose'
 alias dcb='dc build'
 alias dcu='dc up'
+alias dcud="dc up -d"
 alias dcd='dc down'
+alias dcbu="dcb; dcu" # Build, up
+alias dcr="dc restart"
 
 
 # Kubernetes
