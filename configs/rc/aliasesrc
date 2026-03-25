@@ -645,9 +645,6 @@ alias drb="dr build"
 drsh() {
   docker exec -it $1 bash
 }
-drb() {
-  docker build -t $1 .
-}
 
 # Docker Compose
 alias dc='docker compose'
@@ -751,3 +748,6 @@ kup() {
 whatsmyip() {
   curl ipinfo.io/ip
 }
+
+# Claude
+alias claudedanger="claude --dangerously-skip-permissions"
