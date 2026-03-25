@@ -377,6 +377,7 @@ alias grs='git rebase --skip'
 alias gra='git rebase --abort'
 alias grd="git rebase $GIT_DEV_BRANCH"
 alias grm="git rebase $GIT_MAIN_BRANCH"
+alias gri='git rebase -i'
 
 # Git Misc
 alias gups='git branch --set-upstream-to=origin/`gbc` `gbc`'
@@ -644,6 +645,9 @@ alias drb="dr build"
 drsh() {
   docker exec -it $1 bash
 }
+drb() {
+  docker build -t $1 .
+}
 
 # Docker Compose
 alias dc='docker compose'
@@ -652,8 +656,9 @@ alias dcbnc='dc build --no-cache'
 alias dcu='dc up'
 alias dcud="dc up -d"
 alias dcd='dc down'
+alias dcs='dc stop'
 alias dcbu="dcb; dcu" # Build, up
-alias dcub="dcu --build"
+alias dcub="dcu --build" # Build, up
 alias dcr="dc restart"
 alias dcl="dc logs -f"
 alias dce="dc exec"
