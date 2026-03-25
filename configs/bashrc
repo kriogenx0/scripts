@@ -1,16 +1,11 @@
 #!/usr/bin/env bash
 
+[ -n "$ZSH_VERSION" ] && zmodload zsh/datetime
+_KRIOGENX_RC_START=$EPOCHREALTIME
+
 # Kriogenx Scripts
 # FOR ZSH AND BASH
 # scripts.kriogenx.net
-
-####################
-# KILL DUPLICATE
-
-#if [[ -n $KRIOGENX_DIR ]]; then
-#  echo 'Kriogenx already loaded'
-#  return
-#fi
 
 ####################
 # SETTINGS
@@ -98,67 +93,7 @@ fi
 ####################
 # PIMP MY SHELL
 
-# ZSH SETTINGS
-if [ -n "$ZSH_VERSION" ]; then
-  # ZSH THEME
-  if [[ -d ~/.oh-my-zsh ]]; then
-    # Disable Updating entirely
-    #DISABLE_UPDATE_PROMPT=true
-    DISABLE_AUTO_UPDATE=true
-
-    # ZSH rvm theme support
-    [[ -e ~/.rvm/scripts/rvm ]] && source ~/.rvm/scripts/rvm
-
-    ZSH=$HOME/.oh-my-zsh # oh-my-zsh config
-    ZSH_CUSTOM="$KRIOGENX_DIR"/configs
-    ZSH_THEME="kriogenx" # ~/.oh-my-zsh/themes/
-
-    #plugins=(git rvm fasd rake rails) # ~/.oh-my-zsh/custom/plugins/
-    plugins=(rvm fasd) # ~/.oh-my-zsh/custom/plugins/
-    source $ZSH/oh-my-zsh.sh
-  fi
-
-  # Remove Autocorrect
-  unsetopt correct_all
-  unsetopt correctall
-  unsetopt correct
-
-  # Enable Help
-  [[ `which run-help` =~ 'aliased to' ]] && unalias run-help
-  autoload run-help
-  HELPDIR=/usr/local/share/zsh/helpfiles
-
-# Bash
-elif [ -n "$BASH_VERSION" ]; then
-
-  function rvm_prompt_info() {
-    if [[ -e ~/.rvm/bin/rvm-prompt ]]; then
-      ruby_version=$(~/.rvm/bin/rvm-prompt 2> /dev/null) || return
-      [[ ! -z $ruby_version ]] && echo -en "\033[0m <$ruby_version>"
-    fi
-  }
-
-  function git_prompt_info() {
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-    branch=${ref#ref/heads/}
-    echo -en " \033[0m""${ref#refs/heads/}" #$(parse_git_dirty)"
-    if [[ -n $(git status -s ${SUBMODULE_SYNTAX}  2> /dev/null) ]]; then
-      echo -en "\033[31m✘✘✘"
-    else
-      echo -en "\033[32m✔"
-    fi
-  }
-
-  bind '"\ep": history-search-backward'
-  bind '"\en": history-search-forward'
-  bind '"\C-w": backward-kill-word'
-
-  # Colorize Prompt
-  [ -z "$PS1" ] || stty -ixon
-
-  # Kriogenx Theme
-  [ -z "$PS1" ] || export PS1="╭─ \[\033[01;36m\]\w\[\033[00m\]\$(git_prompt_info '(%s)')\$(rvm_prompt_info)\033[0m\n╰─ "
-fi
+source "$KRIOGENX_DIR"/configs/rc/pimpmyshellrc
 
 ####################
 # ALIASES
@@ -166,3 +101,6 @@ fi
 source "$KRIOGENX_DIR"/configs/rc/aliasesrc
 
 [[ -e "$USER_RC" ]] && source "$USER_RC"
+
+awk -v s="$_KRIOGENX_RC_START" -v e="$EPOCHREALTIME" 'BEGIN{printf "Kriogenx bashrc loaded in %.0fms\n", (e-s)*1000}'
+unset _KRIOGENX_RC_START
