@@ -798,23 +798,28 @@ alias drv='dr volume ls'
 alias dra='dr attach'
 alias drl='dr logs'
 alias drsp="docker system prune -af"
+alias drb="dr build"
 
 # Docker Shell
 drsh() {
   docker exec -it $1 bash
 }
-drb() {
-  docker build -t $1 .
-}
 
 # Docker Compose
 alias dc='docker compose'
 alias dcb='dc build'
+alias dcbnc='dc build --no-cache'
 alias dcu='dc up'
 alias dcud="dc up -d"
 alias dcd='dc down'
 alias dcbu="dcb; dcu" # Build, up
+alias dcub="dcu --build"
 alias dcr="dc restart"
+alias dcl="dc logs -f"
+alias dce="dc exec"
+dcsh() {
+  dc exec -it $1 bash
+}
 
 
 # Kubernetes
