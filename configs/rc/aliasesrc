@@ -736,7 +736,7 @@ alias bashrc="brc"
 ###########
 # Kriogenx
 alias krc='vi "$KRIOGENX_RC"; source "$KRIOGENX_RC"'
-alias aliasrc='vi "$KRIOGENX_RC"/rc/aliasrc; source "$KRIOGENX_RC"/rc/aliasrc'
+alias aliasrc='vi "$KRIOGENX_DIR"/configs/rc/aliasesrc; source "$KRIOGENX_DIR"/configs/rc/aliasesrc'
 alias urc='vi "$USER_RC"; source "$USER_RC"'
 alias kd='cd "$KRIOGENX_DIR"'
 alias kds='cd "$KRIOGENX_DIR"'
