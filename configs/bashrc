@@ -899,7 +899,7 @@ alias kd='cd "$KRIOGENX_DIR"'
 alias kds='cd "$KRIOGENX_DIR"'
 alias kgig='cp "$KRIOGENX_DIR"/configs/git/gitignore ./.gitignore'
 kup() {
-  k up
+  kk up
 }
 
 # Create Link

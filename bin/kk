@@ -21,7 +21,7 @@ killps() {
 
 help() {
   msg "Kriogenx" y
-  echo 'useage: k [appname] <command>'
+  echo 'useage: kk [appname] <command>'
   echo ''
   msg 'Commands:' y
   echo '  update'
@@ -45,20 +45,20 @@ help() {
 status() {
   msg Kriogenx y
   echo ""
-  if [[ `k apache i` == "true" ]]; then
-   echo "Apache                "`k apache t`
+  if [[ `kk apache i` == "true" ]]; then
+   echo "Apache                "`kk apache t`
   fi
-  if [[ `k nginx i` == "true" ]]; then
-   echo "Nginx                 "`k nginx t`
+  if [[ `kk nginx i` == "true" ]]; then
+   echo "Nginx                 "`kk nginx t`
   fi
-  if [[ `k mysql i` == "true" ]]; then
-   echo "Mysql                "`k mysql t`
+  if [[ `kk mysql i` == "true" ]]; then
+   echo "Mysql                "`kk mysql t`
   fi
-  if [[ `k postgres i` == "true" ]]; then
-   echo "Postgres              "`k postgres t`
+  if [[ `kk postgres i` == "true" ]]; then
+   echo "Postgres              "`kk postgres t`
   fi
   echo ""
-  echo "For help, type 'k help'"
+  echo "For help, type 'kk help'"
 }
 
 
