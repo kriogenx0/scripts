@@ -1,0 +1,748 @@
+#!/usr/bin/env bash
+
+####################
+# ALIASES
+
+# Traversing
+alias l='ls -lAh'
+alias ll='ls -l'
+alias la='ls -lAh'   #Show all, sort by extension
+alias lll='ls -lAh'
+alias lt="ls -R | grep \":$\" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'"
+alias ltl="lt | less"
+
+# Search Directory
+lss() {
+  [[ -n $1 ]] && la | grep $1 || la
+}
+
+cl() {
+  cd $1; ls -l
+}
+mkd() {
+  mkdir -p $1
+  cd $1
+}
+alias ds='du -d 1 | sort -n'
+si() {
+  cd "$HOME/Sites/$1"
+  [[ -z $1 ]] && ls -la
+}
+
+# Common Binaries
+alias o='open'
+alias oo='open .'
+alias ox='open *.xcodeproj'
+alias xc='open -a Xcode'
+alias c='clear'
+alias lns="ln -s"
+alias bashcommands="bind -p | sed '/self.insert/d;/^#/d;/do-lowercase/d'"
+
+# Editor
+export IDE="code"
+# export EDITOR=/usr/bin/vim
+export EDITOR=$IDE
+alias e=$IDE
+alias ee='e .'
+alias a='atom'
+alias aa='a .'
+alias v='vim'
+alias vi='vim'
+alias svi='sudo vim'
+alias rmf='rm -rf'
+alias tailf='tail -f'
+
+# Move & Create Directory
+mvd() {
+  mkdir -p $2; mv $1 $2
+}
+alias grepp='grep -irn --color=auto --exclude="*~"'
+grepr() {
+  grepp -e $1 .
+}
+grp() {
+  grepp --exclude="*.git" --exclude="*.meteor" $1 .
+}
+# With Word boundaries
+grpb() {
+  grepp --exclude="*.git" --exclude="*.meteor" "\b$1\b" .
+}
+egrp() {
+  egrep -rn $1 .
+}
+fnd() {
+  find . -name "*$1*"
+}
+
+# Print Path
+alias ppath='echo $PATH | tr ':' "\n"'
+
+# Processes
+psa() {
+  if [[ -z $1 ]]; then
+    ps aux
+  else
+    ps aux | grep $1 | grep -v grep
+  fi
+}
+killps() {
+  PROCESSES=`psa $1 | awk '{print $2}'`
+  [[ -n $PROCESSES ]] && kill -9 $PROCESSES
+}
+
+# tar compress
+tarc() {
+  a=${1%.*}'.tar.gz'
+  /usr/bin/tar cvf $a $1 ;
+}
+
+# ----------
+
+# rsync
+# --exclude='$RECYCLE.BIN' --exclude='$Recycle.Bin' --exclude='.AppleDB' --exclude='.AppleDesktop' --exclude='.AppleDouble' --exclude='.com.apple.timemachine.supported' --exclude='.dbfseventsd' --exclude='.DocumentRevisions-V100*' --exclude='.DS_Store' --exclude='.fseventsd' --exclude='.PKInstallSandboxManager' --exclude='.Spotlight*' --exclude='.SymAV*' --exclude='.symSchedScanLockxz' --exclude='.TemporaryItems' --exclude='.Trash*' --exclude='.vol' --exclude='.VolumeIcon.icns' --exclude='Desktop DB' --exclude='Desktop DF' --exclude='hiberfil.sys' --exclude='lost+found' --exclude='Network Trash Folder' --exclude='pagefile.sys' --exclude='Recycled' --exclude='RECYCLER' --exclude='System Volume Information' --exclude='Temporary Items' --exclude='Thumbs.db'
+RSYNC_EXCLUDE='--exclude="..*" --exclude="._*" --exclude=".!*"'\
+'--exclude=".dropbox*" --exclude ".DS_Store" --exclude=".Spotlight*"'\
+'--exclude="Thumbs.db" --exclude ".BridgeCache*"'\
+'--exclude="_no_sync" --exclude="_no_redundancy" --exclude="-no_redundancy"'\
+"--exclude='.AppleDB' --exclude='.com.apple.timemachine.supported' --exclude='.dbfseventsd' --exclude='.DocumentRevisions*' --exclude='.fseventsd' --exclude='.TemporaryItems' --exclude='.Trash*' --exclude='.vol' --exclude='.VolumeIcon.icns'"
+
+alias rnc="rsync -aEhuvz --progress --stats $RSYNC_EXCLUDE"
+# copy sync
+cps() {
+  rnc "${1%.*}"/ "$2"
+}
+# move sync
+mvs() {
+  rnc --remove-source-files "${1%.*}"/ "$2"
+}
+# copy mirror
+cpmirror() {
+  rnc -aEhvz --delete "${1%.*}"/ "$2"
+}
+drive_sync() {
+  if [[ ! -e "$1" ]]; then
+    echo "$1 not found"
+    exit
+  fi
+  if [[ ! -e "$2" ]]; then
+    echo "$2 not found"
+    exit
+  fi
+  echo "Syncing from $1 to $2"
+  rsync -aEhuv --progress --stats --partial-dir="._rsync-partial" --delete $RSYNC_EXCLUDE "${1%.*}"/ "$2"
+}
+two_way_sync() {
+  rnc "${1%.*}"/ "$2"
+  rnc "${2%.*}"/ "$1"
+}
+
+# Warning: Deletes directories with invisible files
+delete_empty_dirs() {
+  find "$1"/ -type d -empty -delete
+}
+
+# ----------
+
+# Web Server
+alias hosts="sudo vi /etc/hosts; dscacheutil -flushcache"
+alias ports='netstat -lan'
+alias portslisten="ports | egrep 'Proto|LISTEN'"
+webports() {
+  ps auxwww | grep LISTEN
+  portslisten
+  #lsof -i tcp:80
+  #lsof -i tcp:8080
+  #lsof -i tcp:3000
+  lsof -wni tcp
+}
+alias wsports='webports'
+alias tcpports='lsof -wi tcp'
+
+# portinfo 6377
+portinfo() {
+  lsof -wi :$1
+}
+
+
+#####################
+# git
+
+: "${GIT_DEV_BRANCH:=develop}"
+: "${GIT_MAIN_BRANCH:=main}"
+
+alias gcl="git clone"
+#gcl() {
+#  git clone "$@"
+#  if [ -n $2 ]; then
+#    cd $2
+#  else
+#    cd `echo $_ | sed -n -e 's/^.*\/\([^.]*\)\(.git\)*/\1/p'`
+#  fi
+#}
+
+# Adding
+alias ga='git add -A .; git add -v .; git status'
+alias gar='git reset HEAD'
+alias gai='git add -i; git status'
+alias gap='git add -p'
+
+# Committing
+alias gc='git commit -v -m'
+alias gca='git commit --amend --no-edit'
+alias gcaa='git commit --amend'
+
+# Checking out
+alias gco="git checkout"
+alias go="git checkout"
+
+# Checkout Remote
+gor() {
+  git checkout `echo $1 | sed 's/remotes\/origin\///g'`
+}
+# Checkout first branch that matches search
+gos() {
+  git checkout `git branch -a | grep $1 | sed 's/remotes\/origin\///g' | head -n1`
+}
+alias gom="git checkout $GIT_MAIN_BRANCH"
+god() {
+  git checkout $GIT_DEV_BRANCH
+}
+alias gol="git checkout -" # checkout last branch
+gob() { # go back a branch
+  git checkout @\{-"$1"\}
+}
+
+# Branches
+alias gb='git branch'
+
+# Current branch
+alias gbc="git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'" # branch current
+
+# Show Branches in order
+gbb() {
+  for k in $(git branch | sed /\*/d); do
+    echo "$(git log -1 --pretty=format:"%ct" $k) $k"
+  done | sort -r | awk '{print $2}'
+}
+alias gbd='git branch -d'
+alias gbdd='git branch -D' # force delete
+alias gbup='git branch --set-upstream-to=origin/`gbc`'
+
+# Recreate branch
+gbddd() {
+  BRANCH=`gbc`
+  god
+  gbdd $BRANCH
+}
+
+# delete remote
+gbdr() {
+  git push origin ":$1"
+}
+# delete all branches
+gbda() {
+  gbdd "$1"
+  gbdr "$1"
+}
+
+alias gbp='git prune -v'
+alias gbpr='git remote prune origin'
+
+# All Branches
+alias gba='git branch -a' # all branches
+
+# Remote Branches
+alias gbr='git branch -r' # remote branches
+
+# Search Branches
+alias gbs='git branch -a | grep' # search branches
+
+alias gbm="git branch --merged"
+gbmc() {
+  git branch --merged `gbc`
+}
+alias gbnm="git branch --no-merged"
+
+# Branches Merged into main
+alias gbmm="gbm $GIT_MAIN_BRANCH | grep -v $GIT_MAIN_BRANCH"
+
+# Branches Merged into Dev
+alias gbmd="gbm $GIT_DEV_BRANCH | grep -v $GIT_DEV_BRANCH"
+
+# Branch Delete Merged into main
+alias gbdm='gbmm | xargs -n 1 git branch -d'
+
+# Branch Delete Merged into Develop
+alias gbdmd='gbmd | xargs -n 1 git branch -d'
+
+# Branch Delete Merged into Current
+alias gbdmc='gbmc | xargs -n 1 git branch -d'
+
+# Remote Branches merged into main
+alias gbrm="gbr --merged $GIT_MAIN_BRANCH | grep -v $GIT_MAIN_BRANCH | sed 's/^  origin\///g'"
+
+# Remote Branches not merged
+alias gbrnm="gbr --no-merged $GIT_MAIN_BRANCH | sed 's/^  origin\///g'"
+
+# Remote Branches Delete Merged into main
+gbrdm(){
+  for i in `git branch -r --merged $GIT_MAIN_BRANCH | sed 's/^  origin\///g'`; do
+    if [[ $i != $GIT_MAIN_BRANCH && $i != 'HEAD' && $i != '->' && $i != "origin/$GIT_MAIN_BRANCH" ]]; then
+      gbdr $i;
+    fi
+  done
+}
+
+alias gbo='git checkout -b'
+gbu() {
+  gbo "$1"
+  git push -u origin "$1"
+}
+gbt() {
+  git branch -t "$1" origin/"$1"; #origin/"$1";
+  git checkout "$1"
+}
+
+alias gts='git show'
+
+# Git Tags
+alias gt='git tag'
+alias gtg='git tag'
+alias gtp='git push --tags'
+alias gtd='git tag -d'
+gtdr() { # DELETE REMOTE TAG
+  git push origin :refs/tags/$1
+}
+gtda() {
+  gtd $1
+  gtdr $1
+}
+gtdc() {
+  gtda $1
+  gtg $1
+  gtp
+}
+
+# status / diffs
+alias gs='git status'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gdc='git diff --cached'
+alias gad='ga; gds'
+alias gdl="git show" # diff last changes
+alias gdh='git diff HEAD'
+alias gdm="git diff $GIT_MAIN_BRANCH"
+alias gdd="git diff $GIT_DEV_BRANCH"
+alias gsha='git log | head -1'
+
+# logging - glo
+alias glod='git log --oneline --decorate'
+alias glop='git log -p'
+alias glol='git log --graph --decorate --pretty=oneline --abbrev-commit'
+alias glola='git log --graph --decorate --pretty=oneline --abbrev-commit --all'
+alias glodd='git log --pretty=format:"%h%x09%an%x09%ad%x09%s"'
+alias glodr='git log --pretty=format:"%h%x09%an%x09%ad%x09%s" --date=relative'
+# See a branch's commits
+gbl() {
+  glop $GIT_MAIN_BRANCH..`gbc` --no-merges
+}
+alias gbld='glop develop..`gbc` --no-merges' # See a branch's commits
+alias gls='git ls-files'
+alias glgn='ls-files -o -i --exclude-standard' # Show files ignored by git:
+alias glc="git cherry -v $GIT_MAIN_BRANCH" #show changes in branch not merged
+alias gcp="git cherry-pick"
+
+# Git Push
+alias gp='git push'
+alias gpa='git push --all'
+alias gpu='git push -u'
+alias gpo='git push -u origin `gbc`'
+alias gpcr='git push origin `gbc`:'
+
+# Git Pull
+alias gl='git pull'
+alias gla='git pull -v --all'
+glu() {
+  git branch --set-upstream-to `gbc` "origin/"`gbc`
+}
+alias glr='git pull --rebase'
+alias gln='glr; gbpr; gbdm' # Git Pull Sync - Pull Rebase, Prune Branches, Deleted Merged
+alias gnc='glr; gp; gbpr' # Git Sync - Pull Rebase, Push, Prune Branches
+alias glm="gom; glr; gol; glr" # Pull main and go back to branch
+
+# Git Rebasing
+alias gr='git rebase'
+alias grc='git rebase --continue'
+alias grs='git rebase --skip'
+alias gra='git rebase --abort'
+alias grd="git rebase $GIT_DEV_BRANCH"
+alias grm="git rebase $GIT_MAIN_BRANCH"
+
+# Git Misc
+alias gups='git branch --set-upstream-to=origin/`gbc` `gbc`'
+
+# Undos a commit from given hash
+gundocommit() {
+  # TODO: message for excluding hash
+  git rebase --onto "$1"^ $1
+}
+
+# Git Stashes
+alias gst='git stash show'
+alias gstl='git stash list'
+alias gsd='git stash drop'
+alias gss='git stash save'
+alias gsa='git stash apply'
+alias gsad='git stash apply; git stash drop'
+alias gsc='git stash clear'
+alias gsn='ga; gss; glr; gsa'
+
+alias gm='git merge'
+alias gmt='git mergetool'
+alias gmf='git merge --no-commit --no-ff -v'
+alias gmm='git merge main'
+alias gmd="git merge $GIT_DEV_BRANCH"
+
+# ignore file
+alias gig="vi .gitignore"
+alias gigi="git update-index --assume-unchanged" # then filename, used for ignoring changes to a file locally
+alias gigu="git update-index --no-assume-unchanged" # then filename, used for ignoring changes to a file locally
+
+alias grev='git revert'
+alias gcundo='git reset --hard HEAD~1' # undo last commit
+alias gsundo=' git reset --soft HEAD^'
+alias grundo='git revert HEAD~1 -n' #undo commit changes, leaving commit alone
+gundo() {
+  if [ ! $1 -gt 1 ]; then $1=1; fi
+  git revert -n HEAD~r$1
+}
+
+# Git Submodules
+alias gsm='git submodule add'
+alias gsl='git submodule foreach git pull origin $GIT_MAIN_BRANCH'
+alias gsu="git submodule update --init; git submodule update"
+
+# Cleaning & Clearing
+alias gclr='git clean -fd; git checkout -f'
+alias gclrf='gclr; git clean -fxd'
+alias gfix='git gc; git remote prune origin; git repack; git fsck --full --progress'
+alias gclean="gbdmd; gbp; gbpr"
+
+# Config
+alias gconf='vi .git/config'
+alias ggconf='vi ~/.gitconfig'
+
+gsearch() {
+  git grep $1 $(git rev-list --all)
+}
+gitpermanentfiledelete() {
+  git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch $1' --prune-empty --tag-name-filter cat -- --all
+}
+
+####################
+# Apps
+
+# TextEdit
+alias edi='open -e "$1"'
+
+# Browser
+browser() {
+  URL=$1
+  python -mwebbrowser "$URL"
+  [[ -x $BROWSER ]] && exec "$BROWSER" "$URL"
+  path=$(which xdg-open || which gnome-open) && exec "$path" "$URL"
+}
+
+####################
+# SSH
+sshcopy() {
+  if [[ -e ~/.ssh/id_rsa.pub ]]; then
+    pbcopy < ~/.ssh/id_rsa.pub
+    echo "Copied ssh key into clipboard"
+  else
+    echo "SSH key could not be found"
+  fi
+}
+alias sshconfig="vi ~/.ssh/config"
+alias sshadd="ssh-add --apple-load-keychain"
+
+# Dropbox
+alias dropboxpurge="rm -rf ~/Dropbox/.dropbox.cache; echo Dropbox cache deleted"
+
+# Vagrant
+alias vag='vagrant'
+alias vagu='vagrant up'
+alias vagup='vagrant up --provision'
+alias vagp='vagrant provision'
+alias vagd='vagrant destroy -f'
+alias vagh='vagrant halt'
+alias vags='vagrant ssh'
+alias vagss='vagrant suspend'
+
+####################
+# Python
+
+alias py='python'
+alias pyv='which python; python --version'
+alias pyvenv='python -m venv venv'
+alias pys="source venv/bin/activate; pyv"
+alias pyi="python -m pip install"
+alias pyir="python -m pip install -r requirements.txt"
+alias pysetup="pyvenv; pys; pyi"
+
+pyaddpackage() {
+  pip install $1 && pip freeze | grep $1 >> requirements.txt
+}
+
+
+####################
+# RUBY & RAILS
+
+alias rb='ruby'
+alias rrvm='vi .rvmrc'
+alias rcuc='cd `rr`; bundle exec cucumber'
+alias rversions="gem list -ra rails | grep 'rails ('"
+alias rgems='rvm list gemsets; cat .rvmrc'
+alias rgemsdir='cd `rvm gemdir`/gems'
+alias rvdgems='rvm gemset empty'
+alias rgem='vi `rr`/Gemfile'
+rinstall() {
+  if [[ -n $1 ]]; then
+    rvm install $1
+    cd -; cd -
+    gem install bundler
+    bundle install
+  else
+    echo 'Must supply ruby version'
+  fi
+}
+rgemsuninstall(){
+  #gem list | cut -d" " -f1 | xargs gem uninstall -aIx
+  for i in `gem list --no-versions`; do
+    gem uninstall -aIx $i;
+  done
+}
+alias rgembuild='gem pristine --all --no-extensions'
+alias rlog='tail -f `rr`/log/development.log'
+alias rtlog='tail -f `rr`/log/test.log'
+# Rails Root
+rr() {
+  (
+    dir=${1:-$(pwd)}
+    i=0
+    while [ "/" != "$dir" -a "$i" -ne 16 ]; do
+      if [ -f "$dir/config/environment.rb" ]; then
+        echo "$dir"
+        return 0
+      fi
+      dir="$(dirname "$dir")"
+      i=$(expr $i + 1)
+    done
+    return 1
+  )
+}
+rsc() {
+  if [[ -f "`rr`/script/rails" ]]; then
+    `rr`/script/rails console
+  elif [[ -f "`rr`/script/console" ]]; then
+    `rr`/script/console
+  else
+    rails c
+  fi
+}
+rss() {
+  if [[ -f "`rr`/script/rails" ]]; then
+    S="rails server"
+  elif [[ -f "`rr`/script/server" ]]; then
+    S="`rr`/script/server"
+  else
+    S="rails s"
+  fi
+  if [[ -n $1 ]]; then
+    eval "$S -p '$1'"
+  else
+    eval "$S"
+  fi
+}
+alias rss1='rss 3001'
+alias rss2='rss 3002'
+alias rss3='rss 3003'
+
+alias bex="bundle exec"
+
+alias rup='rvm install "`cat .ruby-version`"; cd .; gem install bundler; bundle'
+
+alias railsg="rails generate --no-helper --no-assets --no-controller-specs --no-view-specs"
+
+[[ `which rake` =~ 'aliased to _rake_command' ]] && unalias rake
+
+# Third Party Applications
+alias tiga='tig --all'
+alias tigs='tig status'
+
+# apache
+alias asites='sudo vi /etc/apache2/extra/httpd-vhosts.conf; sudo vi /etc/hosts; sudo apachectl restart'
+alias adsites='sudo vi ~/Dropbox/Office/settings/apache/sites.conf; sudo vi /etc/hosts; sudo apachectl restart'
+alias astart='sudo apachectl restart'
+alias astop='sudo apachectl stop'
+alias alog="tail -f /private/var/log/apache2/error_log"
+
+# Nginx
+alias ngsites='vi /usr/local/etc/nginx/nginx.conf'
+alias ngstart='sudo nginx'
+alias ngstop='sudo nginx -s quit'
+
+# mysql
+# [[ `which mysql` =~ 'aliased to nocorrect' ]] && unalias mysql
+alias mys='mysql.server start'
+alias myr='mysql.server restart'
+alias myq='mysql.server stop'
+
+# cucumber
+alias cuc='cucumber --format pretty -v'
+alias cucb='bex cucumber --format pretty -v'
+cucf() {
+  if [[ -n "$1" ]]; then
+    cucb "features/""${1/\.feature/}"".feature"
+  else
+    ls features | grep ".feature"
+  fi
+}
+
+# postgres
+#alias pg-start='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
+#alias pg-stop='pg_ctl -D /usr/local/var/postgres stop -s -m fast'
+alias pgstart='pg_ctl start'
+alias pgstop='pg_ctl stop'
+pgenv() {
+  echo "PGDATA:    $PGDATA"
+}
+
+# node
+# show versions
+nov() {
+  npm show $1@* version
+}
+
+
+
+# Docker
+alias dr='docker'
+alias dri='docker images'
+alias drr='docker run -t -p 4000:80'
+alias drcl='docker container ls'
+alias drc='docker container ls'
+alias drcp='docker container prune'
+alias drps='docker ps'
+alias drv='dr volume ls'
+alias dra='dr attach'
+alias drl='dr logs'
+alias drsp="docker system prune -af"
+alias drb="dr build"
+
+# Docker Shell
+drsh() {
+  docker exec -it $1 bash
+}
+
+# Docker Compose
+alias dc='docker compose'
+alias dcb='dc build'
+alias dcbnc='dc build --no-cache'
+alias dcu='dc up'
+alias dcud="dc up -d"
+alias dcd='dc down'
+alias dcbu="dcb; dcu" # Build, up
+alias dcub="dcu --build"
+alias dcr="dc restart"
+alias dcl="dc logs -f"
+alias dce="dc exec"
+dcsh() {
+  dc exec -it $1 bash
+}
+
+
+# Kubernetes
+alias k8='kubectl'
+k8sh() {
+  k8 exec -it $1 -- /bin/bash
+}
+
+
+# Remove Garbage Files
+cleandir() {
+  #find . -name '.svn' -type d -print0 | xargs -0 -t rm -rf
+  find . -name '_notes' -type d -print0 | xargs -0 -t rm -rf
+  find . -name '_vti_cnf' -type d -print0 | xargs -0 -t rm -rf
+  find . -name '.DS_Store' -print0 | xargs -0 -t rm -rf
+  find . -name '.BridgeCache' -print0 | xargs -0 -t rm -rf
+  find . -name '.BridgeCacheT' -print0 | xargs -0 -t rm -rf
+  find . -name 'Thumbs.db' -print0 | xargs -0 -t rm -rf
+}
+
+# GetSpace
+getspace() {
+  brew cleanup
+  #sudo rm -rf /.Spotlight-V100
+  [[ -e ~/Library/Caches/Adobe/"Bridge CS6"/Cache ]] && sudo rm -rf ~/Library/Caches/Adobe/"Bridge CS6"/Cache/*
+  [[ -e ~/Library/Caches/com.spotify.client/Storage ]] && sudo rm -rf ~/Library/Caches/com.spotify.client/Storage
+  [[ -e ~/Library/Caches/Google/Chrome ]] && sudo rm -rf ~/Library/Caches/Google/Chrome
+}
+
+# Directories
+alias pwdc='pwd | pbcopy'
+
+# go up directories looking for $1
+dirup() {
+  dir=${1:-$(pwd)}
+  i=0
+  while [ "/" != "$dir" -a "$i" -ne 16 ]; do
+    if [ -f "$dir/$1" ]; then
+      echo "$dir"
+      return 0
+    fi
+    dir="$(dirname "$dir")"
+    i=$(expr $i + 1)
+  done
+  return 1
+}
+
+# SET LAST DIR
+lastdir()
+{
+  rm -f ~/.lastdir
+  pwd > ~/.lastdir
+}
+# CD LAST DIR
+cdl() {
+  [[ -e ~/.lastdir ]] && cd `cat ~/.lastdir`
+}
+
+# Services
+services() {
+  kextstat -kl | awk '!/com\.apple/{printf "%s %s\n", $6, $7}'
+  sudo launchctl list | sed 1d | awk '!/0x|com\.(apple|openssh|vix\.cron)|org\.(amav|apac|cups|isc|ntp|postf|x)/{print $3}'; echo; sudo launchctl getenv DYLD_INSERT_LIBRARIES; echo; sudo defaults read com.apple.loginwindow LoginHook; echo; sudo crontab -l
+  launchctl list | sed 1d | awk '!/0x|com\.apple|org\.(x|openbsd)/{print $3}'; echo; launchctl getenv DYLD_INSERT_LIBRARIES; echo; crontab -l
+  ls -A /e*/{cr,la,mach}* {,/}Lib*/{Ad,Compon,Ex,Fram,In,Keyb,La,Mail/Bu,P*P,Priv,Qu,Scripti,Servi,Spo,Sta}* L*/Fonts .la*
+  osascript -e 'tell application "System Events" to get name of login items'
+}
+
+# Bash Aliases
+alias brc="vi ~/.profile"
+alias bashrc="brc"
+
+###########
+# Kriogenx
+alias krc='vi "$KRIOGENX_RC"; source "$KRIOGENX_RC"'
+alias aliasrc='vi "$KRIOGENX_RC"/rc/aliasrc; source "$KRIOGENX_RC"/rc/aliasrc'
+alias urc='vi "$USER_RC"; source "$USER_RC"'
+alias kd='cd "$KRIOGENX_DIR"'
+alias kds='cd "$KRIOGENX_DIR"'
+alias kgig='cp "$KRIOGENX_DIR"/configs/git/gitignore ./.gitignore'
+kup() {
+  kk up
+}
+
+whatsmyip() {
+  curl ipinfo.io/ip
+}
