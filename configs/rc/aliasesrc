@@ -673,9 +673,8 @@ alias kd='k get deployments'
 kx() {
   if [ -n "$1" ]; then
     k config set current-context "$1"
-  else
-    k config get-contexts
   fi
+  k config get-contexts
 }
 # Namespace
 # - Optional parameter is to set current namespace
@@ -700,7 +699,21 @@ alias kew='k get events --watch'
 kpl() {
   kubectl logs pod/"$1"
 }
-alias ku='kubectl describe kustomizations'
+ku() {
+  if [ -n "$1" ]; then
+    k describe kustomizations "$1"
+  else
+    k get kustomizations
+  fi
+}
+# Config Maps
+kcm() {
+  if [ -n "$1" ]; then
+    k describe cm "$1"
+  else
+    k get cm
+  fi
+}
 
 # Remove Garbage Files
 cleandir() {
