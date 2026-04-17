@@ -170,15 +170,15 @@ portinfo() {
 : "${GIT_DEV_BRANCH:=develop}"
 : "${GIT_MAIN_BRANCH:=main}"
 
-alias gcl="git clone"
-#gcl() {
-#  git clone "$@"
-#  if [ -n $2 ]; then
-#    cd $2
-#  else
-#    cd `echo $_ | sed -n -e 's/^.*\/\([^.]*\)\(.git\)*/\1/p'`
-#  fi
-#}
+gcl() {
+  git clone "$@"
+  local dir="${@: -1}"
+  # if last arg looks like a URL, derive the dir name from it
+  if [[ "$dir" == *://* || "$dir" == *@*:* ]]; then
+    dir=$(basename "$dir" .git)
+  fi
+  cd "$dir"
+}
 
 # Adding
 alias ga='git add -A .; git add -v .; git status'
@@ -781,6 +781,7 @@ alias bashrc="brc"
 # Kriogenx
 alias krc='vi "$KRIOGENX_RC"; source "$KRIOGENX_RC"'
 alias aliasrc='vi "$KRIOGENX_DIR"/configs/rc/aliasesrc; source "$KRIOGENX_DIR"/configs/rc/aliasesrc'
+alias arc='aliasrc'
 alias urc='vi "$USER_RC"; source "$USER_RC"'
 alias kds='cd "$KRIOGENX_DIR"'
 alias kgig='cp "$KRIOGENX_DIR"/configs/git/gitignore ./.gitignore'
