@@ -181,7 +181,7 @@ gcl() {
 }
 
 # Adding
-alias ga='git add -A .; git add -v .; git status'
+alias ga='git add -Av .; git status'
 alias gar='git reset HEAD'
 alias gai='git add -i; git status'
 alias gap='git add -p'
@@ -401,7 +401,7 @@ alias gsn='ga; gss; glr; gsa'
 alias gm='git merge'
 alias gmt='git mergetool'
 alias gmf='git merge --no-commit --no-ff -v'
-alias gmm='git merge main'
+alias gmm="git merge $GIT_MAIN_BRANCH"
 alias gmd="git merge $GIT_DEV_BRANCH"
 
 # ignore file
@@ -411,7 +411,7 @@ alias gigu="git update-index --no-assume-unchanged" # then filename, used for ig
 
 alias grev='git revert'
 alias gcundo='git reset --hard HEAD~1' # undo last commit
-alias gsundo=' git reset --soft HEAD^'
+alias gsundo='git reset --soft HEAD^'
 alias grundo='git revert HEAD~1 -n' #undo commit changes, leaving commit alone
 gundo() {
   if [ ! $1 -gt 1 ]; then $1=1; fi
@@ -777,12 +777,14 @@ services() {
 alias brc="vi ~/.profile"
 alias bashrc="brc"
 
+_editrc() { vi "$1"; source "$1"; }
+
 ###########
 # Kriogenx
-alias krc='vi "$KRIOGENX_RC"; source "$KRIOGENX_RC"'
-alias aliasrc='vi "$KRIOGENX_DIR"/configs/rc/aliasesrc; source "$KRIOGENX_DIR"/configs/rc/aliasesrc'
+alias krc='_editrc "$KRIOGENX_RC"'
+alias aliasrc='_editrc "$KRIOGENX_DIR/configs/rc/aliasesrc"'
 alias arc='aliasrc'
-alias urc='vi "$USER_RC"; source "$USER_RC"'
+alias urc='_editrc "$USER_RC"'
 alias kds='cd "$KRIOGENX_DIR"'
 alias kgig='cp "$KRIOGENX_DIR"/configs/git/gitignore ./.gitignore'
 kup() {
