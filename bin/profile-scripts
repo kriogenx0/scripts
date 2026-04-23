@@ -10,3 +10,7 @@ if [[ -e ~/.profile ]] && [[ ! `cat ~/.profile` =~ 'kriogenx' ]]; then
   echo "source $KRIO_DIR/configs/rc/bashrc" >> ~/.profile
   echo '# Customize Here' >> ~/.profile
 fi
+
+# Link .profile into shell rc files so aliases are available
+[[ ! `cat ~/.zshrc 2>/dev/null` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.zshrc
+[[ ! `cat ~/.bashrc 2>/dev/null` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.bashrc

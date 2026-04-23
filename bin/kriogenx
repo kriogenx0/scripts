@@ -1,0 +1,407 @@
+#!/usr/bin/env bash
+
+KRIO_DIR="${KRIO_DIR:-$HOME/.kriogenx}"
+KRIO_BIN="$KRIO_DIR/bin"
+
+##################################
+# SERVICES
+
+_psa() {
+  if [[ -z $1 ]]; then
+    ps aux
+  else
+    ps aux | grep "$1" | grep -v grep
+  fi
+}
+
+_killps() {
+  local procs
+  procs=$(_psa "$1" | awk '{print $2}')
+  [[ -n $procs ]] && kill -9 $procs
+}
+
+_apache() {
+  case "$1" in
+    s|start)
+      sudo apachectl restart
+      printf "\033[0;32mApache Started\033[0m\n"
+      ;;
+    r|restart)
+      sudo apachectl restart
+      printf "\033[0;32mApache Restarted\033[0m\n"
+      ;;
+    q|quit|stop)
+      sudo apachectl stop
+      printf "\033[0;33mApache Stopped\033[0m\n"
+      ;;
+    sites)
+      if [[ -f ~/Dropbox/Office/settings/apache/sites.conf ]]; then
+        sudo vi ~/Dropbox/Office/settings/apache/sites.conf
+        sudo chown root:wheel ~/Dropbox/Office/settings/apache/sites.conf
+      else
+        sudo vi /etc/apache2/extra/httpd-vhosts.conf
+        sudo chown root:wheel /etc/apache2/extra/httpd-vhosts.conf
+      fi
+      sudo vi /etc/hosts
+      sudo apachectl restart
+      ;;
+    c|config)  sudo vi /etc/apache2/httpd.conf ;;
+    d|doctor)  httpd ;;
+    l|log)     tail -f /private/var/log/apache2/error_log ;;
+    t|status)
+      local status
+      status=$(ps ax | grep /usr/sbin/httpd | grep -v grep | cut -c1-5 | paste -s -)
+      printf "Apache is "
+      if [[ -n $status ]]; then
+        printf "\033[0;32mrunning\033[0m\n"
+      else
+        printf "\033[0;31mnot running\033[0m\n"
+      fi
+      ;;
+    *)
+      printf "\033[0;37;1mapache\033[0m\n"
+      printf "  s | start     Start Apache\n"
+      printf "  q | quit      Stop Apache\n"
+      printf "  r | restart   Restart Apache\n"
+      printf "  t | status    Running status\n"
+      printf "  sites         Edit sites + hosts file\n"
+      printf "  c | config    Edit config file\n"
+      printf "  l | log       Apache error log\n"
+      ;;
+  esac
+}
+
+_mysql() {
+  case "$1" in
+    s|start)     mysql.server start ;;
+    r|restart)   mysql.server restart ;;
+    q|quit|stop) mysql.server stop ;;
+    e|errors)    tail -f /usr/local/var/mysql/*.err ;;
+    t|status)
+      if [[ -e /etc/init.d/mysql ]]; then
+        /etc/init.d/mysql status
+      elif [[ -e /etc/init.d/mysqld ]]; then
+        /etc/init.d/mysqld status
+      else
+        mysql.server status
+      fi
+      ;;
+    *)
+      printf "\033[0;37;1mmysql\033[0m\n"
+      printf "  s | start     Start MySQL\n"
+      printf "  r | restart   Restart MySQL\n"
+      printf "  q | quit      Stop MySQL\n"
+      printf "  e | errors    Tail error log\n"
+      ;;
+  esac
+}
+
+_nginx() {
+  case "$1" in
+    s|start)
+      if sudo nginx; then printf "nginx started\n"; else printf "nginx failed to start\n"; fi
+      ;;
+    q|quit|stop)
+      if sudo nginx -s quit; then printf "nginx stopped\n"; else printf "nginx failed to stop\n"; fi
+      ;;
+    c|conf|config) vi /usr/local/etc/nginx/nginx.conf ;;
+    t|status)
+      [[ -n $(ps aux | grep nginx | grep -v grep) ]] && printf "Running\n" || printf "Not running\n"
+      ;;
+    *)
+      printf "\033[0;37;1mnginx\033[0m\n"
+      printf "  s | start     Start\n"
+      printf "  q | quit      Stop\n"
+      printf "  c | config    Edit config file\n"
+      ;;
+  esac
+}
+
+_postgres() {
+  case "$1" in
+    s|start)     pg_ctl start ;;
+    q|quit|stop) pg_ctl stop ;;
+    t|status)    printf "PGDATA: %s\n" "$PGDATA" ;;
+    *)
+      printf "\033[0;37;1mpostgres\033[0m\n"
+      printf "  s | start     Start\n"
+      printf "  q | stop      Stop\n"
+      ;;
+  esac
+}
+
+_redis() {
+  case "$1" in
+    s|start)     redis-server & ;;
+    q|quit|stop) _killps redis-server ;;
+    *)
+      printf "\033[0;37;1mredis\033[0m\n"
+      printf "  s | start     Start\n"
+      printf "  q | stop      Stop\n"
+      ;;
+  esac
+}
+
+##################################
+# INSTALL
+
+_install_xcode() {
+  local result
+  result=$(xcode-select -p 2>&1)
+  if [[ $result =~ 'not found' ]]; then
+    printf "\033[0;36mInstalling Xcode Command Line Tools...\033[0m\n"
+    xcode-select --install
+  elif [[ -z $result ]]; then
+    printf "\033[0;36mSelecting Xcode install...\033[0m\n"
+    local xcode_dev=/Applications/Xcode.app/Contents/Developer
+    [[ -e $xcode_dev ]] && sudo xcode-select -switch "$xcode_dev"
+  else
+    printf "Xcode: already installed (%s)\n" "$result"
+  fi
+}
+
+_install_homebrew() {
+  if command -v brew &>/dev/null; then
+    printf "Homebrew: already installed\n"
+  else
+    printf "\033[0;36mInstalling Homebrew...\033[0m\n"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> "$HOME/.zprofile"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
+}
+
+_install_git() {
+  if [[ $(which git) =~ "usr/local" || $(which git) =~ "homebrew" ]]; then
+    printf "\033[0;36mUpgrading git...\033[0m\n"
+    brew upgrade git
+  elif command -v brew &>/dev/null; then
+    printf "\033[0;36mInstalling git...\033[0m\n"
+    brew install git
+  else
+    printf "\033[0;36mInstalling git via apt...\033[0m\n"
+    sudo apt-get install git -yf
+  fi
+}
+
+_install_tig() {
+  if command -v tig &>/dev/null; then
+    printf "tig: already installed\n"
+  else
+    printf "\033[0;36mInstalling tig...\033[0m\n"
+    brew install tig
+  fi
+}
+
+_install_janus() {
+  if ! command -v ruby &>/dev/null; then
+    printf "Janus: Ruby is required — run: kriogenx install ruby\n"
+    return 1
+  fi
+  if [[ -d ~/.vim/janus ]]; then
+    printf "\033[0;36mUpdating Janus...\033[0m\n"
+    (cd ~/.vim/janus && git pull)
+  else
+    read -rp "Install Janus vim plugins? y|n " yn
+    case $yn in
+      Y|y|yes)
+        printf "\033[0;36mInstalling Janus...\033[0m\n"
+        curl -Lo- https://bit.ly/janus-bootstrap | bash
+        ;;
+      *) printf "Janus: skipped\n" ;;
+    esac
+  fi
+}
+
+_install_ssh() {
+  if [[ -e ~/.ssh/id_rsa ]]; then
+    printf "SSH: key already exists at ~/.ssh/id_rsa\n"
+    return 0
+  fi
+  printf "\033[0;36mSetting up SSH key...\033[0m\n"
+  local email
+  read -rp "Enter your email address: " email
+  if [[ -n $email ]]; then
+    ssh-keygen -t rsa -C "$email"
+    if [[ -e ~/.ssh/id_rsa ]]; then
+      chmod 0600 ~/.ssh/id_rsa
+      ssh-add ~/.ssh/id_rsa
+      [[ -e ~/.ssh/id_rsa.pub ]] && pbcopy < ~/.ssh/id_rsa.pub && printf "Public key copied to clipboard\n"
+      printf "Testing SSH connection to GitHub...\n"
+      [[ $(ssh -T git@github.com 2>&1) =~ 'success' ]] && printf "SSH: connected\n" || printf "SSH: could not connect to GitHub\n"
+    else
+      printf "ERROR: SSH key generation failed\n"
+    fi
+  fi
+}
+
+_install() {
+  local what="${1:-help}"
+  shift 2>/dev/null || true
+  case "$what" in
+    xcode)           _install_xcode ;;
+    homebrew|brew)   _install_homebrew ;;
+    git)             _install_git ;;
+    tig)             _install_tig ;;
+    janus)           _install_janus ;;
+    ssh)             _install_ssh ;;
+    ruby)            exec "$KRIO_BIN/ruby-install" "$@" ;;
+    all)
+      _install_xcode
+      _install_homebrew
+      _install_git
+      _install_tig
+      _install_janus
+      _install_ssh
+      printf "\n\033[0;32mDeveloper setup complete\033[0m\n"
+      ;;
+    *)
+      printf "\033[0;33minstall\033[0m — available packages\n\n"
+      printf "  xcode       Xcode Command Line Tools\n"
+      printf "  homebrew    Homebrew package manager\n"
+      printf "  git         Git version control\n"
+      printf "  tig         Git log viewer (requires brew)\n"
+      printf "  janus       Vim plugin manager (requires ruby)\n"
+      printf "  ssh         Generate and configure SSH key\n"
+      printf "  ruby        Install Ruby via RVM\n"
+      printf "  all         Install everything above\n\n"
+      ;;
+  esac
+}
+
+##################################
+# STATUS / HELP
+
+_krio_status() {
+  local any=0
+  _svc_line() {
+    local name="$1" check="$2"
+    if eval "$check" &>/dev/null; then
+      printf "  %-22s \033[0;32mrunning\033[0m\n" "$name"
+      any=1
+    fi
+  }
+  _svc_line "apache"   "ps ax | grep /usr/sbin/httpd | grep -v grep"
+  _svc_line "nginx"    "ps ax | grep 'nginx: master' | grep -v grep"
+  _svc_line "mysql"    "ps ax | grep mysqld | grep -v grep"
+  _svc_line "postgres" "ps ax | grep 'postgres -D' | grep -v grep"
+  _svc_line "redis"    "ps ax | grep redis-server | grep -v grep"
+  [[ $any -eq 0 ]] && printf "  no services running\n"
+}
+
+_krio_help() {
+  printf "\033[0;33mkriogenx\033[0m — developer environment toolkit\n\n"
+  printf "\033[0;33mServices:\033[0m\n"
+  _krio_status
+  printf "\n"
+  printf "\033[0;33mUsage:\033[0m  kriogenx <command> [args]\n"
+  printf "        kk <command> [args]\n\n"
+  printf "\033[0;33mServices:\033[0m\n"
+  printf "  apache [cmd]           Manage Apache  (s/q/r/t/sites/config/log)\n"
+  printf "  mysql  [cmd]           Manage MySQL   (s/q/r/t/errors)\n"
+  printf "  nginx  [cmd]           Manage nginx   (s/q/t/config)\n"
+  printf "  postgres [cmd]         Manage Postgres (s/q/t)\n"
+  printf "  redis  [cmd]           Manage Redis   (s/q)\n\n"
+  printf "\033[0;33mSetup:\033[0m\n"
+  printf "  install <what>         Install a tool (xcode/homebrew/git/tig/janus/ssh/ruby/all)\n"
+  printf "  pimp-my-shell          Setup ZSH with oh-my-zsh and kriogenx theme\n"
+  printf "  pimp-my-git            Configure git with sensible defaults\n"
+  printf "  profile-scripts        Setup shell profile (.profile, .zshrc, .bashrc)\n"
+  printf "  macos-hacks            Apply macOS system tweaks\n\n"
+  printf "\033[0;33mManagement:\033[0m\n"
+  printf "  update                 Update kriogenx and installed tools\n\n"
+  printf "\033[0;33mInfo:\033[0m\n"
+  printf "  version                Show version info\n"
+  printf "  help                   Show this help\n\n"
+}
+
+##################################
+# UPDATE
+
+_krio_update() {
+  printf "\033[0;33mKriogenx\033[0m — Updating...\n"
+  (cd "$KRIO_DIR" && git pull --rebase)
+
+  if command -v rvm &>/dev/null; then
+    rvm_latest=$(curl -s https://raw.githubusercontent.com/wayneeseguin/rvm/stable/VERSION)
+    rvm_current=$(rvm --version | awk '{print $2}' | head -1)
+    printf "\033[0;33mRVM\033[0m — Latest: %s  Current: %s — " "$rvm_latest" "$rvm_current"
+    if [[ -z $rvm_latest ]]; then
+      printf "Could not get version\n"
+    elif [[ $rvm_latest != $rvm_current ]]; then
+      printf "Upgrading...\n"
+      rvm get latest
+    else
+      printf "Already latest\n"
+    fi
+  fi
+
+  if command -v composer &>/dev/null; then
+    printf "\033[0;33mComposer\033[0m — Updating...\n"
+    composer self-update
+  fi
+
+  if command -v brew &>/dev/null; then
+    printf "\033[0;33mBrew\033[0m — Updating...\n"
+    brew update && brew upgrade && brew cleanup
+  fi
+
+  if [[ -d ~/.oh-my-zsh ]]; then
+    printf "\033[0;33mOH-MY-ZSH\033[0m — Updating...\n"
+    (cd ~/.oh-my-zsh && git pull --rebase -q && git submodule foreach git pull origin master)
+  fi
+}
+
+##################################
+# MAIN
+
+COMMAND="${1:-help}"
+shift
+
+case "$COMMAND" in
+  # Services
+  a|apache)            _apache "$@" ;;
+  m|my|mysql)          _mysql "$@" ;;
+  n|ng|nginx)          _nginx "$@" ;;
+  p|pg|postgres)       _postgres "$@" ;;
+  r|redis)             _redis "$@" ;;
+
+  # Install
+  i|install)           _install "$@" ;;
+  developer-essentials|dev-essentials|dev)
+    _install all
+    ;;
+
+  # Setup
+  pimp-my-shell|shell)
+    exec "$KRIO_BIN/pimp-my-shell" "$@"
+    ;;
+  pimp-my-git|git)
+    exec "$KRIO_BIN/pimp-my-git" "$@"
+    ;;
+  profile-scripts|profile)
+    exec "$KRIO_BIN/profile-scripts" "$@"
+    ;;
+  macos-hacks|macos)
+    exec "$KRIO_BIN/macos-hacks" "$@"
+    ;;
+  ruby-install|ruby)
+    exec "$KRIO_BIN/ruby-install" "$@"
+    ;;
+
+  # Management
+  u|up|update|upgrade)
+    _krio_update
+    ;;
+  version|v)
+    printf "kriogenx %s\n" "$(cd "$KRIO_DIR" && git describe --tags --always 2>/dev/null || git rev-parse --short HEAD 2>/dev/null || echo 'unknown')"
+    ;;
+  h|help|--help|-h)
+    _krio_help
+    ;;
+  *)
+    printf "kriogenx: unknown command '%s'\n\n" "$COMMAND" >&2
+    _krio_help
+    exit 1
+    ;;
+esac

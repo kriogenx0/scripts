@@ -788,8 +788,9 @@ alias arc='aliasrc'
 alias urc='_editrc "$USER_RC"'
 alias kds='cd "$KRIOGENX_DIR"'
 alias kgig='cp "$KRIOGENX_DIR"/configs/git/gitignore ./.gitignore'
+alias kk='kriogenx'
 kup() {
-  kk up
+  kriogenx update
 }
 
 whatsmyip() {
