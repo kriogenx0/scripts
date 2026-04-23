@@ -414,8 +414,8 @@ alias gcundo='git reset --hard HEAD~1' # undo last commit
 alias gsundo='git reset --soft HEAD^'
 alias grundo='git revert HEAD~1 -n' #undo commit changes, leaving commit alone
 gundo() {
-  if [ ! $1 -gt 1 ]; then $1=1; fi
-  git revert -n HEAD~r$1
+  local n=${1:-1}
+  git revert -n HEAD~$n
 }
 
 # Git Submodules
@@ -444,7 +444,7 @@ gitpermanentfiledelete() {
 # Apps
 
 # TextEdit
-alias edi='open -e "$1"'
+edi() { open -e "$@"; }
 
 # Browser
 browser() {
