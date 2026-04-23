@@ -10,21 +10,6 @@ function virtualenv_info {
     [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
 }
 
-function prompt_char {
-    git branch >/dev/null 2>/dev/null && echo '±' && return
-    echo '○'
-}
-
-function box_name {
-    [ -f ~/.box-name ] && cat ~/.box-name || hostname -s
-}
-
-function time_stamp {
-  #echo -n $(date "+%Y-%m-%d %H:%M:%S") | sed "s/^\dm\"//"
-  echo -n $(date "+%m-%d %H:%M:%S") | sed "s/^\dm\"//"
-}
-
-
 # Local Vars
 local rvm_ruby=''
 if which rvm-prompt &> /dev/null; then
@@ -36,10 +21,9 @@ else
 fi
 local current_dir='${PWD/#$HOME/~}'
 local git_info='$(git_prompt_info)'
-local theme_time=' $(time_stamp)'
 
-# %{$FG[040]%}%n%{$reset_color%} %{$FG[033]%}$(box_name)%{$reset_color%} 
-PROMPT="╭─ %{$terminfo[bold]$FG[226]%}${current_dir}%{$reset_color%}${git_info} ${rvm_ruby}${theme_time}
+# %{$FG[040]%}%n%{$reset_color%} %{$FG[033]%}$(box_name)%{$reset_color%}
+PROMPT="╭─ %{$terminfo[bold]$FG[226]%}${current_dir}%{$reset_color%}${git_info} ${rvm_ruby}%D{%m-%d %H:%M:%S}
 ╰─$(virtualenv_info) "
 #╰─$(virtualenv_info)$(prompt_char) "
 

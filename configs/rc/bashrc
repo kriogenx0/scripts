@@ -11,8 +11,8 @@ _KRIOGENX_RC_START=$EPOCHREALTIME
 # SETTINGS
 
 export KRIOGENX_DIR=~/.kriogenx
-export KRIOGENX_RC="$KRIOGENX_DIR"/configs/bashrc
-export USER_RC=~/Dropbox/Office/settings/bashrc
+export KRIOGENX_RC="$KRIOGENX_DIR"/configs/rc/bashrc
+: "${USER_RC:=~/Dropbox/Office/settings/bashrc}"
 
 ####################
 # ENVIRONMENT VARIABLES
@@ -81,7 +81,7 @@ append_path /Applications/Xcode.app/Contents/Developer/usr/bin
 
 # RVM SETTINGS
 RVM_SCRIPT=~/.rvm/scripts/rvm
-if [[ -f $RVM_SCRIPT ]] && type rvm >/dev/null 2>&1; then
+if [[ -f $RVM_SCRIPT ]]; then
   export rvm_trust_rvmrcs_flag=1
   export rvm_project_rvmrc_default=1
   export rvm_auto_reload_flag=2
