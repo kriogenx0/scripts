@@ -628,22 +628,23 @@ nov() {
 
 
 # Docker
-alias dr='docker'
-alias dri='docker images'
-alias drr='docker run -t -p 4000:80'
-alias drcl='docker container ls'
-alias drc='docker container ls'
-alias drcp='docker container prune'
-alias drps='docker ps'
+: "${DOCKER_APP:=docker}"
+alias dr='$DOCKER_APP'
+alias dri='dr images'
+alias drr='dr run -t -p 4000:80'
+alias drcl='dr container ls'
+alias drc='dr container ls'
+alias drcp='dr container prune'
+alias drps='dr ps'
 alias drv='dr volume ls'
 alias dra='dr attach'
 alias drl='dr logs'
-alias drsp="docker system prune -af"
+alias drsp="dr system prune -af"
 alias drb="dr build"
 
 # Docker Shell
 drsh() {
-  docker exec -it $1 bash
+  dr exec -it $1 bash
 }
 
 # Docker Compose
