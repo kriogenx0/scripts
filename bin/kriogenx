@@ -213,6 +213,24 @@ _install_janus() {
   fi
 }
 
+_install_docker() {
+  if command -v docker &>/dev/null; then
+    printf "docker: already installed\n"
+  else
+    printf "\033[0;36mInstalling docker + colima...\033[0m\n"
+    brew install docker colima
+  fi
+}
+
+_install_node() {
+  if command -v nvm &>/dev/null || [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+    printf "nvm: already installed\n"
+  else
+    printf "\033[0;36mInstalling nvm...\033[0m\n"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+  fi
+}
+
 _install_ssh() {
   if [[ -e ~/.ssh/id_rsa ]]; then
     printf "SSH: key already exists at ~/.ssh/id_rsa\n"
@@ -245,6 +263,9 @@ _install() {
     tig)             _install_tig ;;
     janus)           _install_janus ;;
     ssh)             _install_ssh ;;
+    docker)          _install_docker ;;
+    node)            _install_node ;;
+    python)          exec "$KRIO_BIN/python-install" "$@" ;;
     ruby)            exec "$KRIO_BIN/ruby-install" "$@" ;;
     all)
       _install_xcode
@@ -253,18 +274,24 @@ _install() {
       _install_tig
       _install_janus
       _install_ssh
+      _install_node
       printf "\n\033[0;32mDeveloper setup complete\033[0m\n"
       ;;
     *)
       printf "\033[0;33minstall\033[0m — available packages\n\n"
+      printf "\033[0;37mDev tools:\033[0m\n"
       printf "  xcode       Xcode Command Line Tools\n"
       printf "  homebrew    Homebrew package manager\n"
       printf "  git         Git version control\n"
       printf "  tig         Git log viewer (requires brew)\n"
       printf "  janus       Vim plugin manager (requires ruby)\n"
       printf "  ssh         Generate and configure SSH key\n"
-      printf "  ruby        Install Ruby via RVM\n"
-      printf "  all         Install everything above\n\n"
+      printf "  docker      Docker + Colima\n"
+      printf "\n\033[0;37mLanguages:\033[0m\n"
+      printf "  node        Node.js via nvm\n"
+      printf "  python      Python via pyenv\n"
+      printf "  ruby        Ruby via RVM\n"
+      printf "\n  all         Install all dev tools above\n\n"
       ;;
   esac
 }
@@ -303,7 +330,8 @@ _krio_help() {
   printf "  postgres [cmd]         Manage Postgres (s/q/t)\n"
   printf "  redis  [cmd]           Manage Redis   (s/q)\n\n"
   printf "\033[0;33mSetup:\033[0m\n"
-  printf "  install <what>         Install a tool (xcode/homebrew/git/tig/janus/ssh/ruby/all)\n"
+  printf "  install <what>         Install a tool (xcode/homebrew/git/tig/janus/ssh/all)\n"
+  printf "                           Languages: node / python / ruby\n"
   printf "  pimp-my-shell          Setup ZSH with oh-my-zsh and kriogenx theme\n"
   printf "  pimp-my-git            Configure git with sensible defaults\n"
   printf "  profile-scripts        Setup shell profile (.profile, .zshrc, .bashrc)\n"
