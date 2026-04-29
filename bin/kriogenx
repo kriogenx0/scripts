@@ -218,7 +218,9 @@ _install_docker() {
     printf "docker: already installed\n"
   else
     printf "\033[0;36mInstalling docker + colima...\033[0m\n"
-    brew install docker colima
+    brew install docker docker-buildx docker-compose colima
+    mkdir -p ~/.docker/cli-plugins
+    ln -sfn $(brew --prefix)/opt/docker-buildx/bin/docker-buildx ~/.docker/cli-plugins/docker-buildx
   fi
 }
 
