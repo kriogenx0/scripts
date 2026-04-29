@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+
+import os
+import shutil
+import json
+import subprocess
+from datetime import datetime
+
+# iCloud Path
+DESTINATION_PATH = os.path.expanduser("~/Documents/Takeover")
+
+##########
+
+FILE_DIR = os.path.dirname(__file__)
+# SYNC_SETTINGS_PATH = os.path.join(FILE_DIR, "..", 'configs/sync_settings.json')
+SYNC_SETTINGS_PATH = os.path.join(FILE_DIR, "takeover_config.json")
+
+def current_day():
+    now = datetime.now()
+    return now.strftime("%Y-%m-%d")
+
+data = None
+with open(SYNC_SETTINGS_PATH) as f:
+    data = json.load(f)
+
+if not data:
+    print(f"Could not get json data: {SYNC_SETTINGS_PATH}")
+
+# TODO offer uninstall
+
+for link in data:
+
+    name = link['name']
+    source = link['source']
+    source = os.path.expanduser(source) if source[0] == ("~") else source
+
+    # Check if source is exists
+    if not os.path.exists(source):
+        print(f"{name} - Source file does not exist: {source}")
+        continue
+
+    # Check if destination exists
+    destination = os.path.join(DESTINATION_PATH, link["destination"])
+
+    if os.path.exists(destination):
+        # TODO: Ask user
+        print(f"{name} - Destination exists! {link['destination']}")
+
+        new_folder_name = f"{link['destination']}-{current_day()}"
+        destination = os.path.join(destination, new_folder_name)
+
+        # print(f"{name} - Moving source. source: {source}, destination: {destination}")
+        # shutil.move(source, destination)
+        continue
+
+    os.makedirs(destination, exist_ok=True)
+
+    # Move Directory if destination does not exist
+    print(f"{name} - Moving source. source: {source}, destination: {destination}")
+    shutil.move(source, destination)
+
+    # Create Link
+    subprocess.run(["ln", "-s", source, destination])
+
+    print(f"{name} - Link created. {source}, destination: {destination}")
+
+subprocess.run(["open", DESTINATION_PATH])
