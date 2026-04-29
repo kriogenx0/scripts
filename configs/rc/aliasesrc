@@ -32,7 +32,15 @@ si() {
 # Common Binaries
 alias o='open'
 alias oo='open .'
-ox() { open "${1:-.}"/*.xcodeproj; }
+ox() {
+  if [[ -n "$1" ]]; then
+    open "$1"/*.xcodeproj
+  else
+    local proj
+    proj=$(find . -name "*.xcodeproj" -maxdepth 5 | head -1)
+    [[ -n "$proj" ]] && open "$proj" || echo "No .xcodeproj found"
+  fi
+}
 alias xc='open -a Xcode'
 alias c='clear'
 alias lns="ln -s"
