@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+
+HOSTS_FILE="/etc/hosts"
+
+_hosts_list() {
+  local filter="${1:-}"
+  local found=0
+  while IFS= read -r line; do
+    [[ "$line" =~ ^[[:space:]]*# ]] && continue
+    [[ -z "${line// }" ]] && continue
+    if [[ -n "$filter" ]]; then
+      [[ "$line" == *"$filter"* ]] || continue
+    fi
+    found=1
+    printf "%s\n" "$line"
+  done < "$HOSTS_FILE"
+  if [[ $found -eq 0 ]]; then printf "No entries found\n"; fi
+}
+
+_hosts_add() {
+  local hostname="${1#*://}"
+  local ip="${2:-127.0.0.1}"
+  if [[ -z "$hostname" ]]; then
+    printf "Usage: hosts add <hostname> [ip]\n" >&2
+    exit 1
+  fi
+  if grep -qE "^[^#]*[[:space:]]${hostname}([[:space:]]|$)" "$HOSTS_FILE"; then
+    printf "hosts: '%s' already exists — use 'hosts change' to update it\n" "$hostname" >&2
+    exit 1
+  fi
+  printf "%s\t%s\n" "$ip" "$hostname" | sudo tee -a "$HOSTS_FILE" > /dev/null
+  printf "Added: %s\t%s\n" "$ip" "$hostname"
+}
+
+_hosts_change() {
+  local hostname="$1"
+  local new_ip="$2"
+  if [[ -z "$hostname" || -z "$new_ip" ]]; then
+    printf "Usage: hosts change <hostname> <new-ip>\n" >&2
+    exit 1
+  fi
+  if ! grep -qE "^[^#]*[[:space:]]${hostname}([[:space:]]|$)" "$HOSTS_FILE"; then
+    printf "hosts: '%s' not found — use 'hosts add' to create it\n" "$hostname" >&2
+    exit 1
+  fi
+  local tmp
+  tmp=$(mktemp)
+  sed -E "s|^([^#]*)[[:space:]]+(${hostname})([[:space:]]|$).*|${new_ip}\t${hostname}|" "$HOSTS_FILE" > "$tmp"
+  sudo cp "$tmp" "$HOSTS_FILE"
+  rm -f "$tmp"
+  printf "Updated: %s\t%s\n" "$new_ip" "$hostname"
+}
+
+_hosts_remove() {
+  local hostname="$1"
+  if [[ -z "$hostname" ]]; then
+    printf "Usage: hosts remove <hostname>\n" >&2
+    exit 1
+  fi
+  if ! grep -qE "^[^#]*[[:space:]]${hostname}([[:space:]]|$)" "$HOSTS_FILE"; then
+    printf "hosts: '%s' not found\n" "$hostname" >&2
+    exit 1
+  fi
+  local tmp
+  tmp=$(mktemp)
+  grep -vE "^[^#]*[[:space:]]${hostname}([[:space:]]|$)" "$HOSTS_FILE" > "$tmp"
+  sudo cp "$tmp" "$HOSTS_FILE"
+  rm -f "$tmp"
+  printf "Removed: %s\n" "$hostname"
+}
+
+_hosts_rename() {
+  local old="${1#*://}"
+  local new="${2#*://}"
+  if [[ -z "$old" || -z "$new" ]]; then
+    printf "Usage: hosts rename <old-hostname> <new-hostname>\n" >&2
+    exit 1
+  fi
+  if ! grep -qE "^[^#]*[[:space:]]${old}([[:space:]]|$)" "$HOSTS_FILE"; then
+    printf "hosts: '%s' not found\n" "$old" >&2
+    exit 1
+  fi
+  local tmp
+  tmp=$(mktemp)
+  sed -E "s|^([^#]*[[:space:]]+)${old}([[:space:]]|$)|\1${new}\2|" "$HOSTS_FILE" > "$tmp"
+  sudo cp "$tmp" "$HOSTS_FILE"
+  rm -f "$tmp"
+  printf "Renamed: %s -> %s\n" "$old" "$new"
+}
+
+_hosts_help() {
+  printf "\033[0;33mhosts\033[0m — manage /etc/hosts\n\n"
+  printf "Usage: hosts <command> [args]\n\n"
+  printf "  list [filter]           List entries (optional keyword filter)\n"
+  printf "  add <hostname> [ip]     Add a new entry (ip defaults to 127.0.0.1)\n"
+  printf "  change <hostname> <ip>  Update the IP for an existing hostname\n"
+  printf "  rename <old> <new>      Rename a hostname (keeps the same IP)\n"
+  printf "  remove <hostname>       Remove an entry\n\n"
+  printf "Examples:\n"
+  printf "  hosts list\n"
+  printf "  hosts add myapp.local\n"
+  printf "  hosts add myapp.local 192.168.1.10\n"
+  printf "  hosts change myapp.local 192.168.1.10\n"
+  printf "  hosts rename myapp.local myapp2.local\n"
+  printf "  hosts remove myapp.local\n\n"
+}
+
+COMMAND="${1:-default}"
+shift 2>/dev/null || true
+
+case "$COMMAND" in
+  l|ls|list)   _hosts_list "$@" ;;
+  a|add)       _hosts_add "$@" ;;
+  c|change)    _hosts_change "$@" ;;
+  n|rename)    _hosts_rename "$@" ;;
+  r|rm|remove) _hosts_remove "$@" ;;
+  h|help|--help|-h) _hosts_help ;;
+  default)
+    _hosts_list
+    printf "\n"
+    _hosts_help
+    ;;
+  *)
+    printf "hosts: unknown command '%s'\n\n" "$COMMAND" >&2
+    _hosts_help
+    exit 1
+    ;;
+esac
