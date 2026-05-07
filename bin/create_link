@@ -3,46 +3,79 @@
 # Create Link
 # Create a link at the source to the destination
 
-if [[ -z $1 ]]; then
-  cat << EOF
-Create Link
-  Move source to destination and create sym link from source to destination
-  If destination exists, add date to the old destination
-usage:
-  create_link [source] [destination]
-EOF
-  exit 0
-fi
-
 S="$1"
 D="$2"
 
-# Duplicate Directory
-[[ -n $3 ]] && DD="$3" || DD="$D"-old-`date "+%Y-%m-%d"`
+[[ -n $3 ]] && DD="$3" || DD="$D-old-$(date "+%Y-%m-%d")"
 
-# Remove If Link
-[[ -L "$S" ]] && rm -rf "$S"
-[[ -L "$D" ]] && rm -rf "$D"
-
-# Make Dir
-mkdir -p "`dirname "$D"`"
-
-# Rename Files if Exist
-if [[ -e "$S" ]]; then # If source exists
-  if [[ -e "$D" ]]; then # If destination exists
-    mv "$S" "$DD" # Move to duplicate
-  else
-    mv "$S" "$D"
-  fi
-else # source does nto exist
-  if [[ ! -e "$D" ]]; then
-    echo "Neither of locations exist"
-    echo "Source: $S"
-    echo "Destination: $D"
-    exit 0
-  fi
+# Source cannot already be a symlink
+if [[ -L "$S" ]]; then
+  echo "Error: Source is already a symlink:"
+  echo "  $S"
+  echo "Remove it manually if this is unexpected."
+  return 1
 fi
 
-# Create Links
-ln -s "$D" "$S"
-printf "Created Link\n  From: $S\n  To: $D"
+# If destination is a symlink, remove it
+if [[ -L "$D" ]]; then
+  echo "Destination is a symlink. Removing it:"
+  echo "  $D"
+  rm -rf "$D"
+fi
+
+mkdir -p "$(dirname "$D")"
+
+# Both directories exist
+if [[ -d "$S" && -d "$D" ]]; then
+  echo
+  echo "Both source and destination directories exist:"
+  echo "Source:      $S"
+  echo "Destination: $D"
+  echo
+  echo "Choose an option:"
+  echo "1) Merge source into destination with rsync"
+  echo "2) Use source directory"
+  echo "3) Use destination directory"
+  read -r -p "Enter 1, 2, or 3: " choice
+
+  case "$choice" in
+    1)
+      sudo rsync -aEuv --progress --stats "$S/" "$D/"
+      sudo rm -rf "$S"
+      ;;
+    2)
+      sudo mv "$D" "$DD"
+      sudo mv "$S" "$D"
+      ;;
+    3)
+      sudo mv "$S" "$DD"
+      ;;
+    *)
+      echo "Invalid choice. Aborting."
+      return 1
+      ;;
+  esac
+
+# Source exists
+elif [[ -e "$S" ]]; then
+  if [[ -e "$D" ]]; then
+    echo "Destination already exists. Moving source to duplicate:"
+    echo "  $DD"
+    sudo mv "$S" "$DD"
+  else
+    sudo mv "$S" "$D"
+  fi
+
+# Neither exists
+elif [[ ! -e "$D" ]]; then
+  echo "Neither location exists"
+  echo "Source: $S"
+  echo "Destination: $D"
+  return 0
+fi
+
+# Create symlink
+sudo ln -s "$D" "$S"
+
+echo "Created symlink:"
+echo "  $S -> $D"
