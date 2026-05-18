@@ -657,7 +657,7 @@ drsh() {
 
 # Docker Compose
 : "${DOCKER_COMPOSE_APP:=docker compose}"
-alias dc='$DOCKER_COMPOSE_APP'
+alias dc='${=DOCKER_COMPOSE_APP}'
 alias dcb='dc build'
 alias dcbnc='dc build --no-cache'
 alias dcu='dc up'
