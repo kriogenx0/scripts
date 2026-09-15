@@ -672,6 +672,7 @@ alias dce="dc exec"
 dcsh() {
   dc exec -it $1 bash
 }
+dccs='dc config --services'
 
 
 # Kubernetes
