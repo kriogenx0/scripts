@@ -179,12 +179,13 @@ portinfo() {
 : "${GIT_MAIN_BRANCH:=main}"
 
 gcl() {
-  git clone "$@"
-  local dir="${@: -1}"
-  # if last arg looks like a URL, derive the dir name from it
-  if [[ "$dir" == *://* || "$dir" == *@*:* ]]; then
-    dir=$(basename "$dir" .git)
+  local repo="$1"
+  local host="${2:-github.com}"
+  if [[ "$repo" != *:* ]]; then
+    repo="git@$host:$repo"
   fi
+  git clone "$repo" || return
+  local dir="$(basename "$repo" .git)"
   cd "$dir"
 }
 
