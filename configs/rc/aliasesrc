@@ -402,6 +402,7 @@ alias gst='git stash show'
 alias gstl='git stash list'
 alias gsd='git stash drop'
 alias gss='git stash save'
+alias gsr='git reset' # Unstage all files
 alias gsa='git stash apply'
 alias gsad='git stash apply; git stash drop'
 alias gsc='git stash clear'
