@@ -641,6 +641,8 @@ nov() {
 : "${DOCKER_APP:=docker}"
 alias dr='$DOCKER_APP'
 alias dri='dr images'
+alias drip='dr image prune'
+alias dripa='dr image prune -a'
 alias drr='dr run -t -p 4000:80'
 alias drcl='dr container ls'
 alias drc='dr container ls'
