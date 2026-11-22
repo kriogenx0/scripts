@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Docker Install (Homebrew CLI + Colima runtime, no Docker Desktop)
+# usage: kriogenx install docker
+#   docker, docker compose, docker buildx, credential helper, colima
+# Extra formulae can be added with DOCKER_EXTRAS="lazydocker dive"
+
+if ! command -v brew &>/dev/null; then
+  echo "Homebrew is required — run: kriogenx install homebrew" >&2
+  exit 1
+fi
+
+FORMULAE=(docker docker-compose docker-buildx docker-credential-helper colima)
+# shellcheck disable=SC2206 # intentionally split the space-separated list
+[[ -n ${DOCKER_EXTRAS:-} ]] && FORMULAE+=($DOCKER_EXTRAS)
+
+missing=()
+for f in "${FORMULAE[@]}"; do
+  brew list --formula "$f" &>/dev/null || missing+=("$f")
+done
+
+if [[ ${#missing[@]} -eq 0 ]]; then
+  echo "Docker tools already installed: ${FORMULAE[*]}"
+else
+  echo "Installing ${missing[*]}..."
+  brew install "${missing[@]}"
+fi
+
+# CLI plugins: `docker compose` and `docker buildx` subcommands
+BREW_PREFIX=$(brew --prefix)
+mkdir -p ~/.docker/cli-plugins
+ln -sfn "$BREW_PREFIX/opt/docker-compose/bin/docker-compose" ~/.docker/cli-plugins/docker-compose
+ln -sfn "$BREW_PREFIX/opt/docker-buildx/bin/docker-buildx" ~/.docker/cli-plugins/docker-buildx
+
+# A leftover Docker Desktop config points at a credential helper that no
+# longer exists, which breaks pulls. Switch it to the keychain helper.
+DOCKER_CONFIG_FILE=~/.docker/config.json
+if [[ -f $DOCKER_CONFIG_FILE ]] && grep -q '"credsStore": *"desktop"' "$DOCKER_CONFIG_FILE"; then
+  echo "Switching credsStore from Docker Desktop to osxkeychain"
+  sed -i.bak 's/"credsStore": *"desktop"/"credsStore": "osxkeychain"/' "$DOCKER_CONFIG_FILE"
+fi
+
+# Start the Colima VM (COLIMA_ARGS e.g. "--cpu 4 --memory 8")
+if colima status &>/dev/null; then
+  echo "Colima already running"
+else
+  echo "Starting Colima..."
+  # shellcheck disable=SC2086 # intentionally split user-supplied args
+  colima start ${COLIMA_ARGS:-}
+fi
+
+docker version --format 'docker {{.Client.Version}} (server {{.Server.Version}})' || true
+docker compose version || true
+
+echo "Docker ready. To start Colima at login: brew services start colima"

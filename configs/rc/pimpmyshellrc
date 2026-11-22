@@ -1,3 +1,5 @@
+# Shell framework settings are consumed by oh-my-zsh and zsh.
+# shellcheck disable=SC2034
 # ZSH SETTINGS
 if [ -n "$ZSH_VERSION" ]; then
   # ZSH THEME
@@ -12,7 +14,8 @@ if [ -n "$ZSH_VERSION" ]; then
 
     #plugins=(git rvm fasd rake rails) # ~/.oh-my-zsh/custom/plugins/
     plugins=(rvm fasd) # ~/.oh-my-zsh/custom/plugins/
-    source $ZSH/oh-my-zsh.sh
+    # shellcheck source=/dev/null
+    source "$ZSH/oh-my-zsh.sh"
   fi
 
   # Remove Autocorrect
@@ -37,8 +40,8 @@ elif [ -n "$BASH_VERSION" ]; then
 
   function git_prompt_info() {
     ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-    branch=${ref#ref/heads/}
     echo -en " \033[0m""${ref#refs/heads/}" #$(parse_git_dirty)"
+    # shellcheck disable=SC2086 # Optional space-separated git status flags.
     if [[ -n $(git status -s ${SUBMODULE_SYNTAX}  2> /dev/null) ]]; then
       echo -en "\033[31m✘✘✘"
     else
@@ -54,5 +57,5 @@ elif [ -n "$BASH_VERSION" ]; then
   [ -z "$PS1" ] || stty -ixon
 
   # Kriogenx Theme
-  [ -z "$PS1" ] || export PS1="╭─ \[\033[01;36m\]\w\[\033[00m\]\$(git_prompt_info '(%s)')\$(rvm_prompt_info)\033[0m\n╰─ "
+  [ -z "$PS1" ] || export PS1="╭─ \[\033[01;36m\]\w\[\033[00m\]\$(git_prompt_info '(%s)')\$(rvm_prompt_info)\[\033[0m\]\n╰─ "
 fi

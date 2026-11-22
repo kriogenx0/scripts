@@ -1,11 +1,11 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-KRIO_DIR=~/.kriogenx
+KRIO_DIR="${KRIO_DIR:-$HOME/.kriogenx}"
 
 # Pimp My Shell
 
 if [[ ! -e ~/.oh-my-zsh ]]; then
-  read -p "Install ZSH? y|n " install_zsh
+  read -r -p "Install ZSH? y|n " install_zsh
 
   # Install OH MY ZSH
   if [[ $install_zsh = 'y' ]]; then
@@ -14,33 +14,16 @@ if [[ ! -e ~/.oh-my-zsh ]]; then
 
 else
   # Update ZSH
-  echo $(cd ~/.oh-my-zsh; git pull --rebase)
+  (cd ~/.oh-my-zsh && git pull --rebase)
 fi
 
 if [[ -e ~/.oh-my-zsh ]]; then
   # Install Theme
-  rm -rf ~/.oh-my-zsh/themes/kriogenx.zsh-theme
-  ln -s "$KRIO_DIR"/configs/kriogenx.zsh-theme ~/.oh-my-zsh/themes/kriogenx.zsh-theme
+  ln -sfn "$KRIO_DIR"/configs/kriogenx.zsh-theme ~/.oh-my-zsh/themes/kriogenx.zsh-theme
 fi
 
-if [[ -f ~/.zshrc && ! -f ~/.zshrc-old ]]; then
-  mv ~/.zshrc{,-old}
-fi
-
-# Build .profile
-if [[ ! -e ~/.profile ]]; then
-  echo '#!/usr/bin/env sh' > ~/.profile
-fi
-if [[ -e ~/.profile ]] && [[ ! `cat ~/.profile` =~ 'kriogenx' ]]; then
-  echo "source $KRIO_DIR/configs/rc/bashrc" >> ~/.profile
-  echo 'si' >> ~/.profile
-  echo '# Customize Here' >> ~/.profile
-fi
-
-# Link .profile
-[[ ! -e ~/.zshrc ]] || [[ ! `cat ~/.zshrc` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.zshrc
-[[ ! -e ~/.bashrc ]] || [[ ! `cat ~/.bashrc` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.bashrc
-[[ ! -e ~/.bash_profile ]] || [[ `cat ~/.bash_profile` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.bash_profile
+# Share the idempotent profile setup with the package installer.
+bash "$KRIO_DIR/bin/profile-scripts"
 
 # TODO: Make sure zsh install properly
 echo "ZSH has been installed!"

@@ -1,0 +1,23 @@
+# Repo-wide shellcheck config. See the individual `# shellcheck disable=`
+# comments throughout the codebase for one-off, context-specific suppressions.
+shell=bash
+
+# Legacy backtick command substitution (`cmd` vs $(cmd)). Cosmetic only —
+# tracked as a documented backlog item, not worth a blanket rewrite pass.
+disable=SC2006
+
+# "Consider using pgrep instead of grepping ps output." Style suggestion;
+# the existing ps|grep helpers (psa/_psa) are intentional and predate pgrep
+# being universally available on macOS.
+disable=SC2009
+
+# "This expands when defined, not when used." A number of aliases
+# intentionally bake in session-constant values (GIT_MAIN_BRANCH,
+# GIT_DEV_BRANCH, $IDE) at shell-init time; that's the intended design here,
+# not a bug.
+disable=SC2139
+
+# "Expressions don't expand in single quotes." A few places deliberately
+# write a literal '$(...)' string into a config file to be expanded later
+# (e.g. brew shellenv into .zprofile), not expanded immediately.
+disable=SC2016

@@ -1,8 +1,8 @@
-#!/usr/bin/env sh
-OS_VERS=$(sw_vers | grep ProductVersion | awk -F: '{print $2}')
+#!/usr/bin/env bash
+OS_VERS=$(sw_vers -productVersion)
 
 # YOSEMITE, MAVERICKS, MOUNTAIN LION
-if [[ $OS_VERS =~ "10.10*" ]] || [[ $OS_VERS =~ "10.9*" ]] || [[ $OS_VERS =~ "10.8*" ]]; then
+if [[ $OS_VERS == 10.10.* || $OS_VERS == 10.9.* || $OS_VERS == 10.8.* ]]; then
 
   # DEBUG APP STORE
   defaults write com.apple.appstore ShowDebugMenu -bool TRUE
@@ -46,7 +46,7 @@ if [[ $OS_VERS =~ "10.10*" ]] || [[ $OS_VERS =~ "10.9*" ]] || [[ $OS_VERS =~ "10
   # defaults delete com.apple.dock autohide-time-modifier
 
 # LION
-elif [[ $OS_VERS =~ "10.7*" ]]; then
+elif [[ $OS_VERS == 10.7.* ]]; then
 
   # Scroll Direction
   defaults write -g com.apple.swipescrolldirection -bool false
@@ -203,7 +203,7 @@ defaults write com.apple.LaunchServices LSQuarantine -bool NO
 
 # Safari
 SAFARI_DOWNLOADS=~/Downloads/Safari\ Downloads
-mkdir -p $SAFARI_DOWNLOADS
+mkdir -p "$SAFARI_DOWNLOADS"
 defaults write com.apple.Safari.SandboxBroker DownloadLocation "$SAFARI_DOWNLOADS"
 defaults write com.apple.Safari DownloadLocation "$SAFARI_DOWNLOADS"
 

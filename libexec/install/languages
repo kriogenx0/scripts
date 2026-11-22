@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Language toolchains via mise (https://mise.jdx.dev), one tool for all of them.
+#
+# usage: languages <ruby|node|python|rust|go>... | all
+#
+# Installs globally with `mise use --global`. Pick versions with
+# KRIO_<LANG>_VERSION, e.g. KRIO_NODE_VERSION=22 KRIO_RUBY_VERSION=3.3
+# (default: latest, LTS for node). Projects can still pin their own with
+# .tool-versions / .ruby-version / .nvmrc / mise.toml.
+
+SUPPORTED=(ruby node python rust go)
+
+usage() {
+  echo "usage: $(basename "$0") <${SUPPORTED[*]// /|}>... | all" >&2
+  exit 1
+}
+
+[[ $# -eq 0 ]] && usage
+if [[ $1 == all ]]; then
+  langs=("${SUPPORTED[@]}")
+else
+  langs=("$@")
+fi
+
+for lang in "${langs[@]}"; do
+  case " ${SUPPORTED[*]} " in
+    *" $lang "*) ;;
+    *) echo "Unsupported language: $lang" >&2; usage ;;
+  esac
+done
+
+# mise itself: Homebrew if available, else the official installer
+if ! command -v mise &>/dev/null; then
+  if command -v brew &>/dev/null; then
+    echo "Installing mise..."
+    brew install mise
+  else
+    echo "Installing mise (mise.run)..."
+    curl -fsSL https://mise.run | sh
+    export PATH="$HOME/.local/bin:$PATH"
+  fi
+fi
+
+# Ruby compiles from source; give it the libraries it needs
+for lang in "${langs[@]}"; do
+  if [[ $lang == ruby ]] && command -v brew &>/dev/null; then
+    deps=()
+    for f in libyaml openssl@3 readline; do
+      brew list --formula "$f" &>/dev/null || deps+=("$f")
+    done
+    [[ ${#deps[@]} -gt 0 ]] && brew install "${deps[@]}"
+  fi
+done
+
+for lang in "${langs[@]}"; do
+  var="KRIO_$(echo "$lang" | tr '[:lower:]' '[:upper:]')_VERSION"
+  default=latest
+  [[ $lang == node ]] && default=lts
+  version="${!var:-$default}"
+  echo "Installing $lang@$version..."
+  mise use --global --yes "$lang@$version"
+done
+
+echo "Done. kriogenx's bashrc activates mise; reload your shell to use: ${langs[*]}"

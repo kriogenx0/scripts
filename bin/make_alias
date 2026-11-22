@@ -12,7 +12,7 @@
 #          to allow either file or folder as source
 # Mofified to work with ".app" files, January 2007
 
-scriptname=`basename $0`
+scriptname=`basename "$0"`
 if [ $# -lt 2 ]; then
     echo "Usage: $scriptname srcPath destPath"
     exit

@@ -1,7 +1,23 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Create Link
 # Create a link at the source to the destination
+
+if [[ -z $1 ]]; then
+  cat << EOF
+Create Link
+  Move source to destination and create sym link from source to destination
+  If destination exists, add date to the old destination
+usage:
+  create_link [source] [destination]
+EOF
+  exit 0
+fi
+
+if [[ -z $2 ]]; then
+  echo "create_link: destination is required" >&2
+  exit 1
+fi
 
 S="$1"
 D="$2"
@@ -13,7 +29,7 @@ if [[ -L "$S" ]]; then
   echo "Error: Source is already a symlink:"
   echo "  $S"
   echo "Remove it manually if this is unexpected."
-  return 1
+  exit 1
 fi
 
 # If destination is a symlink, remove it
@@ -24,6 +40,13 @@ if [[ -L "$D" ]]; then
 fi
 
 mkdir -p "$(dirname "$D")"
+
+# Use sudo only when a parent directory we touch isn't writable
+SUDO=()
+for p in "$S" "$D" "$DD"; do
+  [[ -w "$(dirname "$p")" ]] || SUDO=(sudo)
+done
+as_needed() { "${SUDO[@]}" "$@"; }
 
 # Both directories exist
 if [[ -d "$S" && -d "$D" ]]; then
@@ -40,19 +63,19 @@ if [[ -d "$S" && -d "$D" ]]; then
 
   case "$choice" in
     1)
-      sudo rsync -aEuv --progress --stats "$S/" "$D/"
-      sudo rm -rf "$S"
+      as_needed rsync -aEuv --progress --stats "$S/" "$D/"
+      as_needed rm -rf "$S"
       ;;
     2)
-      sudo mv "$D" "$DD"
-      sudo mv "$S" "$D"
+      as_needed mv "$D" "$DD"
+      as_needed mv "$S" "$D"
       ;;
     3)
-      sudo mv "$S" "$DD"
+      as_needed mv "$S" "$DD"
       ;;
     *)
       echo "Invalid choice. Aborting."
-      return 1
+      exit 1
       ;;
   esac
 
@@ -61,9 +84,9 @@ elif [[ -e "$S" ]]; then
   if [[ -e "$D" ]]; then
     echo "Destination already exists. Moving source to duplicate:"
     echo "  $DD"
-    sudo mv "$S" "$DD"
+    as_needed mv "$S" "$DD"
   else
-    sudo mv "$S" "$D"
+    as_needed mv "$S" "$D"
   fi
 
 # Neither exists
@@ -71,11 +94,11 @@ elif [[ ! -e "$D" ]]; then
   echo "Neither location exists"
   echo "Source: $S"
   echo "Destination: $D"
-  return 0
+  exit 0
 fi
 
 # Create symlink
-sudo ln -s "$D" "$S"
+as_needed ln -s "$D" "$S"
 
 echo "Created symlink:"
 echo "  $S -> $D"

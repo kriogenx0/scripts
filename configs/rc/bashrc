@@ -49,28 +49,24 @@ export PATH=${PATH//:\/usr\/local\/bin/}
 
 append_path()
 {
-  [[ -e $1 ]] && [[ ! $PATH =~ $1 ]] && export PATH="$PATH":$1
+  [[ -d $1 && :$PATH: != *:"$1":* ]] && export PATH="$PATH:$1"
 }
 
 # User Bin
-append_path $HOME/bin
+append_path "$HOME/bin"
 
 # RVM Bin
-append_path $HOME/.rvm/bin
+append_path "$HOME/.rvm/bin"
 
 # RVM Gem Error
 #export GEM_BASE=${GEM_HOME//@[a-zA-Z0-9]*/}
 #[[ $GEM_BASE != $GEM_HOME && -d $GEM_BASE/bin ]] && export PATH=$GEM_BASE/bin:$PATH
 
 # RVM Load Gem Bin
-append_path $GEM_HOME/bin
+[[ -n $GEM_HOME ]] && append_path "$GEM_HOME/bin"
 
 # Apple Command Line
 append_path /Developer/usr/bin
-
-# MySQL Native Install
-append_path /usr/local/mysql/support-files
-append_path /usr/local/mysql/bin
 
 # Kriogenx Bin
 append_path "$KRIOGENX_DIR"/bin
@@ -86,8 +82,20 @@ if [[ -f $RVM_SCRIPT ]]; then
   export rvm_project_rvmrc_default=1
   export rvm_auto_reload_flag=2
 
-  source $RVM_SCRIPT
+  # shellcheck source=/dev/null
+  source "$RVM_SCRIPT"
 fi
+
+# mise (language versions: kriogenx install <ruby|node|python|rust|go>)
+_krio_mise=$(command -v mise 2>/dev/null || { [[ -x ~/.local/bin/mise ]] && echo ~/.local/bin/mise; })
+if [[ -n $_krio_mise ]]; then
+  if [ -n "$ZSH_VERSION" ]; then
+    eval "$("$_krio_mise" activate zsh)"
+  else
+    eval "$("$_krio_mise" activate bash)"
+  fi
+fi
+unset _krio_mise
 
 
 ####################
@@ -100,6 +108,7 @@ source "$KRIOGENX_DIR"/configs/rc/pimpmyshellrc
 
 source "$KRIOGENX_DIR"/configs/rc/aliasesrc
 
+# shellcheck source=/dev/null
 [[ -e "$USER_RC" ]] && source "$USER_RC"
 
 awk -v s="$_KRIOGENX_RC_START" -v e="$EPOCHREALTIME" 'BEGIN{printf "Kriogenx bashrc loaded in %.0fms\n", (e-s)*1000}'

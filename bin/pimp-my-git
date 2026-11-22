@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 KRIO_DIR=~/.kriogenx
 
@@ -7,13 +7,13 @@ MERGETOOL=code
 
 ##########
 
-if [[ -z $(cat ~/.gitconfig | grep 'email =') ]]; then
+if ! git config --global --get user.email >/dev/null; then
   echo 'Looks like git is not configured for a user'
-  read -p "Enter your git name: " a
+  read -r -p "Enter your git name: " a
   if [[ -n $a ]]; then
     git config --global user.name "$a"
 
-    read -p "Enter your email: " e
+    read -r -p "Enter your email: " e
     if [[ -n $e ]]; then
       git config --global user.email "$e"
     fi
@@ -29,9 +29,7 @@ git config --global core.editor /usr/bin/vim
 
 # Simple Push Default
 # Need to check version
-if [[ `git --version` =~ 'version 1\.8' ]]; then 
-  git config --global push.default simple
-fi
+git config --global push.default simple
 
 # Colors
 # OPTIONS ARE

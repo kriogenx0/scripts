@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+# Select by interpreter so Ruby, AppleScript and bundled binaries are excluded.
+shell_files=(curl-me.sh install.sh scripts/check)
+for candidate in bin/* libexec/*/* configs/git/*; do
+  [[ -f $candidate ]] || continue
+  IFS= read -r interpreter < "$candidate" || continue
+  case "$interpreter" in
+    '#!'*bash|'#!'*'/sh') shell_files+=("$candidate") ;;
+  esac
+done
+
+# Sourced files (no shebang): kriogenx libraries, rc files, alias topics
+sourced_files=(lib/kriogenx/*.sh configs/rc/{bashrc,aliasesrc,pimpmyshellrc} configs/rc/aliases/*.sh)
+
+for script in "${shell_files[@]}" "${sourced_files[@]}"; do
+  bash -n "$script"
+done
+shellcheck "${shell_files[@]}" "${sourced_files[@]}"
+bats test/

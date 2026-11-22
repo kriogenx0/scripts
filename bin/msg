@@ -1,5 +1,4 @@
-#!/bin/bash
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 tput sgr0
 if [[ -n $2 ]]; then
@@ -65,18 +64,18 @@ if [[ -n $2 ]]; then
   done
   str="\033[""$color"
   [[ -n $bold ]] && str+=";1"
-  [[ -n $underline ]] && str+=$str";4"
-  [[ -n $invert ]] && str+=$str";7"
+  [[ -n $underline ]] && str+=";4"
+  [[ -n $invert ]] && str+=";7"
   str+="m"
   str="$str""$message""\033[0m"
   if [[ -n $ret ]]; then
-    $str
+    printf '%b' "$str"
   elif [[ -n $noline ]]; then
-    printf "$str"
+    printf '%b' "$str"
   else
-    printf "$str\n"
+    printf '%b\n' "$str"
   fi
 else
-  echo $1
+  echo "$1"
 fi
 tput sgr0

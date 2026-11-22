@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-exec "$(dirname "$0")/kriogenx" install all "$@"
+exec "$(dirname "$0")/kriogenx" install essentials "$@"

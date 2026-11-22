@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Aliases config file to config location
 if [[ -d ~/Sites/webconfig ]]; then

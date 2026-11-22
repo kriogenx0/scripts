@@ -1,16 +1,16 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-KRIO_DIR=~/.kriogenx
+KRIO_DIR="${KRIO_DIR:-$HOME/.kriogenx}"
 
-# Build .profile
-if [[ ! -e ~/.profile ]]; then
-  echo '#!/usr/bin/env sh' > ~/.profile
-fi
-if [[ -e ~/.profile ]] && [[ ! `cat ~/.profile` =~ 'kriogenx' ]]; then
-  echo "source $KRIO_DIR/configs/rc/bashrc" >> ~/.profile
-  echo '# Customize Here' >> ~/.profile
+# Keep profile setup safe to run repeatedly.
+touch "$HOME/.profile"
+profile_source="source \"$KRIO_DIR/configs/rc/bashrc\""
+if ! grep -Fq "$KRIO_DIR/configs/rc/bashrc" "$HOME/.profile"; then
+  printf '\n%s\n' "$profile_source" >> "$HOME/.profile"
 fi
 
-# Link .profile into shell rc files so aliases are available
-[[ ! `cat ~/.zshrc 2>/dev/null` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.zshrc
-[[ ! `cat ~/.bashrc 2>/dev/null` =~ 'source ~/.profile' ]] && echo 'source ~/.profile' >> ~/.bashrc
+for rc_file in "$HOME/.zshrc" "$HOME/.bashrc" "$HOME/.bash_profile"; do
+  if ! grep -Eq '^[[:space:]]*(source|\.)[[:space:]]+(~/\.profile|"?\$HOME/\.profile"?)[[:space:]]*$' "$rc_file" 2>/dev/null; then
+    printf '\n%s\n' 'source ~/.profile' >> "$rc_file"
+  fi
+done

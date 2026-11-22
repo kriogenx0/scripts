@@ -6,7 +6,7 @@
 kriogenx_dir=$HOME/.kriogenx
 
 msg() {
-  printf "\033[33m$1\033[0m\n"
+  printf "\033[33m%s\033[0m\n" "$1"
 }
 
 msg "Kriogenx"
@@ -30,7 +30,7 @@ if type git >/dev/null 2>&1; then
     fi
   else
     msg 'Kriogenx is already installed'
-    cd "$kriogenx_dir"
+    cd "$kriogenx_dir" || exit
     git pull --rebase
   fi
 
@@ -39,6 +39,7 @@ if type git >/dev/null 2>&1; then
     echo "This adds aliases, commands, and other fun things."
     export PATH=$PATH:"$kriogenx_dir"/bin
     source "$kriogenx_dir"/bin/profile-scripts
+    # shellcheck source=/dev/null
     source ~/.profile
   fi
 else
@@ -72,6 +73,7 @@ else
     echo "This adds aliases, commands, and other fun things."
     export PATH=$PATH:"$kriogenx_dir"/bin
     source "$kriogenx_dir"/bin/profile-scripts
+    # shellcheck source=/dev/null
     source ~/.profile
   else
     msg 'Could not install kriogenx!'
